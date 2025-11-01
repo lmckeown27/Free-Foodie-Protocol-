@@ -1,0 +1,25 @@
+{
+  "name": "ffq-dtl",
+  "version": "1.0.0",
+  "description": "Free Foodie Quest Data Translation Layer - POAS Calculation & Inventory Normalization",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "keywords": ["dtl", "poas", "allocation"],
+  "author": "BNI",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "axios": "^1.6.2",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0"
+  }
+}
+
