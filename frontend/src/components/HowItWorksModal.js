@@ -143,11 +143,69 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
 
   const content = getContent();
 
+  // Color mapping based on user role
+  const getColorClasses = () => {
+    switch (userRole) {
+      case 'student':
+        return {
+          bg: 'bg-primary-100',
+          bgDark: 'bg-primary-50',
+          border: 'border-primary-200',
+          circle: 'bg-primary-600',
+          circleHover: 'hover:bg-primary-700',
+          text: 'text-primary-900',
+          textLight: 'text-primary-800'
+        };
+      case 'pantry_worker':
+        return {
+          bg: 'bg-purple-100',
+          bgDark: 'bg-purple-50',
+          border: 'border-purple-200',
+          circle: 'bg-purple-600',
+          circleHover: 'hover:bg-purple-700',
+          text: 'text-purple-900',
+          textLight: 'text-purple-800'
+        };
+      case 'supplier':
+        return {
+          bg: 'bg-blue-100',
+          bgDark: 'bg-blue-50',
+          border: 'border-blue-200',
+          circle: 'bg-blue-600',
+          circleHover: 'hover:bg-blue-700',
+          text: 'text-blue-900',
+          textLight: 'text-blue-800'
+        };
+      case 'bni':
+        return {
+          bg: 'bg-orange-100',
+          bgDark: 'bg-orange-50',
+          border: 'border-orange-200',
+          circle: 'bg-orange-600',
+          circleHover: 'hover:bg-orange-700',
+          text: 'text-orange-900',
+          textLight: 'text-orange-800'
+        };
+      default:
+        return {
+          bg: 'bg-gray-100',
+          bgDark: 'bg-gray-50',
+          border: 'border-gray-200',
+          circle: 'bg-gray-600',
+          circleHover: 'hover:bg-gray-700',
+          text: 'text-gray-900',
+          textLight: 'text-gray-800'
+        };
+    }
+  };
+
+  const colors = getColorClasses();
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-primary-100 rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+      <div className={`${colors.bg} rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto`}>
         {/* Header */}
-        <div className="sticky top-0 bg-primary-100 border-b border-primary-200 px-6 py-4 flex justify-between items-center">
+        <div className={`sticky top-0 ${colors.bg} border-b ${colors.border} px-6 py-4 flex justify-between items-center`}>
           <h2 className="text-2xl font-bold text-gray-900">{content.title}</h2>
           <button
             onClick={onClose}
@@ -166,7 +224,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             <div key={step.number} className="flex gap-4">
               {/* Step Number */}
               <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-lg">
+                <div className={`w-10 h-10 rounded-full ${colors.circle} text-white flex items-center justify-center font-bold text-lg`}>
                   {step.number}
                 </div>
               </div>
@@ -180,9 +238,9 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           ))}
 
           {/* Footer Info */}
-          <div className="mt-8 p-4 bg-primary-50 rounded-lg border border-primary-200">
-            <h4 className="font-semibold text-primary-900 mb-2">Key Features</h4>
-            <ul className="space-y-1 text-sm text-primary-800">
+          <div className={`mt-8 p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
+            <h4 className={`font-semibold ${colors.text} mb-2`}>Key Features</h4>
+            <ul className={`space-y-1 text-sm ${colors.textLight}`}>
               <li>• Blockchain-based transparency and accountability</li>
               <li>• Real-time inventory tracking and analytics</li>
               <li>• VLCP compliance and automated reporting</li>
@@ -193,10 +251,10 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-primary-50 border-t border-primary-200 px-6 py-4">
+        <div className={`sticky bottom-0 ${colors.bgDark} border-t ${colors.border} px-6 py-4`}>
           <button
             onClick={onClose}
-            className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
+            className={`w-full px-4 py-2 ${colors.circle} text-white rounded-lg ${colors.circleHover} transition font-medium`}
           >
             Got It
           </button>
