@@ -268,6 +268,42 @@ const LandingPage = () => {
     }
   };
 
+  // Dynamic colors for FAQ section
+  const faqColors = {
+    student: {
+      background: 'bg-primary-100',
+      border: 'border-primary-300',
+      hover: 'hover:bg-primary-200',
+      plusSign: 'text-primary-600',
+      ctaBackground: 'bg-primary-200',
+      ctaButton: 'bg-primary-600 hover:bg-primary-700'
+    },
+    pantry: {
+      background: 'bg-purple-100',
+      border: 'border-purple-300',
+      hover: 'hover:bg-purple-200',
+      plusSign: 'text-purple-600',
+      ctaBackground: 'bg-purple-200',
+      ctaButton: 'bg-purple-600 hover:bg-purple-700'
+    },
+    supplier: {
+      background: 'bg-blue-100',
+      border: 'border-blue-300',
+      hover: 'hover:bg-blue-200',
+      plusSign: 'text-blue-600',
+      ctaBackground: 'bg-blue-200',
+      ctaButton: 'bg-blue-600 hover:bg-blue-700'
+    },
+    bni: {
+      background: 'bg-orange-100',
+      border: 'border-orange-300',
+      hover: 'hover:bg-orange-200',
+      plusSign: 'text-orange-600',
+      ctaBackground: 'bg-orange-200',
+      ctaButton: 'bg-orange-600 hover:bg-orange-700'
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -433,14 +469,31 @@ const LandingPage = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 mb-8">
               {currentUser.title} - Everything you need to know about using FFQ
             </p>
+
+            {/* User Type Selector */}
+            <div className="flex justify-center gap-4">
+              {Object.entries(userTypes).map(([key, type]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveUserType(key)}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all ${
+                    activeUserType === key
+                      ? `${howItWorksColors[key].activeTab} text-white`
+                      : `bg-white text-gray-600 hover:bg-gray-50 border ${howItWorksColors[key].inactiveTabBorder}`
+                  }`}
+                >
+                  {type.title}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-4">
             {currentFaqs.map((faq) => (
-              <div key={faq.id} className="bg-primary-100 rounded-lg shadow-md overflow-hidden border-2 border-primary-300">
+              <div key={faq.id} className={`${faqColors[activeUserType].background} rounded-lg shadow-md overflow-hidden border-2 ${faqColors[activeUserType].border}`}>
                 <button
                   onClick={() => {
                     const content = document.getElementById(`faq-${faq.id}`);
@@ -448,12 +501,12 @@ const LandingPage = () => {
                       content.style.display = content.style.display === 'none' ? 'block' : 'none';
                     }
                   }}
-                  className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+                  className={`w-full px-6 py-5 text-left flex justify-between items-center ${faqColors[activeUserType].hover} transition`}
                 >
                   <span className="text-lg font-semibold text-gray-900">
                     {faq.question}
                   </span>
-                  <span className="text-2xl text-primary-600">+</span>
+                  <span className={`text-2xl ${faqColors[activeUserType].plusSign}`}>+</span>
                 </button>
                 <div id={`faq-${faq.id}`} style={{ display: 'none' }} className="px-6 pb-5">
                   <p className="text-gray-700">
@@ -464,7 +517,7 @@ const LandingPage = () => {
             ))}
           </div>
 
-          <div className="mt-12 text-center bg-primary-200 rounded-xl p-8">
+          <div className={`mt-12 text-center ${faqColors[activeUserType].ctaBackground} rounded-xl p-8`}>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Still have questions?
             </h3>
@@ -473,7 +526,7 @@ const LandingPage = () => {
             </p>
             <button
               onClick={() => navigate('/login')}
-              className="px-8 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition shadow-lg"
+              className={`px-8 py-3 ${faqColors[activeUserType].ctaButton} text-white font-semibold rounded-lg transition shadow-lg`}
             >
               Try It Yourself - It's Free!
             </button>
