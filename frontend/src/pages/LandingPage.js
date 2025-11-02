@@ -14,7 +14,7 @@ const LandingPage = () => {
       title: 'Students',
       headline: 'Vote on Food. Earn Tokens. Get Fair Allocations.',
       subheadline: 'No more waiting in line. Your voice determines what the pantry stocks.',
-      cta: 'Sign In with Cal Poly ID',
+      cta: 'Get Started',
       ctaAction: () => navigate('/login')
     },
     pantry: {
@@ -25,7 +25,7 @@ const LandingPage = () => {
       title: 'Pantry Workers',
       headline: 'Smart Allocation. Multi-Sig Security. Zero Guesswork.',
       subheadline: 'POAS-driven decisions backed by blockchain accountability.',
-      cta: 'Connect Multi-Sig Wallet',
+      cta: 'Get Started',
       ctaAction: () => navigate('/login')
     },
     supplier: {
@@ -36,7 +36,7 @@ const LandingPage = () => {
       title: 'Suppliers',
       headline: 'Donate Surplus. Track Impact. Stay Compliant.',
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
-      cta: 'Register as Supplier',
+      cta: 'Get Started',
       ctaAction: () => navigate('/login')
     }
   };
