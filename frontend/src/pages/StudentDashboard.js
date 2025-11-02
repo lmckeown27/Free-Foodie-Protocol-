@@ -94,13 +94,13 @@ const StudentDashboard = () => {
             <WalletConnect />
             <button
               onClick={() => setShowHowItWorks(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
             >
               How This Works
             </button>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+              className="px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition"
             >
               Logout
             </button>
@@ -133,19 +133,19 @@ const StudentDashboard = () => {
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Voting Power</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">{nfts.governance}</p>
+            <p className="text-3xl font-bold text-primary-700 mt-2">{nfts.governance}</p>
             <p className="text-xs text-gray-500 mt-1">Governance NFTs</p>
           </div>
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Active Claims</h3>
-            <p className="text-3xl font-bold text-green-600 mt-2">{allocations.length}</p>
+            <p className="text-3xl font-bold text-primary-600 mt-2">{allocations.length}</p>
             <p className="text-xs text-gray-500 mt-1">Ready to pick up</p>
           </div>
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Total Pickups</h3>
-            <p className="text-3xl font-bold text-purple-600 mt-2">{nfts.allocation}</p>
+            <p className="text-3xl font-bold text-primary-800 mt-2">{nfts.allocation}</p>
             <p className="text-xs text-gray-500 mt-1">Lifetime claims</p>
           </div>
         </div>
@@ -162,10 +162,10 @@ const StudentDashboard = () => {
           
           <Link
             to="/voting"
-            className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-8 hover:from-blue-600 hover:to-blue-700 transition transform hover:scale-105"
+            className="bg-gradient-to-r from-primary-400 to-primary-500 text-white rounded-lg shadow-lg p-8 hover:from-primary-500 hover:to-primary-600 transition transform hover:scale-105"
           >
             <h2 className="text-2xl font-bold mb-2">Vote for Items</h2>
-            <p className="text-blue-100">Earn Governance NFTs by voting</p>
+            <p className="text-primary-100">Earn Governance NFTs by voting</p>
           </Link>
         </div>
         
@@ -194,7 +194,7 @@ const StudentDashboard = () => {
                         <p className="text-sm text-gray-600">{item.item_type}</p>
                         <p className="text-xs text-gray-500 mt-1">Available: {item.quantity} {item.unit}</p>
                       </div>
-                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                      <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-xs font-medium">
                         {item.status}
                       </span>
                     </div>
@@ -259,13 +259,13 @@ const StudentDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {allocations.map((allocation) => (
-                    <div key={allocation.id} className="p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                    <div key={allocation.id} className="p-4 bg-primary-50 rounded-lg border-2 border-primary-200">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <p className="font-bold text-gray-800">{allocation.item_name}</p>
                           <p className="text-sm text-gray-600">Quantity: {allocation.quantity} {allocation.unit}</p>
                         </div>
-                        <span className="px-2 py-1 bg-green-600 text-white rounded text-xs font-medium">
+                        <span className="px-2 py-1 bg-primary-600 text-white rounded text-xs font-medium">
                           Confirmed
                         </span>
                       </div>
@@ -274,7 +274,7 @@ const StudentDashboard = () => {
                       </p>
                       <Link
                         to="/allocations"
-                        className="block text-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
+                        className="block text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
                       >
                         Show QR for Pickup
                       </Link>
@@ -304,9 +304,9 @@ const StudentDashboard = () => {
                           <p className="text-sm text-gray-600">{claim.quantity}</p>
                         </div>
                         <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          claim.status === 'Confirmed' ? 'bg-blue-100 text-blue-700' :
-                          claim.status === 'Ready for Pickup' ? 'bg-green-100 text-green-700' :
-                          'bg-purple-100 text-purple-700'
+                          claim.status === 'Confirmed' ? 'bg-primary-200 text-primary-800' :
+                          claim.status === 'Ready for Pickup' ? 'bg-primary-100 text-primary-700' :
+                          'bg-primary-300 text-primary-900'
                         }`}>
                           {claim.status}
                         </span>
@@ -328,19 +328,19 @@ const StudentDashboard = () => {
         </div>
         
         {/* Info Banner */}
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+        <div className="bg-primary-50 border-2 border-primary-200 rounded-lg p-6">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-blue-900 mb-2">How FFQ Works</h3>
-              <p className="text-sm text-blue-800 mb-2">
+              <h3 className="font-bold text-primary-900 mb-2">How FFQ Works</h3>
+              <p className="text-sm text-primary-800 mb-2">
                 Your FFQ tokens are stored in a <strong>custodial wallet managed by BNI</strong>. This means you don't need to worry about complicated crypto stuff.
               </p>
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-primary-800">
                 When you claim food, our <strong>POAS (Predicted Optimal Allocation Score)</strong> algorithm ensures fair distribution. Your claim is confirmed instantly, and all you need to do is show up to pick it up!
               </p>
             </div>
