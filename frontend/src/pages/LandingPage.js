@@ -263,6 +263,270 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Blockchain 101
+            </h2>
+            <p className="text-xl text-gray-600">
+              New to blockchain? No worries! Here's what you need to know.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {/* FAQ Item 1 - Blockchain */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-1');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is a blockchain?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-1" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  Think of blockchain as a <strong>digital ledger</strong> that keeps a permanent record of everything that happens. 
+                  Like a notebook that everyone can read but no one can erase or change. In FFQ, this means every vote, 
+                  donation, and food allocation is recorded forever—making the system transparent and trustworthy.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 2 - Wallet */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-2');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is a wallet?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-2" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  A wallet is like your <strong>digital ID and account</strong> in one. It stores your tokens and NFTs, 
+                  and lets you interact with FFQ securely. We use <strong>Petra Wallet</strong>—it's a free browser 
+                  extension (like a password manager) that keeps your account safe. You don't need any cryptocurrency 
+                  or money to use it on our test network!
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 3 - Tokens */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-3');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What are tokens?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-3" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  Tokens are like <strong>points or tickets</strong> in the FFQ system. When you vote on what food you'd 
+                  like, you earn <strong>Governance Tokens</strong>. These tokens give you voting power in the system—the 
+                  more you participate, the more influence you have. Think of them like loyalty points that actually matter!
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 4 - NFTs */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-4');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is an NFT?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-4" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  NFT stands for "Non-Fungible Token"—but forget that jargon! In FFQ, NFTs are <strong>digital certificates</strong> 
+                  that prove something happened. For example, when the pantry approves your food request, you get an 
+                  <strong> Allocation NFT</strong>—like a digital ticket you bring to pick up your food. When suppliers donate, 
+                  they get a <strong>Supplier NFT</strong> as a permanent thank-you record.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 5 - Smart Contract */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-5');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is a smart contract?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-5" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  A smart contract is <strong>code that runs automatically</strong> when certain conditions are met. 
+                  Think of it like a vending machine: you press a button, and if you've paid, you get your snack—no human needed. 
+                  In FFQ, smart contracts automatically handle donations, allocations, and rewards without anyone needing to 
+                  manually process paperwork. This makes everything faster and eliminates human error or bias.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 6 - Gas Fees */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-6');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What are gas fees?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-6" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  Gas fees are <strong>tiny transaction costs</strong> (like a few cents) needed to process actions on the blockchain. 
+                  Think of it like paying a stamp to mail a letter. Good news: FFQ covers these fees for you! And on our test 
+                  network, gas is completely free—you can get free test tokens from a "faucet" with one click.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 7 - POAS */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-7');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is POAS?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-7" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  POAS stands for <strong>Predicted Optimal Allocation Score</strong>. It's FFQ's fairness algorithm that decides 
+                  who gets what food. Instead of "first come, first served," POAS considers factors like: How often do you participate? 
+                  What do you need? When did you last get food? This ensures everyone gets a fair shot, not just those who can line up early.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 8 - Aptos */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-8');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  What is Aptos?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-8" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  Aptos is the <strong>blockchain platform</strong> FFQ runs on. Think of it as the foundation—like how websites run 
+                  on the internet. We chose Aptos because it's fast, secure, and environmentally friendly. As a user, you don't need 
+                  to know much about it—just that it's what makes FFQ's transparency and automation possible.
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 9 - Do I need crypto? */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-9');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  Do I need cryptocurrency or money to use FFQ?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-9" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  <strong>Nope! FFQ is completely free to use.</strong> You don't need to buy any cryptocurrency. We're running on 
+                  a test network where you can get free tokens instantly. All you need is to install the Petra wallet (a free browser 
+                  extension) and sign up with your Cal Poly ID. That's it!
+                </p>
+              </div>
+            </div>
+
+            {/* FAQ Item 10 - Is my data safe? */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-10');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  Is my personal information safe?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-10" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700">
+                  <strong>Yes!</strong> FFQ only stores what's necessary (like your student ID and food preferences) in a secure database. 
+                  The blockchain only records <em>anonymous transaction data</em>—not your name, address, or personal details. 
+                  Your wallet is controlled by you and only you. We can't access your wallet or tokens without your permission.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center bg-primary-200 rounded-xl p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              Still have questions?
+            </h3>
+            <p className="text-gray-700 mb-6">
+              We're here to help! Blockchain might seem complex, but using FFQ is simple.
+            </p>
+            <button
+              onClick={() => navigate('/login')}
+              className="px-8 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition shadow-lg"
+            >
+              Try It Yourself - It's Free!
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
         <div className="max-w-4xl mx-auto text-center">
@@ -302,7 +566,8 @@ const LandingPage = () => {
               <ul className="space-y-2 text-sm">
                 <li><a href="#features" className="hover:text-white transition">Features</a></li>
                 <li><a href="#how-it-works" className="hover:text-white transition">How It Works</a></li>
-                <li><button onClick={() => navigate('/login')} className="hover:text-white transition">Sign In</button></li>
+                <li><button onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-white transition text-left">Blockchain 101 (FAQ)</button></li>
+                <li><button onClick={() => navigate('/login')} className="hover:text-white transition text-left">Sign In</button></li>
               </ul>
             </div>
             <div>
