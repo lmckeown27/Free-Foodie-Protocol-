@@ -435,7 +435,11 @@ const LandingPage = () => {
                 {/* Supplier */}
                 <div className="relative">
                   <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
-                    <div className="text-3xl mb-2">🏪</div>
+                    <div className="mb-2">
+                      <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
                     <div className="font-bold">Suppliers</div>
                     <div className="text-xs text-blue-100 mt-1">Donate Surplus</div>
                   </div>
@@ -452,7 +456,11 @@ const LandingPage = () => {
                 {/* Pantry Worker */}
                 <div className="relative">
                   <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
-                    <div className="text-3xl mb-2">👥</div>
+                    <div className="mb-2">
+                      <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
                     <div className="font-bold">Pantry Workers</div>
                     <div className="text-xs text-purple-100 mt-1">Allocate via POAS</div>
                   </div>
@@ -468,7 +476,13 @@ const LandingPage = () => {
 
                 {/* Student */}
                 <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
-                  <div className="text-3xl mb-2">🎓</div>
+                  <div className="mb-2">
+                    <svg className="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                    </svg>
+                  </div>
                   <div className="font-bold">Students</div>
                   <div className="text-xs text-primary-100 mt-1">Receive Food Fairly</div>
                 </div>
@@ -489,7 +503,12 @@ const LandingPage = () => {
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="text-4xl">🏛️</div>
+                      <div>
+                        <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                      </div>
                       <div>
                         <div className="font-bold text-lg">Basic Needs Initiative</div>
                         <div className="text-xs text-orange-100">Multi-Sig Governance & Infrastructure</div>
@@ -525,7 +544,9 @@ const LandingPage = () => {
               {/* Blockchain Layer Badge */}
               <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
                 <div className="bg-gray-900 text-white px-4 py-2 rounded-full shadow-xl text-xs font-medium flex items-center gap-2">
-                  <span>⛓️</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                   <span>Powered by Aptos Blockchain</span>
                 </div>
               </div>
@@ -580,7 +601,11 @@ const LandingPage = () => {
                 {/* Supplier */}
                 <div className="text-center">
                   <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white mb-4 shadow-lg">
-                    <div className="text-4xl mb-2">🏪</div>
+                    <div className="mb-2">
+                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
                     <h4 className="font-bold text-lg">Supplier</h4>
                     <p className="text-sm text-blue-100 mt-2">Donates surplus food</p>
                   </div>
@@ -600,7 +625,11 @@ const LandingPage = () => {
                 {/* Pantry Worker */}
                 <div className="text-center">
                   <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white mb-4 shadow-lg">
-                    <div className="text-4xl mb-2">👥</div>
+                    <div className="mb-2">
+                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
                     <h4 className="font-bold text-lg">Pantry Worker</h4>
                     <p className="text-sm text-purple-100 mt-2">Manages allocation</p>
                   </div>
@@ -620,7 +649,13 @@ const LandingPage = () => {
                 {/* Student */}
                 <div className="text-center">
                   <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white mb-4 shadow-lg">
-                    <div className="text-4xl mb-2">🎓</div>
+                    <div className="mb-2">
+                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                      </svg>
+                    </div>
                     <h4 className="font-bold text-lg">Student</h4>
                     <p className="text-sm text-primary-100 mt-2">Receives food fairly</p>
                   </div>
@@ -638,7 +673,12 @@ const LandingPage = () => {
                 <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <div className="text-5xl">🏛️</div>
+                      <div>
+                        <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                      </div>
                       <div>
                         <h4 className="font-bold text-xl">Basic Needs Initiative (BNI)</h4>
                         <p className="text-sm text-orange-100 mt-1">Institutional Governance & Oversight</p>
@@ -674,7 +714,9 @@ const LandingPage = () => {
               <div className="mt-6 text-center">
                 <div className="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className="text-2xl">⛓️</div>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
                     <div className="text-left">
                       <div className="font-bold">Aptos Blockchain</div>
                       <div className="text-xs text-gray-400">Immutable audit trail of all transactions</div>

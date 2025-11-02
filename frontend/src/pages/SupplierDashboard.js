@@ -84,7 +84,7 @@ const SupplierDashboard = () => {
     e.preventDefault();
     try {
       await inventoryAPI.addInventory(formData);
-      alert(`✅ Donation logged successfully!\n\n🎫 Supplier NFT minted on Aptos blockchain\n📦 Item: ${formData.item_name}\n⚖️ Quantity: ${formData.quantity} ${formData.unit}\n\nThis NFT serves as your immutable donation receipt for compliance and impact tracking.`);
+      alert(`Donation logged successfully!\n\nSupplier NFT minted on Aptos blockchain\nItem: ${formData.item_name}\nQuantity: ${formData.quantity} ${formData.unit}\n\nThis NFT serves as your immutable donation receipt for compliance and impact tracking.`);
       setShowAddForm(false);
       setFormData({
         item_name: '',
@@ -399,13 +399,17 @@ const SupplierDashboard = () => {
                       {donation.statusSteps.map((step, index) => (
                         <div key={index} className="flex-1 relative">
                           <div className="flex flex-col items-center">
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                              step.completed 
-                                ? 'bg-blue-600 text-white' 
-                                : 'bg-gray-200 text-gray-500'
-                            }`}>
-                              {step.completed ? '✓' : (index + 1)}
-                            </div>
+                                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                                  step.completed
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-200 text-gray-500'
+                                }`}>
+                                  {step.completed ? (
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  ) : (index + 1)}
+                                </div>
                             <p className={`text-xs mt-2 font-medium ${
                               step.completed ? 'text-blue-600' : 'text-gray-500'
                             }`}>

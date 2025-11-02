@@ -56,7 +56,7 @@ const BNIDashboard = () => {
       // 1. Update supplier status in database
       // 2. Mint Supplier NFT on Aptos
       // 3. Send to supplier's wallet
-      alert(`✅ Supplier approved!\n\n🎫 Supplier NFT minted on Aptos\n📧 Verification email sent\n\nThe supplier can now connect their Petra Wallet and begin donating.`);
+      alert(`Supplier approved!\n\nSupplier NFT minted on Aptos\nVerification email sent\n\nThe supplier can now connect their Petra Wallet and begin donating.`);
       fetchDashboardData();
     } catch (error) {
       alert('Failed to approve supplier: ' + error.message);
@@ -220,7 +220,7 @@ const BNIDashboard = () => {
                           onClick={() => handleApproveSupplier(supplier.id)}
                           className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition font-medium"
                         >
-                          ✓ Approve & Mint NFT
+                          Approve & Mint NFT
                         </button>
                         <button
                           onClick={() => handleRejectSupplier(supplier.id)}
