@@ -424,17 +424,111 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Four actors work together to create a fair, transparent food distribution system powered by blockchain
             </p>
-            <div className="flex justify-center items-center gap-3 text-sm text-gray-500 font-medium">
-              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">Suppliers Donate</span>
-              <span>→</span>
-              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">Pantry Workers Allocate</span>
-              <span>→</span>
-              <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full">Students Receive</span>
-              <span>→</span>
-              <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full">BNI Oversees</span>
+            
+            {/* Visual Flow Diagram */}
+            <div className="relative max-w-4xl mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 shadow-lg border border-gray-200">
+              {/* Top Row: Supplier → Pantry Worker → Student */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Supplier */}
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
+                    <div className="text-3xl mb-2">🏪</div>
+                    <div className="font-bold">Suppliers</div>
+                    <div className="text-xs text-blue-100 mt-1">Donate Surplus</div>
+                  </div>
+                  {/* Arrow to Pantry Worker */}
+                  <div className="hidden md:block absolute -right-3 top-1/2 transform -translate-y-1/2 z-10">
+                    <div className="bg-white rounded-full p-1 shadow-md">
+                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pantry Worker */}
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
+                    <div className="text-3xl mb-2">👥</div>
+                    <div className="font-bold">Pantry Workers</div>
+                    <div className="text-xs text-purple-100 mt-1">Allocate via POAS</div>
+                  </div>
+                  {/* Arrow to Student */}
+                  <div className="hidden md:block absolute -right-3 top-1/2 transform -translate-y-1/2 z-10">
+                    <div className="bg-white rounded-full p-1 shadow-md">
+                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Student */}
+                <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-4 text-white shadow-md hover:shadow-xl transition-shadow">
+                  <div className="text-3xl mb-2">🎓</div>
+                  <div className="font-bold">Students</div>
+                  <div className="text-xs text-primary-100 mt-1">Receive Food Fairly</div>
+                </div>
+              </div>
+
+              {/* Divider Line */}
+              <div className="relative mb-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t-2 border-dashed border-gray-300"></div>
+                </div>
+                <div className="relative flex justify-center">
+                  <span className="bg-gray-100 px-4 text-xs font-medium text-gray-500">Governed By</span>
+                </div>
+              </div>
+
+              {/* Bottom Row: BNI Oversight */}
+              <div className="relative">
+                <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="text-4xl">🏛️</div>
+                      <div>
+                        <div className="font-bold text-lg">Basic Needs Initiative</div>
+                        <div className="text-xs text-orange-100">Multi-Sig Governance & Infrastructure</div>
+                      </div>
+                    </div>
+                    <div className="hidden sm:flex gap-2 text-xs">
+                      <div className="bg-white/20 rounded-lg px-3 py-1">Approve Suppliers</div>
+                      <div className="bg-white/20 rounded-lg px-3 py-1">Manage Wallets</div>
+                      <div className="bg-white/20 rounded-lg px-3 py-1">Mint NFTs</div>
+                    </div>
+                  </div>
+                </div>
+                {/* Upward Arrows showing BNI's oversight */}
+                <div className="hidden md:flex justify-around mt-3">
+                  <div className="text-orange-400 animate-bounce">
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="text-orange-400 animate-bounce" style={{animationDelay: '0.2s'}}>
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="text-orange-400 animate-bounce" style={{animationDelay: '0.4s'}}>
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Blockchain Layer Badge */}
+              <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+                <div className="bg-gray-900 text-white px-4 py-2 rounded-full shadow-xl text-xs font-medium flex items-center gap-2">
+                  <span>⛓️</span>
+                  <span>Powered by Aptos Blockchain</span>
+                </div>
+              </div>
             </div>
           </div>
 
