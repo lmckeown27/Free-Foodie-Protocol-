@@ -380,9 +380,11 @@ const LandingPage = () => {
             <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
               {currentUser.headline}
             </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              {currentUser.subheadline}
-            </p>
+            <div className="mb-8 max-w-2xl mx-auto min-h-[3.5rem] flex items-center justify-center">
+              <p className="text-xl text-gray-600">
+                {currentUser.subheadline}
+              </p>
+            </div>
             <button
               onClick={currentUser.ctaAction}
               className={`px-8 py-4 bg-gradient-to-r ${currentUser.gradient} text-white text-lg font-semibold rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all`}
