@@ -7,7 +7,6 @@ import WalletConnect from '../components/WalletConnect';
 const SupplierDashboard = () => {
   const [stats, setStats] = useState(null);
   const [donations, setDonations] = useState([]);
-  const [impactMetrics, setImpactMetrics] = useState(null);
   const [donationTimeline, setDonationTimeline] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
@@ -37,20 +36,6 @@ const SupplierDashboard = () => {
       setStats(statsRes.data.data);
       const donationsData = donationsRes.data.data;
       setDonations(donationsData);
-      
-      // Calculate impact metrics from donations
-      const totalPounds = donationsData.reduce((sum, d) => {
-        const weight = (d.unit === 'lbs' || d.unit === 'pounds') ? d.quantity : d.quantity * 0.5; // rough estimate
-        return sum + weight;
-      }, 0);
-      const mealsSaved = Math.floor(totalPounds * 1.2); // 1.2 meals per pound average
-      const co2Saved = Math.floor(totalPounds * 3.8); // 3.8kg CO2 per pound of food
-      
-      setImpactMetrics({
-        totalPounds: totalPounds.toFixed(1),
-        mealsSaved,
-        co2Saved
-      });
       
       // Create donation timeline (group by status)
       const timeline = donationsData.map(donation => ({
@@ -148,33 +133,6 @@ const SupplierDashboard = () => {
       </header>
       
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Impact Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Pounds Donated</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">{impactMetrics?.totalPounds || 0}</p>
-            <p className="text-xs text-gray-500 mt-1">Lifetime surplus rescued</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Meals Saved</h3>
-            <p className="text-3xl font-bold text-blue-700 mt-2">{impactMetrics?.mealsSaved || 0}</p>
-            <p className="text-xs text-gray-500 mt-1">Approx. meal equivalents</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">CO₂ Saved</h3>
-            <p className="text-3xl font-bold text-cyan-600 mt-2">{impactMetrics?.co2Saved || 0} kg</p>
-            <p className="text-xs text-gray-500 mt-1">Carbon footprint reduced</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Supplier NFTs</h3>
-            <p className="text-3xl font-bold text-blue-700 mt-2">{stats?.supplier_nft_count || 0}</p>
-            <p className="text-xs text-gray-500 mt-1">Blockchain receipts</p>
-          </div>
-        </div>
-        
         {/* Compliance Badge */}
         <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
