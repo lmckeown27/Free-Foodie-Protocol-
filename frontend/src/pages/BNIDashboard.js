@@ -34,13 +34,15 @@ const BNIDashboard = () => {
         totalStudents: dashboardRes.data.data?.users?.find(u => u.role === 'student')?.count || 0,
         totalSuppliers: dashboardRes.data.data?.users?.find(u => u.role === 'supplier')?.count || 0,
         totalPantries: dashboardRes.data.data?.users?.find(u => u.role === 'pantry_worker')?.count || 0,
-        totalDonations: 0,
-        totalAllocations: 0,
-        custodialWallets: 0
+        totalDonations: dashboardRes.data.data?.total_donations || 0,
+        totalAllocations: dashboardRes.data.data?.total_allocations || 0,
+        totalTransactions: dashboardRes.data.data?.total_transactions || 0
       });
       
-      // Audit logs will come from backend when implemented
-      // No mock data - will show "No recent audit logs" if empty
+      // Audit logs will come from compliance endpoint
+      if (analyticsRes.data.data && analyticsRes.data.data.length > 0) {
+        setAuditLogs(analyticsRes.data.data.slice(0, 10));
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
@@ -119,35 +121,51 @@ const BNIDashboard = () => {
       
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* System Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-orange-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Active Students</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-6">
+          <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Active Students</h3>
             <p className="text-3xl font-bold text-orange-600 mt-2">
               {systemMetrics?.totalStudents || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Custodial wallets managed</p>
+            <p className="text-xs text-gray-500 mt-1">Custodial wallets</p>
           </div>
           
-          <div className="bg-orange-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Verified Suppliers</h3>
+          <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Verified Suppliers</h3>
             <p className="text-3xl font-bold text-orange-600 mt-2">
               {systemMetrics?.totalSuppliers || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Supplier NFTs issued</p>
+            <p className="text-xs text-gray-500 mt-1">Supplier NFTs</p>
           </div>
           
-          <div className="bg-orange-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Active Pantries</h3>
+          <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Active Pantries</h3>
             <p className="text-3xl font-bold text-orange-600 mt-2">
               {systemMetrics?.totalPantries || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Multi-sig vaults configured</p>
+            <p className="text-xs text-gray-500 mt-1">Multi-sig vaults</p>
           </div>
           
-          <div className="bg-orange-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Total Transactions</h3>
-            <p className="text-3xl font-bold text-orange-600 mt-2">
-              {dashboard?.total_transactions || 0}
+          <div className="bg-gradient-to-br from-orange-200 to-orange-300 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Total Donations</h3>
+            <p className="text-3xl font-bold text-orange-700 mt-2">
+              {systemMetrics?.totalDonations || 0}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">Food items donated</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-orange-200 to-orange-300 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Total Allocations</h3>
+            <p className="text-3xl font-bold text-orange-700 mt-2">
+              {systemMetrics?.totalAllocations || 0}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">Items allocated</p>
+          </div>
+          
+          <div className="bg-gradient-to-br from-orange-300 to-orange-400 rounded-lg shadow p-6">
+            <h3 className="text-sm font-medium text-gray-600">Blockchain Txns</h3>
+            <p className="text-3xl font-bold text-orange-800 mt-2">
+              {systemMetrics?.totalTransactions || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">On-chain verifications</p>
           </div>

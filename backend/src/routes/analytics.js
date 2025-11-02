@@ -5,8 +5,8 @@ const { authenticate, authorize } = require('../middleware/auth');
 
 // @route   GET /api/v1/analytics/dashboard
 // @desc    Get dashboard analytics
-// @access  Private/PantryWorker/Admin
-router.get('/dashboard', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @access  Private/PantryWorker/BNI
+router.get('/dashboard', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
   try {
     // Total users by role
     const usersResult = await query(`
@@ -51,6 +51,25 @@ router.get('/dashboard', authenticate, authorize('pantry_worker', 'admin'), asyn
       GROUP BY nft_type
     `);
     
+    // Total donations
+    const donationsResult = await query(`
+      SELECT COUNT(*) as total_donations
+      FROM inventory
+    `);
+    
+    // Total allocations
+    const totalAllocationsResult = await query(`
+      SELECT COUNT(*) as total_allocations
+      FROM allocations
+    `);
+    
+    // Total transactions (blockchain events)
+    const transactionsResult = await query(`
+      SELECT COUNT(*) as total_transactions
+      FROM nft_records
+      WHERE status = 'active'
+    `);
+    
     res.json({
       success: true,
       data: {
@@ -58,7 +77,10 @@ router.get('/dashboard', authenticate, authorize('pantry_worker', 'admin'), asyn
         inventory: inventoryResult.rows,
         recent_votes: votesResult.rows[0],
         allocations: allocationsResult.rows,
-        nfts: nftsResult.rows
+        nfts: nftsResult.rows,
+        total_donations: parseInt(donationsResult.rows[0].total_donations),
+        total_allocations: parseInt(totalAllocationsResult.rows[0].total_allocations),
+        total_transactions: parseInt(transactionsResult.rows[0].total_transactions)
       }
     });
   } catch (error) {
@@ -98,8 +120,8 @@ router.get('/demand', authenticate, async (req, res, next) => {
 
 // @route   GET /api/v1/analytics/inventory-health
 // @desc    Get inventory health metrics
-// @access  Private/PantryWorker/Admin
-router.get('/inventory-health', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @access  Private/PantryWorker/BNI
+router.get('/inventory-health', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
@@ -122,8 +144,8 @@ router.get('/inventory-health', authenticate, authorize('pantry_worker', 'admin'
 
 // @route   GET /api/v1/analytics/student-engagement
 // @desc    Get student engagement metrics
-// @access  Private/PantryWorker/Admin
-router.get('/student-engagement', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @access  Private/PantryWorker/BNI
+router.get('/student-engagement', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
@@ -155,8 +177,8 @@ router.get('/student-engagement', authenticate, authorize('pantry_worker', 'admi
 
 // @route   GET /api/v1/analytics/compliance
 // @desc    Get compliance metrics
-// @access  Private/PantryWorker/Admin
-router.get('/compliance', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @access  Private/PantryWorker/BNI
+router.get('/compliance', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
