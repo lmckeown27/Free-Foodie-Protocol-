@@ -82,5 +82,53 @@ router.get('/:id/stats', authenticate, async (req, res, next) => {
   }
 });
 
+// @route   GET /api/v1/suppliers/:id/impact
+// @desc    Get supplier impact metrics
+// @access  Private
+router.get('/:id/impact', authenticate, async (req, res, next) => {
+  try {
+    // Calculate total pounds donated (assumes lbs/pounds units, estimates for others)
+    const poundsResult = await query(
+      `SELECT 
+        SUM(CASE 
+          WHEN unit IN ('lbs', 'pounds', 'lb') THEN quantity
+          WHEN unit IN ('oz', 'ounces') THEN quantity / 16.0
+          WHEN unit IN ('kg', 'kilograms') THEN quantity * 2.20462
+          WHEN unit IN ('g', 'grams') THEN quantity / 453.592
+          ELSE quantity * 0.5 
+        END) as total_pounds
+       FROM inventory 
+       WHERE supplier_id = $1`,
+      [req.params.id]
+    );
+    
+    const totalPounds = parseFloat(poundsResult.rows[0].total_pounds) || 0;
+    
+    // Calculate derived metrics
+    const mealsSaved = Math.floor(totalPounds * 1.2); // ~1.2 meals per pound
+    const co2Saved = Math.floor(totalPounds * 3.8); // ~3.8kg CO2 per pound of food waste prevented
+    
+    // Get NFT count
+    const nftResult = await query(
+      `SELECT COUNT(*) as nft_count
+       FROM nft_records
+       WHERE owner_id = $1 AND nft_type = 'supplier' AND status = 'active'`,
+      [req.params.id]
+    );
+    
+    res.json({
+      success: true,
+      data: {
+        totalPounds: totalPounds.toFixed(1),
+        mealsSaved,
+        co2Saved,
+        nftCount: parseInt(nftResult.rows[0].nft_count)
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;
 

@@ -78,6 +78,7 @@ export const supplierAPI = {
   getSuppliers: () => api.get('/suppliers'),
   getSupplierDonations: (id) => api.get(`/suppliers/${id}/donations`),
   getSupplierStats: (id) => api.get(`/suppliers/${id}/stats`),
+  getSupplierImpact: (id) => api.get(`/suppliers/${id}/impact`),
 };
 
 // Analytics API
