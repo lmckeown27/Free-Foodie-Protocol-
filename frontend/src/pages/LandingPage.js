@@ -232,6 +232,14 @@ const LandingPage = () => {
   const currentUser = userTypes[activeUserType];
   const currentFaqs = faqsByRole[activeUserType];
 
+  // Dynamic button colors for each user type
+  const buttonColors = {
+    student: 'bg-primary-600 hover:bg-primary-700',
+    pantry: 'bg-purple-600 hover:bg-purple-700',
+    supplier: 'bg-blue-600 hover:bg-blue-700',
+    bni: 'bg-orange-600 hover:bg-orange-700'
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -274,7 +282,7 @@ const LandingPage = () => {
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition"
+                className={`px-4 py-2 ${buttonColors[activeUserType]} text-white rounded-lg transition`}
               >
                 Get Started
               </button>
