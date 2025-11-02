@@ -96,5 +96,14 @@ export const nftAPI = {
   getNFTsByType: (type) => api.get(`/nft/type/${type}`),
 };
 
+// POAS API
+export const poasAPI = {
+  calculateAll: () => api.get('/poas/calculate-all'),
+  getStudentScore: (studentId) => api.get(`/poas/student/${studentId}`),
+  getMyScore: () => api.get('/poas/my-score'),
+  getRecommendations: (itemId, limit = 10) => api.get(`/poas/recommendations/${itemId}?limit=${limit}`),
+  calculateBatch: (studentIds) => api.post('/poas/calculate-batch', { student_ids: studentIds }),
+};
+
 export default api;
 

@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const { pool } = require('../../backend/src/config/database');
 const logger = require('./utils/logger');
 
 /**
@@ -14,9 +14,7 @@ const logger = require('./utils/logger');
 
 class POASCalculator {
   constructor() {
-    this.pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-    });
+    this.pool = pool;
     
     // POAS weights (configurable)
     this.weights = {
