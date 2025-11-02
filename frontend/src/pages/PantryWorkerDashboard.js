@@ -30,27 +30,6 @@ const PantryWorkerDashboard = () => {
       setDashboard(dashboardRes.data.data);
       setPendingAllocations(allocationsRes.data.data);
       setInventoryHealth(healthRes.data.data);
-      
-      // Mock compliance logs - in production, this would come from the backend
-      setComplianceLogs([
-        { 
-          id: 1, 
-          type: 'Donation Received', 
-          supplier: 'Campus Market', 
-          item: 'Fresh Produce Mix',
-          weight: '150 lbs',
-          date: new Date(),
-          compliance: 'Bill Emerson Act'
-        },
-        { 
-          id: 2, 
-          type: 'Pickup Verified', 
-          student: 'STUDENT123', 
-          item: 'Organic Apples',
-          date: new Date(Date.now() - 3600000),
-          compliance: 'SB 1383'
-        }
-      ]);
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {

@@ -36,21 +36,6 @@ const SupplierDashboard = () => {
       
       setStats(statsRes.data.data);
       setDonations(donationsRes.data.data);
-      
-      // Mock impact metrics - in production, this would come from the backend
-      setImpactMetrics({
-        totalPounds: 2450,
-        mealsSaved: 1850,
-        co2Saved: 340,
-        complianceRate: 100
-      });
-      
-      // Mock NFT collection - in production, this would come from Aptos blockchain
-      setNftCollection([
-        { id: 1, itemName: 'Fresh Produce Mix', weight: '150 lbs', date: new Date(), txHash: '0xabc123...' },
-        { id: 2, itemName: 'Organic Apples', weight: '200 lbs', date: new Date(Date.now() - 86400000), txHash: '0xdef456...' },
-        { id: 3, itemName: 'Sushi Grade Tuna', weight: '50 lbs', date: new Date(Date.now() - 172800000), txHash: '0xghi789...' }
-      ]);
     } catch (error) {
       console.error('Failed to fetch supplier data', error);
     } finally {

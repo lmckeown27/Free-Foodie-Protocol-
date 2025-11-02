@@ -9,7 +9,7 @@ const StudentDashboard = () => {
   const [allocations, setAllocations] = useState([]);
   const [nfts, setNfts] = useState({ governance: 0, allocation: 0 });
   const [trending, setTrending] = useState([]);
-  const [ffqTokens, setFfqTokens] = useState(100); // Custodial tokens managed by BNI
+  const [ffqTokens, setFfqTokens] = useState(0); // Custodial tokens managed by BNI
   const [claimHistory, setClaimHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
@@ -38,12 +38,6 @@ const StudentDashboard = () => {
       setNfts({ governance: governanceCount, allocation: allocationCount });
       
       setTrending(trendingRes.data.data);
-      
-      // Mock claim history - in production, this would come from the backend
-      setClaimHistory([
-        { id: 1, item: 'Fresh Apples', quantity: '2 lbs', status: 'Confirmed', date: new Date() },
-        { id: 2, item: 'Whole Grain Bread', quantity: '1 loaf', status: 'Ready for Pickup', date: new Date(Date.now() - 86400000) },
-      ]);
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
