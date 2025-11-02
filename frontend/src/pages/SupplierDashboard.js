@@ -83,15 +83,15 @@ const SupplierDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-primary-50">
+    <div className="min-h-screen bg-blue-50">
       {/* Header */}
-      <header className="bg-primary-100 shadow">
+      <header className="bg-blue-100 shadow">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-primary-600">Supplier Dashboard</h1>
+            <h1 className="text-3xl font-bold text-blue-600">Supplier Dashboard</h1>
             <p className="text-sm text-gray-600">Welcome, {user.first_name}!</p>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-1 rounded">
+              <span className="text-xs font-mono bg-blue-200 text-blue-800 px-2 py-1 rounded">
                 Supplier NFT Registered
               </span>
               <span className="text-xs text-gray-500">Blockchain-verified donations</span>
@@ -118,9 +118,9 @@ const SupplierDashboard = () => {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Impact Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Pounds Donated</h3>
-            <p className="text-3xl font-bold text-primary-600 mt-2">{impactMetrics?.totalPounds || 0}</p>
+            <p className="text-3xl font-bold text-blue-600 mt-2">{impactMetrics?.totalPounds || 0}</p>
             <p className="text-xs text-gray-500 mt-1">Lifetime surplus rescued</p>
           </div>
           
@@ -130,15 +130,15 @@ const SupplierDashboard = () => {
             <p className="text-xs text-gray-500 mt-1">Approx. meal equivalents</p>
           </div>
           
-          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">CO₂ Saved</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">{impactMetrics?.co2Saved || 0} kg</p>
+            <p className="text-3xl font-bold text-cyan-600 mt-2">{impactMetrics?.co2Saved || 0} kg</p>
             <p className="text-xs text-gray-500 mt-1">Carbon footprint reduced</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Supplier NFTs</h3>
-            <p className="text-3xl font-bold text-purple-600 mt-2">{stats?.supplier_nft_count || nftCollection.length}</p>
+            <p className="text-3xl font-bold text-blue-700 mt-2">{stats?.supplier_nft_count || nftCollection.length}</p>
             <p className="text-xs text-gray-500 mt-1">Blockchain receipts</p>
           </div>
         </div>
@@ -165,7 +165,7 @@ const SupplierDashboard = () => {
         <div className="mb-6">
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
           >
             {showAddForm ? 'Cancel' : '+ Add New Donation'}
           </button>
@@ -173,7 +173,7 @@ const SupplierDashboard = () => {
         
         {/* Add Donation Form */}
         {showAddForm && (
-          <div className="bg-primary-100 rounded-lg shadow p-6 mb-6">
+          <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Add New Donation</h2>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -182,7 +182,7 @@ const SupplierDashboard = () => {
                   name="item_name"
                   type="text"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.item_name}
                   onChange={handleChange}
                 />
@@ -192,7 +192,7 @@ const SupplierDashboard = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Item Type</label>
                 <select
                   name="item_type"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.item_type}
                   onChange={handleChange}
                 >
@@ -213,7 +213,7 @@ const SupplierDashboard = () => {
                   name="quantity"
                   type="number"
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.quantity}
                   onChange={handleChange}
                 />
@@ -225,7 +225,7 @@ const SupplierDashboard = () => {
                   name="unit"
                   type="text"
                   placeholder="e.g., lbs, count, gallons"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.unit}
                   onChange={handleChange}
                 />
@@ -236,7 +236,7 @@ const SupplierDashboard = () => {
                 <input
                   name="expiration_date"
                   type="date"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.expiration_date}
                   onChange={handleChange}
                 />
@@ -247,7 +247,7 @@ const SupplierDashboard = () => {
                 <input
                   name="location"
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.location}
                   onChange={handleChange}
                 />
@@ -258,7 +258,7 @@ const SupplierDashboard = () => {
                 <textarea
                   name="handling_notes"
                   rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   value={formData.handling_notes}
                   onChange={handleChange}
                 />
@@ -267,7 +267,7 @@ const SupplierDashboard = () => {
               <div className="md:col-span-2">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
                 >
                   Submit Donation
                 </button>
@@ -279,8 +279,8 @@ const SupplierDashboard = () => {
         {/* NFT Collection & Donation History */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* NFT Donation Receipts */}
-          <div className="bg-primary-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-primary-200">
+          <div className="bg-blue-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-blue-200">
               <h2 className="text-xl font-semibold text-gray-800">NFT Donation Receipts</h2>
               <p className="text-sm text-gray-600">Immutable blockchain records</p>
             </div>
@@ -290,13 +290,13 @@ const SupplierDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {nftCollection.map((nft) => (
-                    <div key={nft.id} className="p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border-2 border-purple-200">
+                    <div key={nft.id} className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border-2 border-blue-200">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <p className="font-bold text-gray-800">{nft.itemName}</p>
                           <p className="text-sm text-gray-600">{nft.weight}</p>
                         </div>
-                        <span className="px-2 py-1 bg-purple-600 text-white rounded text-xs font-bold">
+                        <span className="px-2 py-1 bg-blue-600 text-white rounded text-xs font-bold">
                           NFT
                         </span>
                       </div>
@@ -304,10 +304,10 @@ const SupplierDashboard = () => {
                         {nft.date.toLocaleDateString()} at {nft.date.toLocaleTimeString()}
                       </p>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono bg-white px-2 py-1 rounded border border-purple-200 truncate">
+                        <span className="text-xs font-mono bg-white px-2 py-1 rounded border border-blue-200 truncate">
                           {nft.txHash}
                         </span>
-                        <button className="text-xs text-purple-600 hover:text-purple-700 font-medium">
+                        <button className="text-xs text-blue-600 hover:text-blue-700 font-medium">
                           View on Aptos
                         </button>
                       </div>
@@ -319,8 +319,8 @@ const SupplierDashboard = () => {
           </div>
           
           {/* Donation Tracking */}
-          <div className="bg-primary-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-primary-200">
+          <div className="bg-blue-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-blue-200">
               <h2 className="text-xl font-semibold text-gray-800">Donation Tracking</h2>
               <p className="text-sm text-gray-600">Where your donations go</p>
             </div>
@@ -330,7 +330,7 @@ const SupplierDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {donations.slice(0, 5).map((donation) => (
-                    <div key={donation.id} className="p-4 bg-white rounded-lg border border-primary-200">
+                    <div key={donation.id} className="p-4 bg-white rounded-lg border border-blue-200">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <p className="font-bold text-gray-800">{donation.item_name}</p>
@@ -356,7 +356,7 @@ const SupplierDashboard = () => {
                 </div>
               )}
               <div className="mt-4 text-center">
-                <Link to="/inventory" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                <Link to="/inventory" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
                   View Full Donation History →
                 </Link>
               </div>

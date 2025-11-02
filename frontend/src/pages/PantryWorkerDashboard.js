@@ -69,15 +69,15 @@ const PantryWorkerDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-primary-50">
+    <div className="min-h-screen bg-purple-50">
       {/* Header */}
-      <header className="bg-primary-100 shadow">
+      <header className="bg-purple-100 shadow">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-primary-600">FFQ Pantry Dashboard</h1>
+            <h1 className="text-3xl font-bold text-purple-600">FFQ Pantry Dashboard</h1>
             <p className="text-sm text-gray-600">Pantry Worker Panel - {user.first_name}</p>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-xs font-mono bg-purple-100 text-purple-700 px-2 py-1 rounded">
+              <span className="text-xs font-mono bg-purple-200 text-purple-800 px-2 py-1 rounded">
                 Multi-Sig Petra Vault
               </span>
               <span className="text-xs text-gray-500">Shared control & accountability</span>
@@ -104,30 +104,30 @@ const PantryWorkerDashboard = () => {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-primary-100 rounded-lg shadow p-6">
+          <div className="bg-purple-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Available Items</h3>
             <p className="text-3xl font-bold text-green-600 mt-2">
               {inventoryHealth?.available_items || 0}
             </p>
           </div>
           
-          <div className="bg-primary-100 rounded-lg shadow p-6">
+          <div className="bg-purple-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Expiring Soon</h3>
             <p className="text-3xl font-bold text-yellow-600 mt-2">
               {inventoryHealth?.expiring_soon || 0}
             </p>
           </div>
           
-          <div className="bg-primary-100 rounded-lg shadow p-6">
+          <div className="bg-purple-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Expired Items</h3>
             <p className="text-3xl font-bold text-red-600 mt-2">
               {inventoryHealth?.expired_items || 0}
             </p>
           </div>
           
-          <div className="bg-primary-100 rounded-lg shadow p-6">
+          <div className="bg-purple-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Total Students</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">
+            <p className="text-3xl font-bold text-purple-600 mt-2">
               {dashboard?.users?.find(u => u.role === 'student')?.count || 0}
             </p>
           </div>
@@ -137,23 +137,23 @@ const PantryWorkerDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Link
             to="/allocations"
-            className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-6 hover:from-primary-600 hover:to-primary-700 transition"
+            className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 hover:from-purple-600 hover:to-purple-700 transition"
           >
             <h2 className="text-xl font-bold mb-2">Manage Allocations</h2>
-            <p className="text-primary-100">Process and confirm allocations</p>
+            <p className="text-purple-100">Process and confirm allocations</p>
           </Link>
           
           <Link
             to="/inventory"
-            className="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg p-6 hover:from-blue-600 hover:to-blue-700 transition"
+            className="bg-gradient-to-r from-purple-400 to-purple-500 text-white rounded-lg shadow-lg p-6 hover:from-purple-500 hover:to-purple-600 transition"
           >
             <h2 className="text-xl font-bold mb-2">View Inventory</h2>
-            <p className="text-blue-100">Check available items</p>
+            <p className="text-purple-100">Check available items</p>
           </Link>
           
           <Link
             to="/analytics"
-            className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 hover:from-purple-600 hover:to-purple-700 transition"
+            className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg shadow-lg p-6 hover:from-purple-700 hover:to-purple-800 transition"
           >
             <h2 className="text-xl font-bold mb-2">Analytics</h2>
             <p className="text-purple-100">View detailed reports</p>
@@ -203,8 +203,8 @@ const PantryWorkerDashboard = () => {
         {/* POAS Allocations & Compliance */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Active Allocations (POAS-Matched) */}
-          <div className="bg-primary-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-primary-200">
+          <div className="bg-purple-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-purple-200">
               <h2 className="text-xl font-semibold text-gray-800">Active Allocations</h2>
               <p className="text-sm text-gray-600">POAS-matched, ready for pickup</p>
             </div>
@@ -224,7 +224,7 @@ const PantryWorkerDashboard = () => {
                           <p className="text-xs text-gray-500">Qty: {allocation.quantity}</p>
                         </div>
                         <div className="text-right">
-                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium block mb-1">
+                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium block mb-1">
                             POAS: {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
                           </span>
                           <span className="text-xs text-gray-500">
@@ -237,7 +237,7 @@ const PantryWorkerDashboard = () => {
                 </div>
               )}
               <div className="mt-4 text-center">
-                <Link to="/allocations" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                <Link to="/allocations" className="text-purple-600 hover:text-purple-700 font-medium text-sm">
                   View All Allocations →
                 </Link>
               </div>
@@ -245,8 +245,8 @@ const PantryWorkerDashboard = () => {
           </div>
           
           {/* Compliance & Safety Logs */}
-          <div className="bg-primary-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-primary-200">
+          <div className="bg-purple-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-purple-200">
               <h2 className="text-xl font-semibold text-gray-800">Compliance Logs</h2>
               <p className="text-sm text-gray-600">Bill Emerson Act & SB 1383</p>
             </div>
@@ -256,7 +256,7 @@ const PantryWorkerDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {complianceLogs.map((log) => (
-                    <div key={log.id} className="p-4 bg-white rounded-lg border border-primary-200">
+                    <div key={log.id} className="p-4 bg-white rounded-lg border border-purple-200">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-medium">
@@ -281,7 +281,7 @@ const PantryWorkerDashboard = () => {
                 </div>
               )}
               <div className="mt-4 text-center">
-                <Link to="/analytics" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                <Link to="/analytics" className="text-purple-600 hover:text-purple-700 font-medium text-sm">
                   View Full Compliance Report →
                 </Link>
               </div>
@@ -290,22 +290,22 @@ const PantryWorkerDashboard = () => {
         </div>
         
         {/* POAS Analytics Info */}
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+        <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-blue-900 mb-2">POAS Dashboard: Fair Distribution Analytics</h3>
-              <p className="text-sm text-blue-800 mb-2">
+              <h3 className="font-bold text-purple-900 mb-2">POAS Dashboard: Fair Distribution Analytics</h3>
+              <p className="text-sm text-purple-800 mb-2">
                 The <strong>Predicted Optimal Allocation Score (POAS)</strong> ensures equitable food distribution based on student needs, voting history, and demand patterns.
               </p>
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-purple-800">
                 All allocations and verifications are recorded on-chain via your <strong>Multi-Sig Petra Vault</strong>, providing full transparency and accountability.
               </p>
-              <Link to="/analytics" className="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+              <Link to="/analytics" className="inline-block mt-3 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium text-sm">
                 View POAS Analytics Dashboard →
               </Link>
             </div>
