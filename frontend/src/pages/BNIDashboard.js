@@ -26,19 +26,10 @@ const BNIDashboard = () => {
       
       setDashboard(dashboardRes.data.data);
       
-      // Mock pending suppliers - in production, this would come from backend
-      setPendingSuppliers([
-        { 
-          id: 1, 
-          name: 'Campus Market', 
-          email: 'contact@campusmarket.com',
-          business_type: 'Grocery Store',
-          submitted: new Date(),
-          status: 'pending'
-        }
-      ]);
+      // Pending suppliers come from API (filtered in fetchDashboardData)
+      // No mock data - will show "No pending applications" if empty
       
-      // Mock system metrics
+      // System metrics from real dashboard data
       setSystemMetrics({
         totalStudents: dashboardRes.data.data?.users?.find(u => u.role === 'student')?.count || 0,
         totalSuppliers: dashboardRes.data.data?.users?.find(u => u.role === 'supplier')?.count || 0,
@@ -48,25 +39,8 @@ const BNIDashboard = () => {
         custodialWallets: 0
       });
       
-      // Mock audit logs
-      setAuditLogs([
-        {
-          id: 1,
-          type: 'Supplier Approved',
-          actor: 'Basic Needs Initiative Staff',
-          target: 'Campus Market',
-          timestamp: new Date(),
-          blockchain_tx: '0xabc123...'
-        },
-        {
-          id: 2,
-          type: 'NFT Minted',
-          actor: 'System',
-          target: 'Student Wallet',
-          timestamp: new Date(Date.now() - 3600000),
-          blockchain_tx: '0xdef456...'
-        }
-      ]);
+      // Audit logs will come from backend when implemented
+      // No mock data - will show "No recent audit logs" if empty
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
