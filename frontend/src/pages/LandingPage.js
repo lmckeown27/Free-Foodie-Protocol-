@@ -310,7 +310,7 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Left - FAQ & Features */}
+            {/* Left - FAQ & Features & POAS */}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
@@ -323,6 +323,12 @@ const LandingPage = () => {
                 className="text-gray-600 hover:text-gray-900 transition"
               >
                 Features
+              </button>
+              <button
+                onClick={() => document.getElementById('poas')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-600 hover:text-gray-900 transition"
+              >
+                POAS
               </button>
             </div>
             
@@ -415,6 +421,183 @@ const LandingPage = () => {
                 <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* POAS Section */}
+      <section id="poas" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Fair Allocation Through POAS</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              The Predicted Optimal Allocation Score ensures every student gets a fair chance at food, 
+              based on need, participation, and engagement—not first-come, first-served.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            {/* Left: Explanation */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">How POAS Works</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                POAS is an AI-powered algorithm that calculates each student's priority for receiving food allocations. 
+                Instead of rewarding those who can check the app most frequently, POAS considers multiple factors to 
+                ensure equitable distribution.
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
+                    40%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Vote Weight</h4>
+                    <p className="text-sm text-gray-600">Your voting activity and preferences for food items</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
+                    30%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Engagement Score</h4>
+                    <p className="text-sm text-gray-600">Platform activity and community participation</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
+                    20%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Claim History</h4>
+                    <p className="text-sm text-gray-600">Reliability in picking up allocated food (reduces waste)</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
+                    10%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Urgency Factor</h4>
+                    <p className="text-sm text-gray-600">Time since last allocation to ensure regular access</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Visual/Example */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-100">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">POAS in Action</h3>
+              
+              {/* Example Student Cards */}
+              <div className="space-y-4">
+                <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 border-2 border-green-500">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-gray-900">Student A</span>
+                    <span className="px-3 py-1 bg-green-600 text-white rounded-full font-bold text-sm">
+                      POAS: 87.5
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <p>✓ Voted 15 times this week</p>
+                    <p>✓ High engagement (5 logins)</p>
+                    <p>✓ 100% pickup rate</p>
+                    <p>✓ Last allocation: 5 days ago</p>
+                  </div>
+                  <div className="mt-3 text-sm font-bold text-green-700">
+                    → High Priority for Allocation
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4 border-2 border-yellow-400">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-gray-900">Student B</span>
+                    <span className="px-3 py-1 bg-yellow-600 text-white rounded-full font-bold text-sm">
+                      POAS: 62.3
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <p>✓ Voted 5 times this week</p>
+                    <p>• Moderate engagement (2 logins)</p>
+                    <p>• 75% pickup rate</p>
+                    <p>✓ Last allocation: 3 days ago</p>
+                  </div>
+                  <div className="mt-3 text-sm font-bold text-yellow-700">
+                    → Medium Priority for Allocation
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border-2 border-gray-300">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-gray-900">Student C</span>
+                    <span className="px-3 py-1 bg-gray-600 text-white rounded-full font-bold text-sm">
+                      POAS: 41.8
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-600 space-y-1">
+                    <p>• Voted 1 time this week</p>
+                    <p>• Low engagement (1 login)</p>
+                    <p>• 50% pickup rate (high waste)</p>
+                    <p>• Last allocation: 1 day ago</p>
+                  </div>
+                  <div className="mt-3 text-sm font-bold text-gray-700">
+                    → Lower Priority for Allocation
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Benefits Section */}
+          <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl shadow-xl p-8 text-white">
+            <h3 className="text-2xl font-bold mb-6 text-center">Why POAS Is Fair</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <h4 className="font-bold text-lg mb-2">Equal Opportunity</h4>
+                <p className="text-sm text-primary-100">
+                  Students with genuine need get priority, regardless of when they check the app
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h4 className="font-bold text-lg mb-2">Reduces Waste</h4>
+                <p className="text-sm text-primary-100">
+                  Rewards students who actually pick up their allocations, minimizing food waste
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h4 className="font-bold text-lg mb-2">Blockchain Verified</h4>
+                <p className="text-sm text-primary-100">
+                  All POAS calculations are recorded on Aptos for complete transparency
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-lg font-semibold text-primary-100">
+                "Vote more, engage with the platform, and pick up your allocations to increase your POAS score!"
+              </p>
+            </div>
           </div>
         </div>
       </section>
