@@ -9,8 +9,8 @@ const LandingPage = () => {
     student: {
       color: 'primary',
       gradient: 'from-primary-500 to-primary-600',
-      bgColor: 'bg-gradient-to-b from-primary-50 to-white',
-      sectionBg: 'bg-primary-50',
+      bgColor: 'bg-gradient-to-b from-primary-100 to-white',
+      sectionBg: 'bg-primary-100',
       title: 'Students',
       headline: 'Vote on Food. Earn Tokens. Get Fair Allocations.',
       subheadline: 'No more waiting in line. Your voice determines what the pantry stocks.',
@@ -20,8 +20,8 @@ const LandingPage = () => {
     pantry: {
       color: 'purple',
       gradient: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-gradient-to-b from-purple-50 to-white',
-      sectionBg: 'bg-purple-50',
+      bgColor: 'bg-gradient-to-b from-purple-100 to-white',
+      sectionBg: 'bg-purple-100',
       title: 'Pantry Workers',
       headline: 'Smart Allocation. Multi-Sig Security. Zero Guesswork.',
       subheadline: 'POAS-driven decisions backed by blockchain accountability.',
@@ -31,8 +31,8 @@ const LandingPage = () => {
     supplier: {
       color: 'blue',
       gradient: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-gradient-to-b from-blue-50 to-white',
-      sectionBg: 'bg-blue-50',
+      bgColor: 'bg-gradient-to-b from-blue-100 to-white',
+      sectionBg: 'bg-blue-100',
       title: 'Suppliers',
       headline: 'Donate Surplus. Track Impact. Stay Compliant.',
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
