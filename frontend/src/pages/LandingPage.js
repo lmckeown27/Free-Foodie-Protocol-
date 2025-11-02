@@ -311,22 +311,22 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Left - FAQ & Features & POAS */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-8">
               <button
                 onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 hover:text-gray-900 transition"
+                className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
                 FAQ
               </button>
               <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 hover:text-gray-900 transition"
+                className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
                 Features
               </button>
               <button
                 onClick={() => document.getElementById('poas')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 hover:text-gray-900 transition"
+                className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
                 POAS
               </button>
@@ -343,16 +343,16 @@ const LandingPage = () => {
             </div>
             
             {/* Right - Navigation */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-8">
               <button
                 onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 hover:text-gray-900 transition"
+                className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
                 How It Works
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className={`px-4 py-2 ${buttonColors[activeUserType]} text-white rounded-lg transition`}
+                className={`px-4 py-2 ${buttonColors[activeUserType]} text-white rounded-lg transition font-medium`}
               >
                 Get Started
               </button>
