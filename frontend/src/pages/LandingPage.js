@@ -525,6 +525,56 @@ const LandingPage = () => {
                 </p>
               </div>
             </div>
+
+            {/* FAQ Item 11 - NFTs vs monkey pictures */}
+            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden border-2 border-primary-300">
+              <button
+                onClick={() => {
+                  const content = document.getElementById('faq-11');
+                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                }}
+                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  Wait, aren't NFTs just those monkey pictures? How is this different?
+                </span>
+                <span className="text-2xl text-primary-600">+</span>
+              </button>
+              <div id="faq-11" style={{ display: 'none' }} className="px-6 pb-5">
+                <p className="text-gray-700 mb-4">
+                  <strong>Great question!</strong> You're thinking of <strong>collectible NFTs</strong> (like Bored Apes, CryptoPunks, etc.)—
+                  digital art sold for speculation and status. FFQ uses <strong>utility NFTs</strong>, which serve completely different purposes. 
+                  Here's the key difference:
+                </p>
+                <div className="bg-white rounded-lg p-4 mb-4">
+                  <p className="font-semibold text-gray-900 mb-2">Collectible NFTs (Monkey Pictures):</p>
+                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                    <li>Bought and sold for money (speculative investment)</li>
+                    <li>Used as profile pictures or status symbols</li>
+                    <li>Purely aesthetic—no functional purpose</li>
+                    <li>Often expensive (thousands of dollars)</li>
+                    <li>Can lose value overnight</li>
+                  </ul>
+                </div>
+                <div className="bg-white rounded-lg p-4 mb-4">
+                  <p className="font-semibold text-gray-900 mb-2">FFQ's Utility NFTs (Functional Tools):</p>
+                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
+                    <li><strong>100% FREE</strong>—never bought or sold</li>
+                    <li><strong>Governance NFTs</strong> = Your voting rights (participate in decisions)</li>
+                    <li><strong>Allocation NFTs</strong> = Your food pickup tickets (fraud-proof claims)</li>
+                    <li><strong>Supplier NFTs</strong> = Donation receipts (tax deduction proof)</li>
+                    <li>Serve specific, practical purposes—not collectibles</li>
+                    <li>Not tradeable—tied to your identity and needs</li>
+                  </ul>
+                </div>
+                <p className="text-gray-700">
+                  <strong>The bottom line:</strong> FFQ's NFTs are <em>tools</em>, not art. They're digital certificates that prove rights, 
+                  prevent fraud, and enable fair distribution. You'll never see a monkey picture on FFQ—just functional blockchain technology 
+                  solving real problems in food distribution. Think of them like <strong>digital tickets, receipts, and ID cards</strong>—
+                  not collectibles or investments. And again: they're completely free!
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="mt-12 text-center bg-primary-200 rounded-xl p-8">
