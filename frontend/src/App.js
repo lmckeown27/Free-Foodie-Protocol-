@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import PantryWorkerDashboard from './pages/PantryWorkerDashboard';
 import SupplierDashboard from './pages/SupplierDashboard';
+import BNIDashboard from './pages/BNIDashboard';
 import Inventory from './pages/Inventory';
 import Voting from './pages/Voting';
 import Allocations from './pages/Allocations';
@@ -41,6 +42,8 @@ const DashboardRedirect = () => {
       return <Navigate to="/pantry-worker" />;
     case 'supplier':
       return <Navigate to="/supplier" />;
+    case 'bni':
+      return <Navigate to="/bni" />;
     default:
       return <Navigate to="/login" />;
   }
@@ -96,6 +99,15 @@ function App() {
               />
               
               <Route 
+                path="/bni" 
+                element={
+                  <ProtectedRoute allowedRoles={['bni']}>
+                    <BNIDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
                 path="/inventory" 
                 element={
                   <ProtectedRoute>
@@ -125,7 +137,7 @@ function App() {
               <Route 
                 path="/analytics" 
                 element={
-                  <ProtectedRoute allowedRoles={['pantry_worker']}>
+                  <ProtectedRoute allowedRoles={['pantry_worker', 'bni']}>
                     <Analytics />
                   </ProtectedRoute>
                 }

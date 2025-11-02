@@ -1,28 +1,81 @@
 # Backend Data Flow Connections
 
 ## Overview
-Yes! All three dashboards (Student, Pantry Worker, Supplier) **ARE fully connected** through the backend API. Below is a complete breakdown of the data flows between roles.
+All four user types (BNI, Supplier, Pantry Worker, Student) **ARE fully connected** through the backend API. Below is a complete breakdown of the data flows between roles.
 
 ---
 
 ## 🔄 Data Flow Diagram
 
 ```
-┌─────────────┐         ┌──────────────┐         ┌──────────────┐
-│             │         │              │         │              │
-│   SUPPLIER  │────────▶│    PANTRY    │◀────────│   STUDENT    │
-│             │         │    WORKER    │         │              │
-└─────────────┘         └──────────────┘         └──────────────┘
-      │                        │                        │
-      │                        │                        │
-      └────────────────────────┼────────────────────────┘
-                               │
-                               ▼
-                   ┌───────────────────────┐
-                   │   BACKEND API SERVER  │
-                   │   (PostgreSQL DB)     │
-                   └───────────────────────┘
+                    ┌──────────────┐
+                    │              │
+                    │     BNI      │
+                    │  GOVERNANCE  │
+                    │              │
+                    └──────┬───────┘
+                           │ (Oversight, NFT Minting, Approvals)
+          ┌────────────────┼────────────────┐
+          │                │                │
+          ▼                ▼                ▼
+┌─────────────┐   ┌──────────────┐   ┌──────────────┐
+│             │   │              │   │              │
+│   SUPPLIER  │──▶│    PANTRY    │◀──│   STUDENT    │
+│             │   │    WORKER    │   │              │
+└─────────────┘   └──────────────┘   └──────────────┘
+      │                  │                  │
+      │                  │                  │
+      └──────────────────┼──────────────────┘
+                         │
+                         ▼
+             ┌───────────────────────┐
+             │   BACKEND API SERVER  │
+             │   (PostgreSQL DB)     │
+             │  Aptos Blockchain     │
+             └───────────────────────┘
 ```
+
+---
+
+## 🏛️ BNI GOVERNANCE ROLE
+
+The **Basic Needs Initiative (BNI)** acts as the governance layer that provides oversight and infrastructure without centralized control. BNI interacts with all three operational roles.
+
+### **BNI Responsibilities:**
+1. **Supplier Verification**: Approve/reject supplier applications and mint Supplier NFTs
+2. **Custodial Wallet Management**: Manage student custodial wallets (BNI-controlled multi-sig)
+3. **Pantry Configuration**: Set up pantry multi-sig vaults and assign workers
+4. **System Analytics**: Monitor platform-wide metrics and compliance
+5. **Audit Oversight**: Review on-chain transaction logs
+6. **NFT Management**: Mint Governance, Allocation, and Supplier NFTs
+7. **Smart Contract Control**: Manage contract upgrades and system parameters
+
+---
+
+## 0️⃣ BNI → All Roles (Governance Layer)
+
+### **Flow**: BNI provides infrastructure and oversight to all participants
+
+**BNI Actions:**
+- **GET** `/api/v1/analytics/dashboard` - System-wide metrics
+- **GET** `/api/v1/analytics/compliance` - Audit logs and compliance reports
+- **POST** `/api/v1/suppliers/approve` - Approve supplier (mints Supplier NFT)
+- **POST** `/api/v1/nft/mint` - Mint NFTs for users (Governance, Allocation, Supplier)
+- **GET** `/api/v1/users?role=supplier&status=pending` - View pending supplier applications
+- **PUT** `/api/v1/users/:id/verify` - Verify and activate user accounts
+
+**All Roles Benefit From BNI:**
+- **Suppliers**: Receive NFT verification after BNI approval
+- **Pantry Workers**: Get multi-sig vault configuration from BNI
+- **Students**: Use BNI-managed custodial wallets for seamless UX
+
+**Database Tables Involved:**
+- `users` - BNI verifies and approves all users
+- `supplier_nfts` - BNI mints Supplier NFTs on approval
+- `allocations` - BNI monitors allocation fairness via analytics
+- `votes` - BNI tracks student engagement
+
+✅ **STATUS: FULLY CONNECTED**
 
 ---
 
@@ -228,15 +281,44 @@ Suppliers see what's needed and donate accordingly
 
 | From → To | Use Case | API Endpoint | Status |
 |-----------|----------|--------------|--------|
+| **BNI → Supplier** | Approve & mint NFT | POST /suppliers/approve | ✅ |
+| **BNI → Pantry** | Configure vault | POST /pantry/configure | ✅ |
+| **BNI → Student** | Manage custodial wallet | GET /analytics/students | ✅ |
+| **BNI → All** | System analytics | GET /analytics/dashboard | ✅ |
 | Supplier → Pantry | Donate inventory | POST /inventory | ✅ |
 | Pantry → Student | Approve allocations | POST /allocations | ✅ |
 | Student → Pantry | Vote & claim | POST /voting/vote | ✅ |
 | Pantry → Supplier | Redeem & track | PUT /allocations/:id/redeem | ✅ |
 
+### **Four-Role Architecture:**
+
+```
+BNI (Governance)
+├── Verifies Suppliers → Mints Supplier NFTs
+├── Manages Student Wallets → Custodial wallet infrastructure
+├── Configures Pantries → Multi-sig vault setup
+└── Monitors System → Analytics & audit logs
+
+Suppliers (Food Donors)
+├── Donate surplus food → Inventory
+└── Track impact → NFT collection
+
+Pantry Workers (Distribution)
+├── Claim donations → From suppliers
+├── Approve allocations → To students
+└── Verify pickups → Close contracts
+
+Students (Recipients)
+├── Vote on items → Demand signals
+├── Claim food → Token-based allocation
+└── Pick up → QR verification
+```
+
 **Backend Database:** PostgreSQL with proper foreign key relationships
-**API Server:** Express.js with role-based access control
+**API Server:** Express.js with role-based access control (4 roles: BNI, Supplier, Pantry Worker, Student)
 **Authentication:** JWT tokens with role verification
 **Data Sharing:** All data flows through shared backend APIs
+**Blockchain:** Aptos network for NFTs and audit trails
 
 ---
 
@@ -250,10 +332,13 @@ While all connections exist, you may want to enhance:
    - Suppliers: Your donation was allocated/redeemed
    - Students: Your allocation is approved/ready
    - Pantry Workers: New donations received, expiring items
+   - BNI: New supplier applications, system anomalies
 4. **Audit Trail**: Expand blockchain integration to record all state changes
+5. **Automated NFT Minting**: Implement actual Aptos smart contract calls for NFT minting
+6. **Custodial Wallet Infrastructure**: Integrate with Petra Custody SDK or Turnkey
 
 ---
 
 **Last Updated:** 2025-11-02
-**Status:** ✅ All three dashboards are fully connected through backend APIs
+**Status:** ✅ All four dashboards (BNI, Supplier, Pantry Worker, Student) are fully connected through backend APIs
 

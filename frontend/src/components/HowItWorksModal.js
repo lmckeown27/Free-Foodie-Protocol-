@@ -95,6 +95,43 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             }
           ]
         };
+      
+      case 'bni':
+        return {
+          title: 'How This Works: BNI Governance',
+          steps: [
+            {
+              number: 1,
+              title: 'System Oversight',
+              description: 'The Basic Needs Initiative provides governance infrastructure for the Free Foodie Quest platform without centralized control.'
+            },
+            {
+              number: 2,
+              title: 'Supplier Verification',
+              description: 'Review and approve supplier applications. Verify business credentials (EIN, licenses). Mint Supplier NFTs on Aptos blockchain to grant access.'
+            },
+            {
+              number: 3,
+              title: 'Custodial Wallet Management',
+              description: 'Manage custodial wallets for students through BNI-controlled multi-sig system. Execute blockchain transactions on behalf of students for simplified UX.'
+            },
+            {
+              number: 4,
+              title: 'Pantry Configuration',
+              description: 'Configure pantry multi-sig vaults. Assign Pantry Workers as co-signers. Set approval thresholds for security and accountability.'
+            },
+            {
+              number: 5,
+              title: 'Audit & Analytics',
+              description: 'Monitor system-wide metrics: student participation, supplier contributions, food rescued. Review on-chain audit logs for compliance and transparency.'
+            },
+            {
+              number: 6,
+              title: 'NFT & Smart Contract Control',
+              description: 'Mint Governance NFTs, Allocation NFTs, and Supplier NFTs. Manage smart contract upgrades and system parameters. Control treasury wallet for platform sustainability.'
+            }
+          ]
+        };
 
       default:
         return {

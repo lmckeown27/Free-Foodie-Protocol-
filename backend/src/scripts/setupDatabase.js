@@ -18,7 +18,7 @@ const setupDatabase = async () => {
         calpoly_id VARCHAR(100) UNIQUE,
         first_name VARCHAR(100),
         last_name VARCHAR(100),
-        role VARCHAR(50) NOT NULL CHECK (role IN ('student', 'pantry_worker', 'supplier')),
+        role VARCHAR(50) NOT NULL CHECK (role IN ('student', 'pantry_worker', 'supplier', 'bni')),
         phone VARCHAR(20),
         verified BOOLEAN DEFAULT false,
         governance_nft_count INTEGER DEFAULT 0,
