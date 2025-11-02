@@ -73,28 +73,28 @@ const LandingPage = () => {
 
   const howItWorks = {
     student: [
-      { step: 1, title: 'Sign Up', description: 'Register with your Cal Poly ID' },
-      { step: 2, title: 'Vote & Earn', description: 'Vote on desired items, earn Governance Tokens' },
-      { step: 3, title: 'Bid & Receive', description: 'Use tokens to bid on allocations via POAS' },
-      { step: 4, title: 'Pickup', description: 'Get notified and pick up your allocation' }
+      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - BNI creates your custodial wallet' },
+      { step: 2, title: 'Vote on Food', description: 'Browse available inventory and vote for items you need' },
+      { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with voting activity and engagement' },
+      { step: 4, title: 'Claim & Pickup', description: 'Receive allocation notification, show QR code, pick up food' }
     ],
     pantry: [
-      { step: 1, title: 'Connect Wallet', description: 'Link your Petra Wallet to FFQ' },
-      { step: 2, title: 'Setup Multi-Sig', description: 'Create Vault with co-signers (e.g., 2-of-3)' },
-      { step: 3, title: 'Review POAS', description: 'Access allocation recommendations' },
-      { step: 4, title: 'Approve & Execute', description: 'Multi-sig approval for all operations' }
+      { step: 1, title: 'Accept Donations', description: 'Receive supplier donations and log them in inventory' },
+      { step: 2, title: 'View POAS Rankings', description: 'See AI-powered recommendations for fair allocation' },
+      { step: 3, title: 'Allocate Food', description: 'Assign items to students based on POAS priority scores' },
+      { step: 4, title: 'Verify Pickups', description: 'Scan student QR codes to confirm food distribution' }
     ],
     supplier: [
-      { step: 1, title: 'Connect Wallet', description: 'Link your Petra Wallet' },
-      { step: 2, title: 'List Inventory', description: 'Add donations with weight, type, expiry' },
-      { step: 3, title: 'Auto-Execute', description: 'Smart contracts handle custody transfer' },
-      { step: 4, title: 'Track Impact', description: 'View donation stats and Supplier NFTs' }
+      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - BNI verifies and mints your Supplier NFT' },
+      { step: 2, title: 'Donate Surplus', description: 'Add food donations with details (type, quantity, expiration)' },
+      { step: 3, title: 'Get Protected', description: 'Automatic compliance with Good Samaritan Act and SB 1383' },
+      { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, and CO₂ reduced on blockchain' }
     ],
     bni: [
-      { step: 1, title: 'Verify Suppliers', description: 'Review applications and mint Supplier NFTs' },
-      { step: 2, title: 'Configure Pantries', description: 'Set up multi-sig vaults and assign co-signers' },
-      { step: 3, title: 'Manage Wallets', description: 'Oversee custodial wallets for students' },
-      { step: 4, title: 'Monitor System', description: 'Track analytics, compliance, and audit logs' }
+      { step: 1, title: 'Approve Suppliers', description: 'Review applications and mint Supplier NFTs via Multi-Sig Vault' },
+      { step: 2, title: 'Manage Wallets', description: 'Create and oversee custodial wallets for all students' },
+      { step: 3, title: 'Mint NFTs', description: 'Issue Governance NFTs (voting) and Allocation NFTs (claims)' },
+      { step: 4, title: 'Monitor Compliance', description: 'Track system analytics, audit logs, and blockchain transactions' }
     ]
   };
 
@@ -424,7 +424,18 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600">Simple steps for each user type</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+              Four actors work together to create a fair, transparent food distribution system powered by blockchain
+            </p>
+            <div className="flex justify-center items-center gap-3 text-sm text-gray-500 font-medium">
+              <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">Suppliers Donate</span>
+              <span>→</span>
+              <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">Pantry Workers Allocate</span>
+              <span>→</span>
+              <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full">Students Receive</span>
+              <span>→</span>
+              <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full">BNI Oversees</span>
+            </div>
           </div>
 
           {/* User Type Tabs */}
@@ -460,6 +471,124 @@ const LandingPage = () => {
                 )}
               </div>
             ))}
+          </div>
+
+          {/* Complete System Flow Visualization */}
+          <div className="mt-20 max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <h3 className="text-3xl font-bold text-gray-900 mb-3">Complete System Flow</h3>
+              <p className="text-gray-600">How all actors work together in the FFQ ecosystem</p>
+            </div>
+            
+            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-100">
+              {/* Flow Diagram */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Supplier */}
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white mb-4 shadow-lg">
+                    <div className="text-4xl mb-2">🏪</div>
+                    <h4 className="font-bold text-lg">Supplier</h4>
+                    <p className="text-sm text-blue-100 mt-2">Donates surplus food</p>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    • Apply & get approved<br/>
+                    • Add donation to inventory<br/>
+                    • Receive Supplier NFT<br/>
+                    • Track impact metrics
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="hidden lg:flex items-center justify-center">
+                  <div className="text-3xl text-gray-300">→</div>
+                </div>
+
+                {/* Pantry Worker */}
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white mb-4 shadow-lg">
+                    <div className="text-4xl mb-2">👥</div>
+                    <h4 className="font-bold text-lg">Pantry Worker</h4>
+                    <p className="text-sm text-purple-100 mt-2">Manages allocation</p>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    • Accept donations<br/>
+                    • Review POAS rankings<br/>
+                    • Allocate to students<br/>
+                    • Verify pickups via QR
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="hidden lg:flex items-center justify-center">
+                  <div className="text-3xl text-gray-300">→</div>
+                </div>
+
+                {/* Student */}
+                <div className="text-center">
+                  <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white mb-4 shadow-lg">
+                    <div className="text-4xl mb-2">🎓</div>
+                    <h4 className="font-bold text-lg">Student</h4>
+                    <p className="text-sm text-primary-100 mt-2">Receives food fairly</p>
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    • Vote on food items<br/>
+                    • Earn POAS priority<br/>
+                    • Receive allocation notice<br/>
+                    • Show QR code, pick up
+                  </div>
+                </div>
+              </div>
+
+              {/* BNI Oversight */}
+              <div className="mt-8 pt-8 border-t-2 border-gray-200">
+                <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="text-5xl">🏛️</div>
+                      <div>
+                        <h4 className="font-bold text-xl">Basic Needs Initiative (BNI)</h4>
+                        <p className="text-sm text-orange-100 mt-1">Institutional Governance & Oversight</p>
+                      </div>
+                    </div>
+                    <div className="text-right text-sm text-orange-100">
+                      Multi-Sig Petra Vault<br/>
+                      <span className="text-xs">Manages all blockchain transactions</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="font-bold">Approve Suppliers</div>
+                      <div className="text-orange-100">Mint Supplier NFTs</div>
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="font-bold">Manage Wallets</div>
+                      <div className="text-orange-100">Custodial for students</div>
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="font-bold">Mint NFTs</div>
+                      <div className="text-orange-100">Governance & Allocation</div>
+                    </div>
+                    <div className="bg-white/20 rounded-lg p-2">
+                      <div className="font-bold">Monitor System</div>
+                      <div className="text-orange-100">Analytics & compliance</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Blockchain Layer */}
+              <div className="mt-6 text-center">
+                <div className="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">⛓️</div>
+                    <div className="text-left">
+                      <div className="font-bold">Aptos Blockchain</div>
+                      <div className="text-xs text-gray-400">Immutable audit trail of all transactions</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
