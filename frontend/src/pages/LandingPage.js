@@ -240,6 +240,34 @@ const LandingPage = () => {
     bni: 'bg-orange-600 hover:bg-orange-700'
   };
 
+  // Dynamic colors for How It Works section
+  const howItWorksColors = {
+    student: {
+      activeTab: 'bg-primary-600',
+      inactiveTabBorder: 'border-primary-200',
+      stepCircle: 'bg-primary-600',
+      arrow: 'bg-primary-300'
+    },
+    pantry: {
+      activeTab: 'bg-purple-600',
+      inactiveTabBorder: 'border-purple-200',
+      stepCircle: 'bg-purple-600',
+      arrow: 'bg-purple-300'
+    },
+    supplier: {
+      activeTab: 'bg-blue-600',
+      inactiveTabBorder: 'border-blue-200',
+      stepCircle: 'bg-blue-600',
+      arrow: 'bg-blue-300'
+    },
+    bni: {
+      activeTab: 'bg-orange-600',
+      inactiveTabBorder: 'border-orange-200',
+      stepCircle: 'bg-orange-600',
+      arrow: 'bg-orange-300'
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -369,8 +397,8 @@ const LandingPage = () => {
                 onClick={() => setActiveUserType(key)}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                   activeUserType === key
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50 border border-primary-200'
+                    ? `${howItWorksColors[key].activeTab} text-white`
+                    : `bg-white text-gray-600 hover:bg-gray-50 border ${howItWorksColors[key].inactiveTabBorder}`
                 }`}
               >
                 {type.title}
@@ -383,14 +411,14 @@ const LandingPage = () => {
             {howItWorks[activeUserType].map((step) => (
               <div key={step.step} className="relative">
                 <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 h-full">
-                  <div className="w-12 h-12 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-xl mb-4">
+                  <div className={`w-12 h-12 rounded-full ${howItWorksColors[activeUserType].stepCircle} text-white flex items-center justify-center font-bold text-xl mb-4`}>
                     {step.step}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
                   <p className="text-gray-600 text-sm">{step.description}</p>
                 </div>
                 {step.step < howItWorks[activeUserType].length && (
-                  <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-primary-300"></div>
+                  <div className={`hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 ${howItWorksColors[activeUserType].arrow}`}></div>
                 )}
               </div>
             ))}
