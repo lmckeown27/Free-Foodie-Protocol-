@@ -102,9 +102,20 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary-600">Free Foodie Quest</h1>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition cursor-pointer"
+              >
+                Free Foodie Quest
+              </button>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-600 hover:text-gray-900 transition"
+              >
+                FAQ
+              </button>
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition">Features</a>
               <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition">How It Works</a>
               <button
