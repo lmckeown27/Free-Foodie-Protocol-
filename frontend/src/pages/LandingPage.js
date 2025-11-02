@@ -9,6 +9,8 @@ const LandingPage = () => {
     student: {
       color: 'primary',
       gradient: 'from-primary-500 to-primary-600',
+      bgColor: 'bg-gradient-to-b from-primary-50 to-white',
+      sectionBg: 'bg-primary-50',
       title: 'Students',
       headline: 'Vote on Food. Earn Tokens. Get Fair Allocations.',
       subheadline: 'No more waiting in line. Your voice determines what the pantry stocks.',
@@ -18,6 +20,8 @@ const LandingPage = () => {
     pantry: {
       color: 'purple',
       gradient: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-gradient-to-b from-purple-50 to-white',
+      sectionBg: 'bg-purple-50',
       title: 'Pantry Workers',
       headline: 'Smart Allocation. Multi-Sig Security. Zero Guesswork.',
       subheadline: 'POAS-driven decisions backed by blockchain accountability.',
@@ -27,6 +31,8 @@ const LandingPage = () => {
     supplier: {
       color: 'blue',
       gradient: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-gradient-to-b from-blue-50 to-white',
+      sectionBg: 'bg-blue-50',
       title: 'Suppliers',
       headline: 'Donate Surplus. Track Impact. Stay Compliant.',
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
@@ -75,8 +81,107 @@ const LandingPage = () => {
     ]
   };
 
+  const faqsByRole = {
+    student: [
+      {
+        id: 1,
+        question: "How do I get food from FFQ?",
+        answer: "First, vote on the food items you'd like to see in the pantry. Your votes help determine what gets stocked. When food becomes available, you can request it through the platform. The POAS (Predicted Optimal Allocation Score) algorithm fairly distributes food based on need, participation, and timing. If approved, you'll receive an Allocation NFT—a digital pickup ticket—in your wallet. Present this at the pantry to collect your food!"
+      },
+      {
+        id: 2,
+        question: "What is an Allocation NFT and why do I need one?",
+        answer: "An Allocation NFT is like a digital pickup ticket stored in your wallet. When the pantry approves your food request, this NFT is automatically created and sent to you. It contains details like what food you're allocated, when to pick it up, and expiration dates. Because it's on the blockchain, it can't be forged or stolen. When you arrive at the pantry, workers scan your NFT to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the NFT is 'redeemed' (marked as used) so no one can claim the same food twice."
+      },
+      {
+        id: 3,
+        question: "Wait, aren't NFTs just those monkey pictures? How is this different?",
+        answer: "Great question! You're thinking of collectible NFTs (like Bored Apes, CryptoPunks, etc.)—digital art sold for speculation and status. FFQ uses utility NFTs, which serve completely different purposes. Collectible NFTs are bought/sold for money, used as profile pictures, purely aesthetic, and often expensive. FFQ's Utility NFTs are 100% FREE, serve as your voting rights and food pickup tickets, have specific practical purposes, and are not tradeable. They're digital certificates that prove rights, prevent fraud, and enable fair distribution. Think of them like digital tickets, receipts, and ID cards—not collectibles or investments."
+      },
+      {
+        id: 4,
+        question: "How does voting work and why does my vote matter?",
+        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded on the blockchain as a permanent, tamper-proof record. You also receive a Governance NFT—a digital certificate that proves you participated and gives you voting power in future decisions. The more you engage, the more influence you have. The POAS algorithm uses voting data to predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
+      },
+      {
+        id: 5,
+        question: "Do I need cryptocurrency or money to use FFQ?",
+        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto or pay any fees. We're running on Aptos testnet (a test blockchain network) where everything is free. Any small transaction fees ('gas fees') are covered by FFQ—you'll never be charged. Just install the free Petra wallet, sign up with your Cal Poly ID, and start using FFQ. The blockchain tech runs in the background; from your perspective, it's just a regular app. No crypto knowledge required!"
+      },
+      {
+        id: 6,
+        question: "Why is FFQ better than traditional food pantries?",
+        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ uses blockchain to create fair allocation (POAS algorithm ensures equity), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). Blockchain transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
+      }
+    ],
+    pantry: [
+      {
+        id: 1,
+        question: "How does FFQ help manage food allocations?",
+        answer: "FFQ uses the POAS (Predicted Optimal Allocation Score) algorithm to automatically calculate fair food distribution. Instead of manual decisions or first-come-first-served, POAS considers factors like student need, participation history, timing, and current demand. The system provides allocation recommendations that you can review and approve. All allocation data is recorded on the blockchain for complete transparency and accountability. This eliminates bias, reduces manual work, and ensures equitable distribution."
+      },
+      {
+        id: 2,
+        question: "What is multi-sig security and why do we need it?",
+        answer: "Multi-signature (multi-sig) security requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses Petra Vault for 2-of-3 or 3-of-5 multi-sig setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for managing pantry operations with accountability and institutional trust."
+      },
+      {
+        id: 3,
+        question: "How does blockchain prevent fraud in our pantry operations?",
+        answer: "Blockchain prevents fraud through immutable records (once recorded, transactions can't be altered or deleted), unique NFTs (allocation tickets can't be copied or reused), automated smart contracts (no human can override fair allocation rules), and transparent auditing (anyone can verify the entire distribution chain). Traditional systems rely on trust and manual checks—blockchain replaces trust with mathematical proof. Students can't fake Allocation NFTs, suppliers can't falsify donations, and all pantry actions are permanently recorded. The system is fraud-proof by design."
+      },
+      {
+        id: 4,
+        question: "What happens when we scan a student's Allocation NFT?",
+        answer: "When you scan a student's Allocation NFT at pickup, the system verifies: (1) The NFT is authentic and issued by your pantry, (2) The student's wallet owns this NFT, (3) The NFT hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' on the blockchain. The NFT status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
+      },
+      {
+        id: 5,
+        question: "How do we track inventory and donations on blockchain?",
+        answer: "Every donation from suppliers is recorded on the blockchain with details like weight, type, expiry date, and source. Suppliers receive Supplier NFTs as permanent donation receipts. As you process donations and distribute food, all inventory movements are logged on-chain. You get real-time dashboards showing: current inventory levels, donation sources, allocation history, and compliance metrics. This creates complete supply chain visibility and automated reporting for audits or compliance checks."
+      },
+      {
+        id: 6,
+        question: "Do we need technical blockchain knowledge to use FFQ?",
+        answer: "No! FFQ's interface looks and feels like a regular pantry management system. The blockchain runs in the background—you'll interact with familiar buttons, dashboards, and workflows. For setup, you'll need to create a Petra Wallet and configure multi-sig security (we provide step-by-step guides). Once set up, daily operations are simple: review POAS recommendations, scan student NFTs at pickup, and track inventory through intuitive dashboards. The complexity is hidden; the benefits are clear."
+      }
+    ],
+    supplier: [
+      {
+        id: 1,
+        question: "How do I donate food through FFQ?",
+        answer: "Connect your Petra Wallet to FFQ, then list your available surplus food with details like weight, type, and expiration date. FFQ's smart contracts automatically handle the custody transfer—you don't need manual paperwork. Once logged, you immediately receive a Supplier NFT: a permanent, blockchain-verified donation receipt. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent."
+      },
+      {
+        id: 2,
+        question: "What is a Supplier NFT and how does it help my business?",
+        answer: "A Supplier NFT is a permanent, verifiable record of your food donation on the blockchain. It serves as: (1) IRS-compliant proof for tax deductions, (2) Public record of your community contribution (builds reputation), (3) Impact metrics showing exactly how many students you helped. Unlike paper receipts that can be lost or forged, blockchain records are permanent and instantly verifiable. This makes donating easier, safer, and more rewarding. You can show stakeholders real, auditable proof of your social impact."
+      },
+      {
+        id: 3,
+        question: "How does FFQ protect us from liability when donating food?",
+        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through smart contracts. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, expiration dates, and handling procedures—all recorded on-chain. Smart contracts create an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have blockchain-verified proof that all safety and legal requirements were met at the time of donation."
+      },
+      {
+        id: 4,
+        question: "Can I track where my donated food goes?",
+        answer: "Yes! FFQ provides complete supply chain visibility. After donating, you can see: which pantry received your food, when it was received and distributed, which students benefited (anonymous data), and impact metrics (lbs rescued, meals provided, waste prevented). Your supplier dashboard shows donation history, cumulative impact, and community recognition. This transparency helps you report to stakeholders, qualify for grants, and demonstrate corporate social responsibility."
+      },
+      {
+        id: 5,
+        question: "Wait, aren't NFTs just those monkey pictures? How is this different?",
+        answer: "Great question! You're thinking of collectible NFTs (like Bored Apes)—digital art sold for speculation. FFQ uses utility NFTs, which are completely different. Collectible NFTs are bought/sold for money, used as status symbols, and purely aesthetic. FFQ's Supplier NFTs are 100% FREE, serve as donation receipts for tax purposes, prove community impact, and are not tradeable. Think of them like digital receipts and certificates—not collectibles. You'll never see monkey pictures on FFQ, just functional blockchain tools that make donating easier and provide permanent proof of your contributions."
+      },
+      {
+        id: 6,
+        question: "Do I need cryptocurrency to participate?",
+        answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency. We're running on Aptos testnet (a free test network). Any transaction fees are covered by FFQ—you'll never be charged. Just install the free Petra wallet and connect it to FFQ. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking."
+      }
+    ]
+  };
 
   const currentUser = userTypes[activeUserType];
+  const currentFaqs = faqsByRole[activeUserType];
 
   return (
     <div className="min-h-screen bg-white">
@@ -130,7 +235,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+      <section className={`pt-32 pb-20 px-4 sm:px-6 lg:px-8 ${currentUser.bgColor}`}>
         <div className="max-w-7xl mx-auto">
           {/* User Type Selector */}
           <div className="flex justify-center gap-4 mb-12">
@@ -237,317 +342,41 @@ const LandingPage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary-50">
+      <section className={`py-20 px-4 sm:px-6 lg:px-8 ${currentUser.sectionBg}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              How FFQ Uses Blockchain
+              Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-600">
-              Learn why blockchain makes food distribution fairer, more transparent, and fraud-proof.
+              {currentUser.title} - Everything you need to know about using FFQ
             </p>
           </div>
 
           <div className="space-y-4">
-            {/* FAQ Item 1 - Why blockchain? */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-1');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  Why does FFQ use blockchain instead of a regular app?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-1" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  Blockchain provides <strong>three key benefits</strong> for food distribution: <strong>transparency</strong> (anyone can verify 
-                  where food came from and where it went), <strong>fraud prevention</strong> (no one can fake donations or double-claim food), 
-                  and <strong>automated fairness</strong> (smart contracts ensure everyone gets treated equally). Traditional apps can be manipulated 
-                  by admins or hacked. Blockchain creates a permanent, unchangeable record that everyone can trust—making food distribution 
-                  accountable and equitable.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 2 - What happens when I vote? */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-2');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  What happens when I vote for food items on FFQ?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-2" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  When you vote, your choice is recorded on the blockchain as a <strong>permanent, tamper-proof record</strong>. 
-                  You also receive a <strong>Governance NFT</strong>—a digital certificate that proves you participated and gives you 
-                  voting power in future decisions. The more you engage, the more influence you have. This blockchain-based system 
-                  ensures no one can manipulate votes or silence student voices. Your vote truly counts and can never be erased or changed.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 3 - Allocation NFT */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-3');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  What's an Allocation NFT and why do I need one to pick up food?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-3" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  An <strong>Allocation NFT</strong> is like a <strong>digital pickup ticket</strong> stored in your wallet. When the pantry 
-                  approves your request, this NFT is automatically created and sent to you. It contains details like what food you're 
-                  allocated, when to pick it up, and expiration dates. Because it's on the blockchain, it can't be forged or stolen. 
-                  When you arrive at the pantry, workers scan your NFT to verify your claim—preventing fraud and ensuring only approved 
-                  students get food. After pickup, the NFT is "redeemed" (marked as used) so no one can claim the same food twice.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 4 - NFTs vs monkey pictures */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden border-2 border-primary-300">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-4');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  Wait, aren't NFTs just those monkey pictures? How is this different?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-4" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700 mb-4">
-                  <strong>Great question!</strong> You're thinking of <strong>collectible NFTs</strong> (like Bored Apes, CryptoPunks, etc.)—
-                  digital art sold for speculation and status. FFQ uses <strong>utility NFTs</strong>, which serve completely different purposes. 
-                  Here's the key difference:
-                </p>
-                <div className="bg-white rounded-lg p-4 mb-4">
-                  <p className="font-semibold text-gray-900 mb-2">Collectible NFTs (Monkey Pictures):</p>
-                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
-                    <li>Bought and sold for money (speculative investment)</li>
-                    <li>Used as profile pictures or status symbols</li>
-                    <li>Purely aesthetic—no functional purpose</li>
-                    <li>Often expensive (thousands of dollars)</li>
-                    <li>Can lose value overnight</li>
-                  </ul>
+            {currentFaqs.map((faq) => (
+              <div key={faq.id} className={`bg-primary-100 rounded-lg shadow-md overflow-hidden ${faq.id === 3 ? 'border-2 border-primary-300' : ''}`}>
+                <button
+                  onClick={() => {
+                    const content = document.getElementById(`faq-${faq.id}`);
+                    if (content) {
+                      content.style.display = content.style.display === 'none' ? 'block' : 'none';
+                    }
+                  }}
+                  className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
+                >
+                  <span className="text-lg font-semibold text-gray-900">
+                    {faq.question}
+                  </span>
+                  <span className="text-2xl text-primary-600">+</span>
+                </button>
+                <div id={`faq-${faq.id}`} style={{ display: 'none' }} className="px-6 pb-5">
+                  <p className="text-gray-700">
+                    {faq.answer}
+                  </p>
                 </div>
-                <div className="bg-white rounded-lg p-4 mb-4">
-                  <p className="font-semibold text-gray-900 mb-2">FFQ's Utility NFTs (Functional Tools):</p>
-                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2">
-                    <li><strong>100% FREE</strong>—never bought or sold</li>
-                    <li><strong>Governance NFTs</strong> = Your voting rights (participate in decisions)</li>
-                    <li><strong>Allocation NFTs</strong> = Your food pickup tickets (fraud-proof claims)</li>
-                    <li><strong>Supplier NFTs</strong> = Donation receipts (tax deduction proof)</li>
-                    <li>Serve specific, practical purposes—not collectibles</li>
-                    <li>Not tradeable—tied to your identity and needs</li>
-                  </ul>
-                </div>
-                <p className="text-gray-700">
-                  <strong>The bottom line:</strong> FFQ's NFTs are <em>tools</em>, not art. They're digital certificates that prove rights, 
-                  prevent fraud, and enable fair distribution. You'll never see a monkey picture on FFQ—just functional blockchain technology 
-                  solving real problems in food distribution. Think of them like <strong>digital tickets, receipts, and ID cards</strong>—
-                  not collectibles or investments. And again: they're completely free!
-                </p>
               </div>
-            </div>
-
-            {/* FAQ Item 5 - Transparency */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-5');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  How does blockchain make FFQ more transparent?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-5" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  Every action in FFQ—donations, votes, allocations, pickups—is recorded on the blockchain as a <strong>public, 
-                  permanent record</strong> (though your personal info stays private). Students can see: How much food was donated? 
-                  Where did it come from? How was it allocated? Who picked it up? This transparency builds trust and holds everyone 
-                  accountable. If something seems unfair, you can verify it yourself. Traditional food pantries often lack this 
-                  visibility—blockchain ensures FFQ operates in the open, not behind closed doors.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 6 - Supplier benefits */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-6');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  How do suppliers benefit from blockchain donations?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-6" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  When suppliers donate food, they receive a <strong>Supplier NFT</strong>—a permanent, verifiable record of their 
-                  contribution on the blockchain. This serves as <strong>proof for tax deductions</strong> (IRS-compliant), builds their 
-                  <strong>community reputation</strong> (visible donation history), and provides <strong>impact metrics</strong> (see exactly 
-                  how many students their donations helped). Unlike paper receipts that can be lost or forged, blockchain records are 
-                  permanent and instantly verifiable. This makes donating easier, safer, and more rewarding for suppliers.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 7 - Fraud prevention */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-7');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  How does blockchain prevent fraud in food distribution?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-7" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  Blockchain prevents fraud through <strong>immutable records</strong> (once recorded, transactions can't be altered or deleted), 
-                  <strong>unique NFTs</strong> (allocation tickets can't be copied or reused), <strong>automated smart contracts</strong> 
-                  (no human can override fair allocation rules), and <strong>transparent auditing</strong> (anyone can verify the entire 
-                  distribution chain). Traditional systems rely on trust and manual checks—blockchain replaces trust with mathematical proof. 
-                  You can't fake a donation, double-claim food, or manipulate voting. The system is fraud-proof by design.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 8 - Wallet needed */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-8');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  Why do I need a wallet for a food pantry?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-8" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  Your <strong>wallet</strong> (like Petra Wallet) is your <strong>digital identity and secure storage</strong> on the blockchain. 
-                  It holds your Governance NFTs (voting rights), Allocation NFTs (food pickup tickets), and participation history. Think of it 
-                  like a digital backpack that only you control. Unlike traditional apps where the company controls your account, blockchain 
-                  wallets give <em>you</em> full ownership. FFQ can't lock you out, lose your records, or access your assets without permission. 
-                  It's free to set up (just a browser extension) and doesn't require cryptocurrency—it's simply how you interact securely with FFQ.
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 9 - Do I need crypto? */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-9');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  Do I need cryptocurrency or money to use FFQ?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-9" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  <strong>Absolutely not!</strong> FFQ is 100% free. You don't need to buy crypto or pay any fees. We're running on 
-                  Aptos <strong>testnet</strong> (a test blockchain network) where everything is free. Any small transaction fees 
-                  ("gas fees") are covered by FFQ—you'll never be charged. Just install the free Petra wallet, sign up with your 
-                  Cal Poly ID, and start using FFQ. The blockchain tech runs in the background; from your perspective, it's just a 
-                  regular app. No crypto knowledge required!
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 10 - Data privacy */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-10');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  Is my personal information private on the blockchain?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-10" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  <strong>Yes—blockchain is public but pseudonymous.</strong> Here's what that means: The blockchain records 
-                  <em>anonymous wallet addresses</em> and transaction data (e.g., "wallet 0x123... voted for apples"). It does NOT store your 
-                  name, email, or personal details. Your identity info (student ID, name, etc.) stays in FFQ's secure database, separate 
-                  from the blockchain. Only you can connect your wallet address to your real identity. So the blockchain is transparent 
-                  (anyone can verify activity), but your personal information stays private. Best of both worlds!
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Item 11 - Different from traditional */}
-            <div className="bg-primary-100 rounded-lg shadow-md overflow-hidden">
-              <button
-                onClick={() => {
-                  const content = document.getElementById('faq-11');
-                  content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                }}
-                className="w-full px-6 py-5 text-left flex justify-between items-center hover:bg-primary-200 transition"
-              >
-                <span className="text-lg font-semibold text-gray-900">
-                  How is FFQ different from traditional food pantries?
-                </span>
-                <span className="text-2xl text-primary-600">+</span>
-              </button>
-              <div id="faq-11" style={{ display: 'none' }} className="px-6 pb-5">
-                <p className="text-gray-700">
-                  Traditional pantries often operate on <strong>"first come, first served"</strong> (favoring those who can line up early), 
-                  <strong>lack transparency</strong> (students can't see how decisions are made), and rely on <strong>manual processes</strong> 
-                  (prone to errors and bias). FFQ uses blockchain to create <strong>fair allocation</strong> (POAS algorithm ensures equity), 
-                  <strong>complete transparency</strong> (see the entire food supply chain), <strong>student voice</strong> (vote on what food 
-                  comes in), and <strong>fraud prevention</strong> (tamper-proof records). Blockchain transforms food pantries from charity 
-                  handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="mt-12 text-center bg-primary-200 rounded-xl p-8">
