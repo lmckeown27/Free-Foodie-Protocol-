@@ -11,6 +11,7 @@ import SupplierDashboard from './pages/SupplierDashboard';
 import BNIDashboard from './pages/BNIDashboard';
 import Inventory from './pages/Inventory';
 import Voting from './pages/Voting';
+import VotingInterface from './pages/VotingInterface';
 import Allocations from './pages/Allocations';
 import Analytics from './pages/Analytics';
 import './styles/App.css';
@@ -121,6 +122,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['student']}>
                     <Voting />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/vote" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <VotingInterface />
                   </ProtectedRoute>
                 } 
               />
