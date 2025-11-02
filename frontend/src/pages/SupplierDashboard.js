@@ -8,7 +8,6 @@ const SupplierDashboard = () => {
   const [stats, setStats] = useState(null);
   const [donations, setDonations] = useState([]);
   const [impactMetrics, setImpactMetrics] = useState(null);
-  const [nftCollection, setNftCollection] = useState([]);
   const [donationTimeline, setDonationTimeline] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
@@ -171,7 +170,7 @@ const SupplierDashboard = () => {
           
           <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Supplier NFTs</h3>
-            <p className="text-3xl font-bold text-blue-700 mt-2">{stats?.supplier_nft_count || nftCollection.length}</p>
+            <p className="text-3xl font-bold text-blue-700 mt-2">{stats?.supplier_nft_count || 0}</p>
             <p className="text-xs text-gray-500 mt-1">Blockchain receipts</p>
           </div>
         </div>
@@ -309,50 +308,8 @@ const SupplierDashboard = () => {
           </div>
         )}
         
-        {/* NFT Collection & Donation History */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* NFT Donation Receipts */}
-          <div className="bg-blue-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-blue-200">
-              <h2 className="text-xl font-semibold text-gray-800">NFT Donation Receipts</h2>
-              <p className="text-sm text-gray-600">Immutable blockchain records</p>
-            </div>
-            <div className="p-6">
-              {nftCollection.length === 0 ? (
-                <p className="text-gray-500">No NFT receipts yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {nftCollection.map((nft) => (
-                    <div key={nft.id} className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border-2 border-blue-200">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="font-bold text-gray-800">{nft.itemName}</p>
-                          <p className="text-sm text-gray-600">{nft.weight}</p>
-                        </div>
-                        <span className="px-2 py-1 bg-blue-600 text-white rounded text-xs font-bold">
-                          NFT
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500 mb-2">
-                        {nft.date.toLocaleDateString()} at {nft.date.toLocaleTimeString()}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono bg-white px-2 py-1 rounded border border-blue-200 truncate">
-                          {nft.txHash}
-                        </span>
-                        <button className="text-xs text-blue-600 hover:text-blue-700 font-medium">
-                          View on Aptos
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-          
-          {/* Donation Tracking */}
-          <div className="bg-blue-100 rounded-lg shadow">
+        {/* Donation Tracking */}
+        <div className="bg-blue-100 rounded-lg shadow mb-6">
             <div className="px-6 py-4 border-b border-blue-200">
               <h2 className="text-xl font-semibold text-gray-800">Donation Tracking</h2>
               <p className="text-sm text-gray-600">Where your donations go</p>
@@ -394,7 +351,6 @@ const SupplierDashboard = () => {
                 </Link>
               </div>
             </div>
-          </div>
         </div>
         
         {/* Donation Lifecycle Tracker */}

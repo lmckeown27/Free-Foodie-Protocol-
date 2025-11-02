@@ -10,13 +10,9 @@ const StudentDashboard = () => {
   const [allocations, setAllocations] = useState([]);
   const [nfts, setNfts] = useState({ governance: 0, allocation: 0 });
   const [trending, setTrending] = useState([]);
-  const [ffqTokens, setFfqTokens] = useState(0); // Custodial tokens managed by Basic Needs Initiative
-  const [claimHistory, setClaimHistory] = useState([]);
   const [poasScore, setPoasScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [bidAmount, setBidAmount] = useState('');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   
   useEffect(() => {
@@ -53,28 +49,6 @@ const StudentDashboard = () => {
       console.error('Failed to fetch dashboard data', error);
     } finally {
       setLoading(false);
-    }
-  };
-  
-  const handleClaimItem = async (item) => {
-    if (!bidAmount || bidAmount <= 0) {
-      alert('Please enter a valid token amount');
-      return;
-    }
-    
-    if (bidAmount > ffqTokens) {
-      alert('Insufficient FFQ tokens');
-      return;
-    }
-    
-    try {
-      // In production, this would call the backend to process the claim via POAS
-      alert(`Your claim is confirmed! You've bid ${bidAmount} tokens for ${item.item_name}.`);
-      setFfqTokens(ffqTokens - bidAmount);
-      setSelectedItem(null);
-      setBidAmount('');
-    } catch (error) {
-      alert('Failed to process claim: ' + error.message);
     }
   };
   
@@ -135,12 +109,7 @@ const StudentDashboard = () => {
         </div>
         
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-primary-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">FFQ Tokens</h3>
-            <p className="text-3xl font-bold text-primary-600 mt-2">{ffqTokens}</p>
-            <p className="text-xs text-gray-500 mt-1">Use to claim food</p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Voting Power</h3>
@@ -238,69 +207,33 @@ const StudentDashboard = () => {
           </Link>
         </div>
         
-        {/* Available Food - Claim with Tokens */}
+        {/* Available Food Inventory */}
         <div className="bg-primary-100 rounded-lg shadow mb-6">
-          <div className="px-6 py-4 border-b border-primary-200 flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">Available Food</h2>
-              <p className="text-sm text-gray-600">Real-time pantry inventory</p>
-            </div>
-            <div className="text-right">
-              <p className="text-2xl font-bold text-primary-600">{ffqTokens}</p>
-              <p className="text-xs text-gray-500">FFQ Tokens Available</p>
-            </div>
+          <div className="px-6 py-4 border-b border-primary-200">
+            <h2 className="text-xl font-semibold text-gray-800">Available Food</h2>
+            <p className="text-sm text-gray-600">Real-time pantry inventory</p>
           </div>
           <div className="p-6">
             {inventory.length === 0 ? (
               <p className="text-gray-500">No items available right now. Check back soon!</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {inventory.slice(0, 6).map((item) => (
-                  <div key={item.id} className="bg-white rounded-lg border-2 border-primary-200 p-4 hover:border-primary-400 transition">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
+                  <div key={item.id} className="bg-white rounded-lg border-2 border-primary-200 p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
                         <h3 className="font-bold text-gray-800">{item.item_name}</h3>
                         <p className="text-sm text-gray-600">{item.item_type}</p>
-                        <p className="text-xs text-gray-500 mt-1">Available: {item.quantity} {item.unit}</p>
                       </div>
                       <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-xs font-medium">
                         {item.status}
                       </span>
                     </div>
-                    {selectedItem?.id === item.id ? (
-                      <div className="space-y-2">
-                        <input
-                          type="number"
-                          placeholder="Token amount"
-                          value={bidAmount}
-                          onChange={(e) => setBidAmount(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleClaimItem(item)}
-                            className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
-                          >
-                            Confirm Claim
-                          </button>
-                          <button
-                            onClick={() => {
-                              setSelectedItem(null);
-                              setBidAmount('');
-                            }}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => setSelectedItem(item)}
-                        className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
-                      >
-                        Claim with Tokens
-                      </button>
+                    <p className="text-xs text-gray-500">Available: {item.quantity} {item.unit}</p>
+                    {item.expiration_date && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        Expires: {new Date(item.expiration_date).toLocaleDateString()}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -346,47 +279,6 @@ const StudentDashboard = () => {
                   ))}
                 </div>
               )}
-            </div>
-          </div>
-          
-          {/* Claim History */}
-          <div className="bg-primary-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-primary-200">
-              <h2 className="text-xl font-semibold text-gray-800">Recent Activity</h2>
-              <p className="text-sm text-gray-600">Your claim history</p>
-            </div>
-            <div className="p-6">
-              {claimHistory.length === 0 ? (
-                <p className="text-gray-500">No activity yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {claimHistory.map((claim) => (
-                    <div key={claim.id} className="p-4 bg-white rounded-lg border border-primary-200">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="font-bold text-gray-800">{claim.item}</p>
-                          <p className="text-sm text-gray-600">{claim.quantity}</p>
-                        </div>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          claim.status === 'Confirmed' ? 'bg-primary-200 text-primary-800' :
-                          claim.status === 'Ready for Pickup' ? 'bg-primary-100 text-primary-700' :
-                          'bg-primary-300 text-primary-900'
-                        }`}>
-                          {claim.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500">
-                        {claim.date.toLocaleDateString()} at {claim.date.toLocaleTimeString()}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="mt-4 text-center">
-                <Link to="/allocations" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
-                  View Full History →
-                </Link>
-              </div>
             </div>
           </div>
         </div>

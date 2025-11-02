@@ -8,7 +8,6 @@ const PantryWorkerDashboard = () => {
   const [dashboard, setDashboard] = useState(null);
   const [pendingAllocations, setPendingAllocations] = useState([]);
   const [inventoryHealth, setInventoryHealth] = useState(null);
-  const [complianceLogs, setComplianceLogs] = useState([]);
   const [poasRecommendations, setPoasRecommendations] = useState([]);
   const [scanMode, setScanMode] = useState(false);
   const [scannedId, setScannedId] = useState('');
@@ -258,10 +257,8 @@ const PantryWorkerDashboard = () => {
           )}
         </div>
         
-        {/* POAS Allocations & Compliance */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Active Allocations (POAS-Matched) */}
-          <div className="bg-purple-100 rounded-lg shadow">
+        {/* Active Allocations (POAS-Matched) */}
+        <div className="bg-purple-100 rounded-lg shadow mb-6">
             <div className="px-6 py-4 border-b border-purple-200">
               <h2 className="text-xl font-semibold text-gray-800">Active Allocations</h2>
               <p className="text-sm text-gray-600">POAS-matched, ready for pickup</p>
@@ -300,51 +297,6 @@ const PantryWorkerDashboard = () => {
                 </Link>
               </div>
             </div>
-          </div>
-          
-          {/* Compliance & Safety Logs */}
-          <div className="bg-purple-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-purple-200">
-              <h2 className="text-xl font-semibold text-gray-800">Compliance Logs</h2>
-              <p className="text-sm text-gray-600">Bill Emerson Act & SB 1383</p>
-            </div>
-            <div className="p-6">
-              {complianceLogs.length === 0 ? (
-                <p className="text-gray-500">No compliance logs yet</p>
-              ) : (
-                <div className="space-y-3">
-                  {complianceLogs.map((log) => (
-                    <div key={log.id} className="p-4 bg-white rounded-lg border border-purple-200">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">
-                            {log.type}
-                          </span>
-                          <p className="text-sm font-bold text-gray-800 mt-2">{log.item}</p>
-                          <p className="text-xs text-gray-600">
-                            {log.supplier && `Supplier: ${log.supplier}`}
-                            {log.student && `Student: ${log.student}`}
-                            {log.weight && ` | ${log.weight}`}
-                          </p>
-                        </div>
-                        <span className="text-xs font-mono bg-purple-200 text-purple-800 px-2 py-1 rounded">
-                          {log.compliance}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500">
-                        {log.date.toLocaleString()}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="mt-4 text-center">
-                <Link to="/analytics" className="text-purple-600 hover:text-purple-700 font-medium text-sm">
-                  View Full Compliance Report →
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
         
         {/* POAS Analytics Info */}
