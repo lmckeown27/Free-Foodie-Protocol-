@@ -75,23 +75,6 @@ const LandingPage = () => {
     ]
   };
 
-  const testimonials = [
-    {
-      quote: "FFQ transformed how we access food. No more uncertainty—I know exactly what's available and when I can pick it up.",
-      author: "Sarah M.",
-      role: "Cal Poly Student"
-    },
-    {
-      quote: "The POAS algorithm takes the guesswork out of allocations. We're serving more students fairly and efficiently.",
-      author: "James K.",
-      role: "Pantry Manager"
-    },
-    {
-      quote: "We've donated 500+ lbs of surplus food with complete peace of mind. The compliance tracking is automatic.",
-      author: "Maria G.",
-      role: "Local Restaurant Owner"
-    }
-  ];
 
   const currentUser = userTypes[activeUserType];
 
@@ -181,22 +164,6 @@ const LandingPage = () => {
               {currentUser.cta}
             </button>
           </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary-600 mb-2">500+</div>
-              <div className="text-gray-600">Students Served</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary-600 mb-2">10K+ lbs</div>
-              <div className="text-gray-600">Food Rescued</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-primary-600 mb-2">100%</div>
-              <div className="text-gray-600">Blockchain Verified</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -263,28 +230,6 @@ const LandingPage = () => {
                 {step.step < howItWorks[activeUserType].length && (
                   <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-primary-300"></div>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">What People Say</h2>
-            <p className="text-xl text-gray-600">Real feedback from our community</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-gray-50 p-8 rounded-xl border border-gray-100">
-                <p className="text-gray-700 mb-6 italic">"{testimonial.quote}"</p>
-                <div>
-                  <p className="font-bold text-gray-900">{testimonial.author}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </div>
               </div>
             ))}
           </div>
