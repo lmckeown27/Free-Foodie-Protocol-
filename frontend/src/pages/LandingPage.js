@@ -101,13 +101,19 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Left - FAQ */}
-            <div className="flex items-center">
+            {/* Left - FAQ & Features */}
+            <div className="flex items-center gap-4">
               <button
                 onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-gray-600 hover:text-gray-900 transition"
               >
                 FAQ
+              </button>
+              <button
+                onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-600 hover:text-gray-900 transition"
+              >
+                Features
               </button>
             </div>
             
@@ -123,8 +129,12 @@ const LandingPage = () => {
             
             {/* Right - Navigation */}
             <div className="flex items-center gap-4">
-              <a href="#features" className="text-gray-600 hover:text-gray-900 transition">Features</a>
-              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition">How It Works</a>
+              <button
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-600 hover:text-gray-900 transition"
+              >
+                How It Works
+              </button>
               <button
                 onClick={() => navigate('/login')}
                 className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition"
