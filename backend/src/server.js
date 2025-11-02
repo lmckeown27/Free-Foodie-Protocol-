@@ -28,10 +28,10 @@ app.use(cors({
   credentials: true
 }));
 
-// Rate limiting - more lenient for development
+// Rate limiting - very lenient for development
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 1000, // Increased for development
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 10000, // Very high limit for development
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -40,10 +40,10 @@ const limiter = rateLimit({
 // Apply general rate limiting to all API routes
 app.use('/api/', limiter);
 
-// More lenient rate limiting specifically for auth during development
+// Extremely lenient rate limiting specifically for auth during development
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 500, // Very lenient for testing
+  max: 5000, // Extremely lenient for testing
   message: { error: 'Too many login attempts, please try again later.' },
   skipSuccessfulRequests: true, // Don't count successful logins
 });
