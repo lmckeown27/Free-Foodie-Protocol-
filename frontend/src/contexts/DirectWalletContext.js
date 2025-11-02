@@ -39,7 +39,7 @@ export function DirectWalletProvider({ children }) {
             const account = await petra.account();
             setAddress(account.address);
             setConnected(true);
-            console.log("✅ Auto-connected to Petra wallet");
+            console.log("Auto-connected to Petra wallet");
           } else {
             // Clear stale connection
             localStorage.removeItem("ffqWalletConnected");
@@ -75,14 +75,14 @@ export function DirectWalletProvider({ children }) {
       setAddress(response.address);
       setConnected(true);
 
-      console.log("✅ Connected to Petra wallet!");
-      console.log("📍 Address:", response.address);
+      console.log("Connected to Petra wallet!");
+      console.log("Address:", response.address);
 
       // Store in localStorage for persistence
       localStorage.setItem("ffqWalletConnected", "true");
       localStorage.setItem("ffqWalletAddress", response.address);
     } catch (error) {
-      console.error("❌ Failed to connect wallet:", error);
+      console.error("Failed to connect wallet:", error);
       alert(`Failed to connect wallet: ${error.message || "Unknown error"}`);
     }
   };
@@ -100,9 +100,9 @@ export function DirectWalletProvider({ children }) {
       localStorage.removeItem("ffqWalletConnected");
       localStorage.removeItem("ffqWalletAddress");
 
-      console.log("✅ Wallet disconnected");
+      console.log("Wallet disconnected");
     } catch (error) {
-      console.error("❌ Failed to disconnect wallet:", error);
+      console.error("Failed to disconnect wallet:", error);
     }
   };
 

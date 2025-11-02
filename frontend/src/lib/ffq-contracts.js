@@ -14,7 +14,7 @@ export const mintGovernanceNFT = async (itemType, itemName, priority) => {
   const petra = getPetraWallet();
   const account = await petra.account();
   
-  console.log("🗳️ Minting Governance NFT for vote...");
+  console.log("Minting Governance NFT for vote...");
   console.log("Item:", itemName, "Type:", itemType, "Priority:", priority);
   
   // Check balance first
@@ -32,16 +32,16 @@ export const mintGovernanceNFT = async (itemType, itemName, priority) => {
   };
   
   try {
-    console.log("📤 Submitting transaction...");
+    console.log("Submitting transaction...");
     const response = await petra.signAndSubmitTransaction(payload);
-    console.log("✅ Transaction hash:", response.hash);
+    console.log("Transaction hash:", response.hash);
     
     await waitForTransactionWithTimeout(response.hash);
-    console.log("🎉 Governance NFT minted successfully!");
+    console.log("Governance NFT minted successfully!");
     
     return response;
   } catch (error) {
-    console.error("❌ Governance NFT minting failed:", error);
+    console.error("Governance NFT minting failed:", error);
     throw error;
   }
 };
@@ -102,16 +102,16 @@ export const mintSupplierNFT = async (itemName, quantity, donationType, complian
   };
   
   try {
-    console.log("📤 Submitting transaction...");
+    console.log("Submitting transaction...");
     const response = await petra.signAndSubmitTransaction(payload);
-    console.log("✅ Transaction hash:", response.hash);
+    console.log("Transaction hash:", response.hash);
     
     await waitForTransactionWithTimeout(response.hash);
-    console.log("🎉 Supplier NFT minted successfully!");
+    console.log("Supplier NFT minted successfully!");
     
     return response;
   } catch (error) {
-    console.error("❌ Supplier NFT minting failed:", error);
+    console.error("Supplier NFT minting failed:", error);
     throw error;
   }
 };
@@ -129,7 +129,7 @@ export const mintAllocationNFT = async (studentAddress, itemName, quantity, poas
   const petra = getPetraWallet();
   const account = await petra.account();
   
-  console.log("🎟️ Minting Allocation NFT...");
+  console.log("Minting Allocation NFT...");
   console.log("Student:", studentAddress);
   console.log("Item:", itemName, "Quantity:", quantity, "POAS:", poasScore);
   
@@ -152,16 +152,16 @@ export const mintAllocationNFT = async (studentAddress, itemName, quantity, poas
   };
   
   try {
-    console.log("📤 Submitting transaction...");
+    console.log("Submitting transaction...");
     const response = await petra.signAndSubmitTransaction(payload);
-    console.log("✅ Transaction hash:", response.hash);
+    console.log("Transaction hash:", response.hash);
     
     await waitForTransactionWithTimeout(response.hash);
-    console.log("🎉 Allocation NFT minted successfully!");
+    console.log("Allocation NFT minted successfully!");
     
     return response;
   } catch (error) {
-    console.error("❌ Allocation NFT minting failed:", error);
+    console.error("Allocation NFT minting failed:", error);
     throw error;
   }
 };
@@ -173,7 +173,7 @@ export const batchMintAllocationNFTs = async (allocations) => {
   const petra = getPetraWallet();
   const account = await petra.account();
   
-  console.log(`🎟️ Batch minting ${allocations.length} Allocation NFTs...`);
+  console.log(`Batch minting ${allocations.length} Allocation NFTs...`);
   
   // Check balance first
   await checkGasBalance(account.address);
@@ -196,16 +196,16 @@ export const batchMintAllocationNFTs = async (allocations) => {
   };
   
   try {
-    console.log("📤 Submitting batch transaction...");
+    console.log("Submitting batch transaction...");
     const response = await petra.signAndSubmitTransaction(payload);
-    console.log("✅ Transaction hash:", response.hash);
+    console.log("Transaction hash:", response.hash);
     
     await waitForTransactionWithTimeout(response.hash, 60000); // Longer timeout for batch
-    console.log("🎉 Batch Allocation NFTs minted successfully!");
+    console.log("Batch Allocation NFTs minted successfully!");
     
     return response;
   } catch (error) {
-    console.error("❌ Batch Allocation NFT minting failed:", error);
+    console.error("Batch Allocation NFT minting failed:", error);
     throw error;
   }
 };
@@ -234,16 +234,16 @@ export const redeemAllocationNFT = async (tokenId, studentAddress) => {
   };
   
   try {
-    console.log("📤 Submitting transaction...");
+    console.log("Submitting transaction...");
     const response = await petra.signAndSubmitTransaction(payload);
-    console.log("✅ Transaction hash:", response.hash);
+    console.log("Transaction hash:", response.hash);
     
     await waitForTransactionWithTimeout(response.hash);
-    console.log("🎉 Allocation NFT redeemed and burned!");
+    console.log("Allocation NFT redeemed and burned!");
     
     return response;
   } catch (error) {
-    console.error("❌ Allocation NFT redemption failed:", error);
+    console.error("Allocation NFT redemption failed:", error);
     throw error;
   }
 };

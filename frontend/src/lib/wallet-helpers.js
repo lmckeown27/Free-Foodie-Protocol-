@@ -13,7 +13,7 @@ export const checkGasBalance = async (walletAddress) => {
     if (coinResource) {
       const balance = parseInt(coinResource.data.coin.value) / 100000000; // Convert octas to APT
       
-      console.log("💰 APT Balance:", balance, "APT");
+      console.log("APT Balance:", balance, "APT");
       
       if (balance < 0.001) {
         throw new Error(
@@ -27,7 +27,7 @@ export const checkGasBalance = async (walletAddress) => {
     
     throw new Error("Could not fetch wallet balance");
   } catch (error) {
-    console.error("⚠️ Balance check error:", error);
+    console.error("Balance check error:", error);
     throw error;
   }
 };
@@ -41,7 +41,7 @@ export const waitForTransactionWithTimeout = async (txHash, timeoutMs = 30000) =
   while (Date.now() - startTime < timeoutMs) {
     try {
       await aptos.waitForTransaction({ transactionHash: txHash });
-      console.log("✅ Transaction confirmed:", txHash);
+      console.log("Transaction confirmed:", txHash);
       return true;
     } catch (error) {
       if (Date.now() - startTime >= timeoutMs) {
