@@ -41,8 +41,6 @@ const DashboardRedirect = () => {
       return <Navigate to="/pantry-worker" />;
     case 'supplier':
       return <Navigate to="/supplier" />;
-    case 'admin':
-      return <Navigate to="/analytics" />;
     default:
       return <Navigate to="/login" />;
   }
@@ -82,7 +80,7 @@ function App() {
               <Route 
                 path="/pantry-worker" 
                 element={
-                  <ProtectedRoute allowedRoles={['pantry_worker', 'admin']}>
+                  <ProtectedRoute allowedRoles={['pantry_worker']}>
                     <PantryWorkerDashboard />
                   </ProtectedRoute>
                 } 
@@ -91,7 +89,7 @@ function App() {
               <Route 
                 path="/supplier" 
                 element={
-                  <ProtectedRoute allowedRoles={['supplier', 'admin']}>
+                  <ProtectedRoute allowedRoles={['supplier']}>
                     <SupplierDashboard />
                   </ProtectedRoute>
                 } 
@@ -127,10 +125,10 @@ function App() {
               <Route 
                 path="/analytics" 
                 element={
-                  <ProtectedRoute allowedRoles={['pantry_worker', 'admin']}>
+                  <ProtectedRoute allowedRoles={['pantry_worker']}>
                     <Analytics />
                   </ProtectedRoute>
-                } 
+                }
               />
             </Routes>
           </div>

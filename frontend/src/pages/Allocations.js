@@ -96,7 +96,7 @@ const Allocations = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">POAS Score</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  {(user.role === 'pantry_worker' || user.role === 'admin') && filter === 'approved' && (
+                  {user.role === 'pantry_worker' && filter === 'approved' && (
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                   )}
                 </tr>
@@ -131,7 +131,7 @@ const Allocations = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(allocation.allocation_date).toLocaleString()}
                     </td>
-                    {(user.role === 'pantry_worker' || user.role === 'admin') && filter === 'approved' && (
+                    {user.role === 'pantry_worker' && filter === 'approved' && (
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
                         <button
                           onClick={() => handleRedeem(allocation.id)}
