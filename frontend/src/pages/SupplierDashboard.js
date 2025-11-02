@@ -71,7 +71,7 @@ const SupplierDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/';
+    window.location.href = '/login';
   };
   
   if (loading) {
