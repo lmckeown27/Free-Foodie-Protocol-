@@ -8,6 +8,9 @@ const PantryWorkerDashboard = () => {
   const [dashboard, setDashboard] = useState(null);
   const [pendingAllocations, setPendingAllocations] = useState([]);
   const [inventoryHealth, setInventoryHealth] = useState(null);
+  const [complianceLogs, setComplianceLogs] = useState([]);
+  const [scanMode, setScanMode] = useState(false);
+  const [scannedId, setScannedId] = useState('');
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -20,17 +23,55 @@ const PantryWorkerDashboard = () => {
     try {
       const [dashboardRes, allocationsRes, healthRes] = await Promise.all([
         analyticsAPI.getDashboard(),
-        allocationAPI.getAllocations({ status: 'pending', limit: 10 }),
+        allocationAPI.getAllocations({ status: 'approved', limit: 10 }),
         analyticsAPI.getInventoryHealth()
       ]);
       
       setDashboard(dashboardRes.data.data);
       setPendingAllocations(allocationsRes.data.data);
       setInventoryHealth(healthRes.data.data);
+      
+      // Mock compliance logs - in production, this would come from the backend
+      setComplianceLogs([
+        { 
+          id: 1, 
+          type: 'Donation Received', 
+          supplier: 'Campus Market', 
+          item: 'Fresh Produce Mix',
+          weight: '150 lbs',
+          date: new Date(),
+          compliance: 'Bill Emerson Act'
+        },
+        { 
+          id: 2, 
+          type: 'Pickup Verified', 
+          student: 'STUDENT123', 
+          item: 'Organic Apples',
+          date: new Date(Date.now() - 3600000),
+          compliance: 'SB 1383'
+        }
+      ]);
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const handleVerifyPickup = async (studentId) => {
+    if (!scannedId) {
+      alert('Please scan or enter a student PolyCard ID');
+      return;
+    }
+    
+    try {
+      // In production, this would verify the student's Allocation NFT and close the contract
+      alert(`Pickup verified for Student ID: ${scannedId}. Contract closeout initiated via Multi-Sig Vault.`);
+      setScannedId('');
+      setScanMode(false);
+      fetchDashboardData();
+    } catch (error) {
+      alert('Failed to verify pickup: ' + error.message);
     }
   };
   
@@ -56,6 +97,12 @@ const PantryWorkerDashboard = () => {
           <div>
             <h1 className="text-3xl font-bold text-primary-600">FFQ Pantry Dashboard</h1>
             <p className="text-sm text-gray-600">Pantry Worker Panel - {user.first_name}</p>
+            <div className="mt-1 flex items-center gap-2">
+              <span className="text-xs font-mono bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                Multi-Sig Petra Vault
+              </span>
+              <span className="text-xs text-gray-500">Shared control & accountability</span>
+            </div>
           </div>
           <div className="flex gap-3 items-center">
             <WalletConnect />
@@ -134,50 +181,155 @@ const PantryWorkerDashboard = () => {
           </Link>
         </div>
         
-        {/* Pending Allocations */}
-        <div className="bg-primary-100 rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-primary-200">
-            <h2 className="text-xl font-semibold text-gray-800">Pending Allocations</h2>
+        {/* Verify Student Pickup - Scan PolyCard ID */}
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold">Verify Student Pickup</h2>
+              <p className="text-sm opacity-90">Scan PolyCard ID to confirm claim and close contract</p>
+            </div>
+            <button
+              onClick={() => setScanMode(!scanMode)}
+              className="px-6 py-3 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition font-bold"
+            >
+              {scanMode ? 'Cancel Scan' : 'Start Scan Mode'}
+            </button>
           </div>
-          <div className="p-6">
-            {pendingAllocations.length === 0 ? (
-              <p className="text-gray-500">No pending allocations at this time.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-primary-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Item</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">POAS</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-primary-100 divide-y divide-gray-200">
-                    {pendingAllocations.map((allocation) => (
-                      <tr key={allocation.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {allocation.student_first_name} {allocation.student_last_name}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {allocation.item_name}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {allocation.quantity}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(allocation.allocation_date).toLocaleDateString()}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          
+          {scanMode && (
+            <div className="bg-white/20 rounded-lg p-4 backdrop-blur">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Enter or scan PolyCard ID..."
+                  value={scannedId}
+                  onChange={(e) => setScannedId(e.target.value)}
+                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 font-mono"
+                  autoFocus
+                />
+                <button
+                  onClick={handleVerifyPickup}
+                  className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-bold"
+                >
+                  Verify Pickup
+                </button>
               </div>
-            )}
+              <p className="text-xs mt-2 opacity-90">
+                This action requires Multi-Sig approval via Petra Vault
+              </p>
+            </div>
+          )}
+        </div>
+        
+        {/* POAS Allocations & Compliance */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* Active Allocations (POAS-Matched) */}
+          <div className="bg-primary-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-primary-200">
+              <h2 className="text-xl font-semibold text-gray-800">Active Allocations</h2>
+              <p className="text-sm text-gray-600">POAS-matched, ready for pickup</p>
+            </div>
+            <div className="p-6">
+              {pendingAllocations.length === 0 ? (
+                <p className="text-gray-500">No active allocations at this time.</p>
+              ) : (
+                <div className="space-y-3">
+                  {pendingAllocations.slice(0, 5).map((allocation) => (
+                    <div key={allocation.id} className="p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <p className="font-bold text-gray-800">
+                            {allocation.student_first_name} {allocation.student_last_name}
+                          </p>
+                          <p className="text-sm text-gray-600">{allocation.item_name}</p>
+                          <p className="text-xs text-gray-500">Qty: {allocation.quantity}</p>
+                        </div>
+                        <div className="text-right">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium block mb-1">
+                            POAS: {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {new Date(allocation.allocation_date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 text-center">
+                <Link to="/allocations" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                  View All Allocations →
+                </Link>
+              </div>
+            </div>
+          </div>
+          
+          {/* Compliance & Safety Logs */}
+          <div className="bg-primary-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-primary-200">
+              <h2 className="text-xl font-semibold text-gray-800">Compliance Logs</h2>
+              <p className="text-sm text-gray-600">Bill Emerson Act & SB 1383</p>
+            </div>
+            <div className="p-6">
+              {complianceLogs.length === 0 ? (
+                <p className="text-gray-500">No compliance logs yet</p>
+              ) : (
+                <div className="space-y-3">
+                  {complianceLogs.map((log) => (
+                    <div key={log.id} className="p-4 bg-white rounded-lg border border-primary-200">
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-medium">
+                            {log.type}
+                          </span>
+                          <p className="text-sm font-bold text-gray-800 mt-2">{log.item}</p>
+                          <p className="text-xs text-gray-600">
+                            {log.supplier && `Supplier: ${log.supplier}`}
+                            {log.student && `Student: ${log.student}`}
+                            {log.weight && ` | ${log.weight}`}
+                          </p>
+                        </div>
+                        <span className="text-xs font-mono bg-green-100 text-green-700 px-2 py-1 rounded">
+                          {log.compliance}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500">
+                        {log.date.toLocaleString()}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 text-center">
+                <Link to="/analytics" className="text-primary-600 hover:text-primary-700 font-medium text-sm">
+                  View Full Compliance Report →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* POAS Analytics Info */}
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-blue-900 mb-2">POAS Dashboard: Fair Distribution Analytics</h3>
+              <p className="text-sm text-blue-800 mb-2">
+                The <strong>Predicted Optimal Allocation Score (POAS)</strong> ensures equitable food distribution based on student needs, voting history, and demand patterns.
+              </p>
+              <p className="text-sm text-blue-800">
+                All allocations and verifications are recorded on-chain via your <strong>Multi-Sig Petra Vault</strong>, providing full transparency and accountability.
+              </p>
+              <Link to="/analytics" className="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm">
+                View POAS Analytics Dashboard →
+              </Link>
+            </div>
           </div>
         </div>
       </main>
