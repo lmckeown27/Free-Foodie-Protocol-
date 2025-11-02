@@ -355,7 +355,7 @@ const LandingPage = () => {
 
           <div className="space-y-4">
             {currentFaqs.map((faq) => (
-              <div key={faq.id} className={`bg-primary-100 rounded-lg shadow-md overflow-hidden ${faq.id === 3 ? 'border-2 border-primary-300' : ''}`}>
+              <div key={faq.id} className="bg-primary-100 rounded-lg shadow-md overflow-hidden border-2 border-primary-300">
                 <button
                   onClick={() => {
                     const content = document.getElementById(`faq-${faq.id}`);
