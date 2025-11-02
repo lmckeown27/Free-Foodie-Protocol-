@@ -9,6 +9,7 @@ const SupplierDashboard = () => {
   const [donations, setDonations] = useState([]);
   const [impactMetrics, setImpactMetrics] = useState(null);
   const [nftCollection, setNftCollection] = useState([]);
+  const [donationTimeline, setDonationTimeline] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const [formData, setFormData] = useState({
@@ -35,7 +36,39 @@ const SupplierDashboard = () => {
       ]);
       
       setStats(statsRes.data.data);
-      setDonations(donationsRes.data.data);
+      const donationsData = donationsRes.data.data;
+      setDonations(donationsData);
+      
+      // Calculate impact metrics from donations
+      const totalPounds = donationsData.reduce((sum, d) => {
+        const weight = (d.unit === 'lbs' || d.unit === 'pounds') ? d.quantity : d.quantity * 0.5; // rough estimate
+        return sum + weight;
+      }, 0);
+      const mealsSaved = Math.floor(totalPounds * 1.2); // 1.2 meals per pound average
+      const co2Saved = Math.floor(totalPounds * 3.8); // 3.8kg CO2 per pound of food
+      
+      setImpactMetrics({
+        totalPounds: totalPounds.toFixed(1),
+        mealsSaved,
+        co2Saved
+      });
+      
+      // Create donation timeline (group by status)
+      const timeline = donationsData.map(donation => ({
+        id: donation.id,
+        item: donation.item_name,
+        quantity: `${donation.quantity} ${donation.unit}`,
+        date: new Date(donation.donation_date),
+        status: donation.status,
+        statusSteps: [
+          { label: 'Donated', completed: true, date: new Date(donation.donation_date) },
+          { label: 'Available', completed: donation.status !== 'pending', date: donation.status !== 'pending' ? new Date(donation.donation_date) : null },
+          { label: 'Allocated', completed: donation.status === 'allocated' || donation.status === 'redeemed', date: null },
+          { label: 'Redeemed', completed: donation.status === 'redeemed', date: null }
+        ]
+      }));
+      
+      setDonationTimeline(timeline.slice(0, 5));
     } catch (error) {
       console.error('Failed to fetch supplier data', error);
     } finally {
@@ -361,6 +394,84 @@ const SupplierDashboard = () => {
                 </Link>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Donation Lifecycle Tracker */}
+        <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Donation Lifecycle Tracker</h2>
+          <p className="text-sm text-gray-600 mb-6">Track your donations from drop-off to student pickup</p>
+          
+          {donationTimeline.length === 0 ? (
+            <div className="text-center py-8 bg-blue-50 rounded-lg">
+              <p className="text-gray-500">No donation tracking data yet. Add a donation to see its journey!</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {donationTimeline.map((donation) => (
+                <div key={donation.id} className="bg-white rounded-lg p-5 border-2 border-blue-200">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="font-bold text-gray-900 text-lg">{donation.item}</h3>
+                      <p className="text-sm text-gray-600">{donation.quantity}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Donated on {donation.date.toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full ${
+                      donation.status === 'available' ? 'bg-blue-100 text-blue-700' :
+                      donation.status === 'allocated' ? 'bg-blue-200 text-blue-800' :
+                      donation.status === 'redeemed' ? 'bg-blue-600 text-white' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {donation.status.toUpperCase()}
+                    </span>
+                  </div>
+                  
+                  {/* Status Timeline */}
+                  <div className="relative">
+                    <div className="flex justify-between items-center">
+                      {donation.statusSteps.map((step, index) => (
+                        <div key={index} className="flex-1 relative">
+                          <div className="flex flex-col items-center">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                              step.completed 
+                                ? 'bg-blue-600 text-white' 
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {step.completed ? '✓' : (index + 1)}
+                            </div>
+                            <p className={`text-xs mt-2 font-medium ${
+                              step.completed ? 'text-blue-600' : 'text-gray-500'
+                            }`}>
+                              {step.label}
+                            </p>
+                            {step.date && (
+                              <p className="text-xs text-gray-400 mt-1">
+                                {step.date.toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
+                          {index < donation.statusSteps.length - 1 && (
+                            <div className={`absolute top-5 left-1/2 w-full h-0.5 ${
+                              step.completed && donation.statusSteps[index + 1].completed
+                                ? 'bg-blue-600'
+                                : 'bg-gray-200'
+                            }`} style={{ transform: 'translateY(-50%)' }}></div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div className="mt-6 text-center">
+            <Link to="/inventory" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+              View Full Donation History →
+            </Link>
           </div>
         </div>
         

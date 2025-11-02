@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { analyticsAPI, allocationAPI, inventoryAPI } from '../services/api';
+import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
 
@@ -9,6 +9,7 @@ const PantryWorkerDashboard = () => {
   const [pendingAllocations, setPendingAllocations] = useState([]);
   const [inventoryHealth, setInventoryHealth] = useState(null);
   const [complianceLogs, setComplianceLogs] = useState([]);
+  const [poasRecommendations, setPoasRecommendations] = useState([]);
   const [scanMode, setScanMode] = useState(false);
   const [scannedId, setScannedId] = useState('');
   const [loading, setLoading] = useState(true);
@@ -21,15 +22,27 @@ const PantryWorkerDashboard = () => {
   
   const fetchDashboardData = async () => {
     try {
-      const [dashboardRes, allocationsRes, healthRes] = await Promise.all([
+      const [dashboardRes, allocationsRes, healthRes, inventoryRes] = await Promise.all([
         analyticsAPI.getDashboard(),
         allocationAPI.getAllocations({ status: 'approved', limit: 10 }),
-        analyticsAPI.getInventoryHealth()
+        analyticsAPI.getInventoryHealth(),
+        inventoryAPI.getInventory({ limit: 1 }) // Get at least one item for recommendations
       ]);
       
       setDashboard(dashboardRes.data.data);
       setPendingAllocations(allocationsRes.data.data);
       setInventoryHealth(healthRes.data.data);
+      
+      // Fetch POAS recommendations for the first inventory item
+      if (inventoryRes.data.data.length > 0) {
+        try {
+          const poasRes = await poasAPI.getRecommendations(inventoryRes.data.data[0].id, 5);
+          setPoasRecommendations(poasRes.data.data);
+        } catch (poasError) {
+          console.log('POAS recommendations not available yet', poasError);
+          setPoasRecommendations([]);
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
@@ -130,6 +143,51 @@ const PantryWorkerDashboard = () => {
             <p className="text-3xl font-bold text-purple-600 mt-2">
               {dashboard?.users?.find(u => u.role === 'student')?.count || 0}
             </p>
+          </div>
+        </div>
+        
+        {/* POAS Recommendations Panel */}
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold">POAS Allocation Recommendations</h2>
+              <p className="text-sm opacity-90">AI-powered fair distribution based on student needs</p>
+            </div>
+            <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+              <p className="text-xs opacity-90">Top Priority Students</p>
+              <p className="text-2xl font-bold">{poasRecommendations.length}</p>
+            </div>
+          </div>
+          
+          {poasRecommendations.length === 0 ? (
+            <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
+              <p className="text-center text-white/90">
+                No POAS recommendations available yet. Run the POAS calculation to generate fair allocation priorities.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {poasRecommendations.map((rec, index) => (
+                <div key={rec.student_id || index} className="bg-white/10 backdrop-blur rounded-lg p-4 border border-white/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold bg-white/20 px-2 py-1 rounded">
+                      Rank #{index + 1}
+                    </span>
+                    <span className="text-lg font-bold">
+                      {rec.poas_score ? rec.poas_score.toFixed(1) : 'N/A'}
+                    </span>
+                  </div>
+                  <p className="text-sm font-semibold">Student ID: {rec.student_id?.substring(0, 8) || 'Unknown'}</p>
+                  <p className="text-xs opacity-90 mt-1">High priority for allocation</p>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          <div className="mt-4 text-center">
+            <Link to="/analytics" className="inline-block px-6 py-2 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition font-medium text-sm">
+              View Full POAS Analytics →
+            </Link>
           </div>
         </div>
         

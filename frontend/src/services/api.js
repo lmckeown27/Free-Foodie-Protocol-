@@ -105,5 +105,15 @@ export const poasAPI = {
   calculateBatch: (studentIds) => api.post('/poas/calculate-batch', { student_ids: studentIds }),
 };
 
+// Notifications API
+export const notificationsAPI = {
+  getNotifications: (params = {}) => api.get('/notifications', { params }),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (id) => api.put(`/notifications/${id}/read`),
+  markAllAsRead: () => api.put('/notifications/mark-all-read'),
+  deleteNotification: (id) => api.delete(`/notifications/${id}`),
+  createNotification: (data) => api.post('/notifications', data),
+};
+
 export default api;
 

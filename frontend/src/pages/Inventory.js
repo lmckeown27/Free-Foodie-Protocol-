@@ -3,12 +3,21 @@ import { inventoryAPI } from '../services/api';
 
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
+  const [filteredInventory, setFilteredInventory] = useState([]);
   const [filter, setFilter] = useState('available');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('expiration');
   const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   
   useEffect(() => {
     fetchInventory();
   }, [filter]);
+  
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [inventory, searchTerm, categoryFilter, sortBy]);
   
   const fetchInventory = async () => {
     setLoading(true);
@@ -22,11 +31,59 @@ const Inventory = () => {
     }
   };
   
+  const applyFiltersAndSort = () => {
+    let filtered = [...inventory];
+    
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(item => 
+        item.item_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.item_type?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    // Category filter
+    if (categoryFilter !== 'all') {
+      filtered = filtered.filter(item => item.item_type === categoryFilter);
+    }
+    
+    // Sort
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'expiration':
+          return new Date(a.expiration_date) - new Date(b.expiration_date);
+        case 'name':
+          return a.item_name.localeCompare(b.item_name);
+        case 'quantity':
+          return b.quantity - a.quantity;
+        default:
+          return 0;
+      }
+    });
+    
+    setFilteredInventory(filtered);
+  };
+  
+  const getExpirationWarning = (expirationDate) => {
+    const daysUntilExpiration = Math.floor((new Date(expirationDate) - new Date()) / (1000 * 60 * 60 * 24));
+    if (daysUntilExpiration < 0) return { color: 'text-red-600', label: 'EXPIRED' };
+    if (daysUntilExpiration <= 3) return { color: 'text-red-500', label: 'Expires Soon' };
+    if (daysUntilExpiration <= 7) return { color: 'text-yellow-600', label: 'Use Soon' };
+    return { color: 'text-green-600', label: 'Fresh' };
+  };
+  
+  const categories = ['all', ...new Set(inventory.map(item => item.item_type).filter(Boolean))];
+  
   return (
     <div className="min-h-screen bg-primary-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Inventory</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
+            <p className="text-sm text-gray-600 mt-1">
+              {filteredInventory.length} items • {filter} status
+            </p>
+          </div>
           <button
             onClick={() => window.history.back()}
             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
@@ -54,53 +111,136 @@ const Inventory = () => {
           </div>
         </div>
         
+        {/* Search and Filters */}
+        <div className="bg-primary-100 rounded-lg shadow p-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Search */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+              <input
+                type="text"
+                placeholder="Search by name or type..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+              />
+            </div>
+            
+            {/* Category Filter */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+              >
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>
+                    {cat === 'all' ? 'All Categories' : cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Sort */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+              >
+                <option value="expiration">Expiration Date</option>
+                <option value="name">Name (A-Z)</option>
+                <option value="quantity">Quantity (High to Low)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
         {/* Inventory Grid */}
         {loading ? (
           <div className="text-center py-12">
             <p className="text-gray-600">Loading inventory...</p>
           </div>
-        ) : inventory.length === 0 ? (
+        ) : filteredInventory.length === 0 ? (
           <div className="bg-primary-100 rounded-lg shadow p-12 text-center">
-            <p className="text-gray-500">No inventory items found with status: {filter}</p>
+            <p className="text-gray-500">
+              {inventory.length === 0 
+                ? `No inventory items found with status: ${filter}`
+                : 'No items match your search and filter criteria'
+              }
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {inventory.map((item) => (
-              <div key={item.id} className="bg-primary-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">{item.item_name}</h3>
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                      item.status === 'available' ? 'bg-green-100 text-green-800' :
-                      item.status === 'allocated' ? 'bg-blue-100 text-blue-800' :
-                      'bg-purple-100 text-purple-800'
-                    }`}>
-                      {item.status}
-                    </span>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm text-gray-600">
-                    <p><span className="font-medium">Type:</span> {item.item_type || 'N/A'}</p>
-                    <p><span className="font-medium">Quantity:</span> {item.quantity} {item.unit}</p>
-                    {item.expiration_date && (
-                      <p><span className="font-medium">Expires:</span> {new Date(item.expiration_date).toLocaleDateString()}</p>
-                    )}
-                    {item.location && (
-                      <p><span className="font-medium">Location:</span> {item.location}</p>
-                    )}
-                    {item.supplier_first_name && (
-                      <p><span className="font-medium">Supplier:</span> {item.supplier_first_name} {item.supplier_last_name}</p>
-                    )}
-                  </div>
-                  
-                  {item.handling_notes && (
-                    <div className="mt-4 p-3 bg-primary-50 rounded-lg">
-                      <p className="text-xs text-gray-600">{item.handling_notes}</p>
+            {filteredInventory.map((item) => {
+              const expirationWarning = item.expiration_date ? getExpirationWarning(item.expiration_date) : null;
+              
+              return (
+                <div key={item.id} className="bg-primary-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">{item.item_name}</h3>
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                        item.status === 'available' ? 'bg-green-100 text-green-800' :
+                        item.status === 'allocated' ? 'bg-blue-100 text-blue-800' :
+                        'bg-purple-100 text-purple-800'
+                      }`}>
+                        {item.status}
+                      </span>
                     </div>
-                  )}
+                    
+                    {expirationWarning && (
+                      <div className={`mb-3 px-3 py-2 rounded-lg ${
+                        expirationWarning.label === 'EXPIRED' ? 'bg-red-100' :
+                        expirationWarning.label === 'Expires Soon' ? 'bg-red-50' :
+                        expirationWarning.label === 'Use Soon' ? 'bg-yellow-50' :
+                        'bg-green-50'
+                      }`}>
+                        <p className={`text-xs font-bold ${expirationWarning.color}`}>
+                          {expirationWarning.label}
+                        </p>
+                      </div>
+                    )}
+                    
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <p><span className="font-medium">Type:</span> {item.item_type || 'N/A'}</p>
+                      <p><span className="font-medium">Quantity:</span> {item.quantity} {item.unit}</p>
+                      {item.expiration_date && (
+                        <p>
+                          <span className="font-medium">Expires:</span>{' '}
+                          {new Date(item.expiration_date).toLocaleDateString()}
+                        </p>
+                      )}
+                      {item.location && (
+                        <p><span className="font-medium">Location:</span> {item.location}</p>
+                      )}
+                      {item.supplier_first_name && (
+                        <p><span className="font-medium">Supplier:</span> {item.supplier_first_name} {item.supplier_last_name}</p>
+                      )}
+                    </div>
+                    
+                    {item.handling_notes && (
+                      <div className="mt-4 p-3 bg-primary-50 rounded-lg">
+                        <p className="text-xs text-gray-600">{item.handling_notes}</p>
+                      </div>
+                    )}
+                    
+                    {user.role === 'pantry_worker' && item.status === 'available' && (
+                      <div className="mt-4 flex gap-2">
+                        <button className="flex-1 px-3 py-2 bg-primary-600 text-white text-xs rounded-lg hover:bg-primary-700 transition">
+                          Allocate
+                        </button>
+                        <button className="flex-1 px-3 py-2 bg-gray-600 text-white text-xs rounded-lg hover:bg-gray-700 transition">
+                          Edit
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

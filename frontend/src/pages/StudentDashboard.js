@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { inventoryAPI, votingAPI, allocationAPI, nftAPI } from '../services/api';
+import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
+import PickupQRCode from '../components/PickupQRCode';
 
 const StudentDashboard = () => {
   const [inventory, setInventory] = useState([]);
@@ -11,6 +12,7 @@ const StudentDashboard = () => {
   const [trending, setTrending] = useState([]);
   const [ffqTokens, setFfqTokens] = useState(0); // Custodial tokens managed by Basic Needs Initiative
   const [claimHistory, setClaimHistory] = useState([]);
+  const [poasScore, setPoasScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -38,6 +40,15 @@ const StudentDashboard = () => {
       setNfts({ governance: governanceCount, allocation: allocationCount });
       
       setTrending(trendingRes.data.data);
+      
+      // Fetch student's POAS score
+      try {
+        const poasRes = await poasAPI.getMyScore();
+        setPoasScore(poasRes.data.data);
+      } catch (poasError) {
+        console.log('POAS score not available yet', poasError);
+        setPoasScore(null);
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
@@ -148,6 +159,64 @@ const StudentDashboard = () => {
             <p className="text-3xl font-bold text-primary-800 mt-2">{nfts.allocation}</p>
             <p className="text-xs text-gray-500 mt-1">Lifetime claims</p>
           </div>
+        </div>
+        
+        {/* POAS Score Display */}
+        <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-6 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold">Your Allocation Priority Score</h2>
+              <p className="text-sm opacity-90">Fair AI-powered distribution based on your needs</p>
+            </div>
+            <div className="bg-white/20 backdrop-blur px-6 py-4 rounded-lg">
+              <p className="text-xs opacity-90 text-center">POAS Score</p>
+              <p className="text-4xl font-bold">
+                {poasScore?.poas_score ? poasScore.poas_score.toFixed(1) : '—'}
+              </p>
+            </div>
+          </div>
+          
+          {poasScore ? (
+            <div className="bg-white/10 backdrop-blur rounded-lg p-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
+                <div className="text-center">
+                  <p className="text-xs opacity-75">Vote Weight</p>
+                  <p className="text-lg font-bold">{poasScore.vote_weight?.toFixed(1) || '0.0'}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs opacity-75">Engagement</p>
+                  <p className="text-lg font-bold">{poasScore.engagement_score?.toFixed(1) || '0.0'}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs opacity-75">Claim History</p>
+                  <p className="text-lg font-bold">{poasScore.claim_history?.toFixed(1) || '0.0'}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs opacity-75">Urgency</p>
+                  <p className="text-lg font-bold">{poasScore.urgency_factor?.toFixed(1) || '0.0'}</p>
+                </div>
+              </div>
+              <p className="text-xs text-center opacity-90">
+                Higher scores mean you'll have priority when claiming food. Vote more and engage with the platform to improve your score!
+              </p>
+              <div className="mt-3 text-center">
+                <Link to="/vote" className="inline-block px-6 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  Vote to Increase Your Score →
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
+              <p className="text-center text-white/90">
+                Your POAS score will be calculated once you start voting and engaging with the platform.
+              </p>
+              <div className="mt-3 text-center">
+                <Link to="/vote" className="inline-block px-6 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  Start Voting Now →
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Quick Actions */}
@@ -272,12 +341,7 @@ const StudentDashboard = () => {
                       <p className="text-xs text-gray-500 mb-3">
                         POAS Score: {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'} | Fair allocation via blockchain
                       </p>
-                      <Link
-                        to="/allocations"
-                        className="block text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-medium"
-                      >
-                        Show QR for Pickup
-                      </Link>
+                      <PickupQRCode allocation={allocation} student={user} />
                     </div>
                   ))}
                 </div>

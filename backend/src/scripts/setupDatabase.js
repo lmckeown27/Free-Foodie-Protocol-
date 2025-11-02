@@ -120,6 +120,21 @@ const setupDatabase = async () => {
       );
     `);
     
+    // Notifications table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS notifications (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(50) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        message TEXT NOT NULL,
+        data JSONB,
+        read BOOLEAN DEFAULT false,
+        read_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
     // Create indexes for better performance
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);');
@@ -130,6 +145,8 @@ const setupDatabase = async () => {
     await client.query('CREATE INDEX IF NOT EXISTS idx_allocations_status ON allocations(status);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_nft_records_owner ON nft_records(owner_id);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_nft_records_type ON nft_records(nft_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(read);');
     
     logger.info('Database setup completed successfully!');
   } catch (error) {

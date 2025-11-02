@@ -14,6 +14,7 @@ import Voting from './pages/Voting';
 import VotingInterface from './pages/VotingInterface';
 import Allocations from './pages/Allocations';
 import Analytics from './pages/Analytics';
+import Reports from './pages/Reports';
 import './styles/App.css';
 
 // Protected route component
@@ -149,6 +150,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['pantry_worker', 'bni']}>
                     <Analytics />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route 
+                path="/reports" 
+                element={
+                  <ProtectedRoute>
+                    <Reports />
                   </ProtectedRoute>
                 }
               />
