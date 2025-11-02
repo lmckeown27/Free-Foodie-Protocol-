@@ -98,7 +98,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
       
       case 'bni':
         return {
-          title: 'How This Works: BNI Governance',
+          title: 'How This Works: Basic Needs Initiative Governance',
           steps: [
             {
               number: 1,
@@ -113,7 +113,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             {
               number: 3,
               title: 'Custodial Wallet Management',
-              description: 'Manage custodial wallets for students through BNI-controlled multi-sig system. Execute blockchain transactions on behalf of students for simplified UX.'
+              description: 'Manage custodial wallets for students through multi-sig system controlled by the Basic Needs Initiative. Execute blockchain transactions on behalf of students for simplified UX.'
             },
             {
               number: 4,

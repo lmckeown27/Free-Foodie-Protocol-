@@ -9,7 +9,7 @@ const StudentDashboard = () => {
   const [allocations, setAllocations] = useState([]);
   const [nfts, setNfts] = useState({ governance: 0, allocation: 0 });
   const [trending, setTrending] = useState([]);
-  const [ffqTokens, setFfqTokens] = useState(0); // Custodial tokens managed by BNI
+  const [ffqTokens, setFfqTokens] = useState(0); // Custodial tokens managed by Basic Needs Initiative
   const [claimHistory, setClaimHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
@@ -118,7 +118,7 @@ const StudentDashboard = () => {
             </div>
             <div className="text-right">
               <p className="text-sm opacity-90">Custodial Wallet</p>
-              <p className="text-xs font-mono bg-white/20 px-3 py-1 rounded">Managed by BNI</p>
+              <p className="text-xs font-mono bg-white/20 px-3 py-1 rounded">Managed by Basic Needs Initiative</p>
             </div>
           </div>
         </div>
@@ -338,7 +338,7 @@ const StudentDashboard = () => {
             <div>
               <h3 className="font-bold text-primary-900 mb-2">How FFQ Works</h3>
               <p className="text-sm text-primary-800 mb-2">
-                Your FFQ tokens are stored in a <strong>custodial wallet managed by BNI</strong>. This means you don't need to worry about complicated crypto stuff.
+                Your FFQ tokens are stored in a <strong>custodial wallet managed by the Basic Needs Initiative</strong>. This means you don't need to worry about complicated crypto stuff.
               </p>
               <p className="text-sm text-primary-800">
                 When you claim food, our <strong>POAS (Predicted Optimal Allocation Score)</strong> algorithm ensures fair distribution. Your claim is confirmed instantly, and all you need to do is show up to pick it up!

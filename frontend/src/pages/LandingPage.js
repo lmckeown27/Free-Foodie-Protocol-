@@ -38,6 +38,17 @@ const LandingPage = () => {
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
       cta: 'Get Started',
       ctaAction: () => navigate('/login')
+    },
+    bni: {
+      color: 'orange',
+      gradient: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-gradient-to-b from-orange-100 to-white',
+      sectionBg: 'bg-orange-100',
+      title: 'Basic Needs Initiative',
+      headline: 'Governance. Verification. System Oversight.',
+      subheadline: 'Empower the ecosystem through infrastructure, compliance, and blockchain oversight.',
+      cta: 'Get Started',
+      ctaAction: () => navigate('/login')
     }
   };
 
@@ -78,6 +89,12 @@ const LandingPage = () => {
       { step: 2, title: 'List Inventory', description: 'Add donations with weight, type, expiry' },
       { step: 3, title: 'Auto-Execute', description: 'Smart contracts handle custody transfer' },
       { step: 4, title: 'Track Impact', description: 'View donation stats and Supplier NFTs' }
+    ],
+    bni: [
+      { step: 1, title: 'Verify Suppliers', description: 'Review applications and mint Supplier NFTs' },
+      { step: 2, title: 'Configure Pantries', description: 'Set up multi-sig vaults and assign co-signers' },
+      { step: 3, title: 'Manage Wallets', description: 'Oversee custodial wallets for students' },
+      { step: 4, title: 'Monitor System', description: 'Track analytics, compliance, and audit logs' }
     ]
   };
 
@@ -176,6 +193,38 @@ const LandingPage = () => {
         id: 6,
         question: "Do I need cryptocurrency to participate?",
         answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency. We're running on Aptos testnet (a free test network). Any transaction fees are covered by FFQ—you'll never be charged. Just install the free Petra wallet and connect it to FFQ. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking."
+      }
+    ],
+    bni: [
+      {
+        id: 1,
+        question: "What is the Basic Needs Initiative's role in FFQ?",
+        answer: "The Basic Needs Initiative (BNI) serves as the governance layer for the Free Foodie Quest platform. BNI provides oversight and infrastructure without centralized control. We verify suppliers, manage custodial wallets for students, configure pantry multi-sig vaults, monitor system-wide analytics, and ensure compliance. Think of BNI as the foundation that empowers each role to operate independently while maintaining transparency and accountability through blockchain technology."
+      },
+      {
+        id: 2,
+        question: "How do we verify and approve new suppliers?",
+        answer: "When suppliers apply to donate through FFQ, BNI reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, BNI mints a Supplier NFT on the Aptos blockchain and sends it to the supplier's wallet. This NFT acts as their verified credential to donate food through the platform. The entire verification process is recorded on-chain for transparency. This protects students and pantries by ensuring only legitimate, compliant suppliers can participate."
+      },
+      {
+        id: 3,
+        question: "What are custodial wallets and why do students need them?",
+        answer: "Custodial wallets are blockchain wallets managed by BNI on behalf of students. Students don't need to download wallet apps or manage private keys—BNI handles the technical blockchain interactions for them. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, BNI's system executes the blockchain transactions automatically. It's like having a bank account where BNI is the trusted custodian, but all transactions are transparent on the public blockchain."
+      },
+      {
+        id: 4,
+        question: "How does BNI configure pantry multi-sig vaults?",
+        answer: "BNI sets up Petra Vault multi-signature wallets for each pantry. These vaults require multiple pantry workers to approve important actions (like releasing allocations or accepting donations). BNI assigns co-signers, sets approval thresholds (e.g., 2-of-3 or 3-of-5), and registers the vault on the blockchain. This ensures no single person can make unauthorized changes, creating accountability and preventing fraud. BNI provides the infrastructure, but pantry workers maintain operational control."
+      },
+      {
+        id: 5,
+        question: "What kind of analytics and oversight does BNI monitor?",
+        answer: "BNI has access to comprehensive system-wide analytics: student participation rates and token usage, supplier contributions and donation patterns, pantry operations and allocation efficiency, POAS algorithm fairness metrics, and compliance logs and audit trails. This data helps BNI identify issues, optimize the platform, and provide transparency to stakeholders. All monitoring is based on blockchain data—BNI can see what's happening but cannot alter past transactions. It's oversight without control."
+      },
+      {
+        id: 6,
+        question: "How is BNI's governance different from traditional administration?",
+        answer: "Unlike traditional centralized administration, BNI provides governance without micromanagement. BNI manages infrastructure (wallets, vaults, verification) but doesn't control day-to-day operations. Pantry workers decide allocations, students vote on preferences, and suppliers choose what to donate—all independently. BNI's role is to ensure the system is fair, transparent, and compliant through blockchain oversight. Think of it as building roads (infrastructure) rather than directing traffic (operations). This creates a truly decentralized ecosystem where power is distributed among all participants."
       }
     ]
   };

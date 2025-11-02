@@ -131,14 +131,14 @@ const Login = () => {
               </div>
             </button>
             
-            {/* BNI */}
+            {/* Basic Needs Initiative */}
             <button
               onClick={() => handleRoleSelect('bni')}
               disabled={loading}
               className="group relative p-6 border-2 border-orange-300 rounded-lg hover:border-orange-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">BNI Governance</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Basic Needs Initiative</h3>
                 <p className="text-sm text-gray-600">
                   System oversight, supplier approval, analytics dashboard
                 </p>

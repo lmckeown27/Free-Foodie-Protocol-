@@ -53,7 +53,7 @@ const BNIDashboard = () => {
         {
           id: 1,
           type: 'Supplier Approved',
-          actor: 'BNI Staff',
+          actor: 'Basic Needs Initiative Staff',
           target: 'Campus Market',
           timestamp: new Date(),
           blockchain_tx: '0xabc123...'
@@ -116,8 +116,8 @@ const BNIDashboard = () => {
       <header className="bg-orange-100 shadow">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-orange-600">BNI Governance Dashboard</h1>
-            <p className="text-sm text-gray-600">Basic Needs Initiative - System Oversight</p>
+            <h1 className="text-3xl font-bold text-orange-600">Basic Needs Initiative Governance Dashboard</h1>
+            <p className="text-sm text-gray-600">System Oversight & Infrastructure</p>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-xs font-mono bg-orange-200 text-orange-800 px-2 py-1 rounded">
                 Multi-Sig Petra Vault
@@ -299,7 +299,7 @@ const BNIDashboard = () => {
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-orange-900 mb-2">BNI Governance Role</h3>
+              <h3 className="font-bold text-orange-900 mb-2">Basic Needs Initiative Governance Role</h3>
               <p className="text-sm text-orange-800 mb-2">
                 As the <strong>Basic Needs Initiative</strong>, you provide oversight and infrastructure for the Free Foodie Quest platform:
               </p>
