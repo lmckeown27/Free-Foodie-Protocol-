@@ -171,7 +171,7 @@ const StudentDashboard = () => {
             <div className="bg-white/20 backdrop-blur px-6 py-4 rounded-lg">
               <p className="text-xs opacity-90 text-center">POAS Score</p>
               <p className="text-4xl font-bold">
-                {poasScore?.poas_score ? poasScore.poas_score.toFixed(1) : '—'}
+                {poasScore?.poas_score ? Number(poasScore.poas_score).toFixed(1) : '—'}
               </p>
             </div>
           </div>
@@ -181,19 +181,19 @@ const StudentDashboard = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                 <div className="text-center">
                   <p className="text-xs opacity-75">Vote Weight</p>
-                  <p className="text-lg font-bold">{poasScore.vote_weight?.toFixed(1) || '0.0'}</p>
+                  <p className="text-lg font-bold">{poasScore.vote_weight ? Number(poasScore.vote_weight).toFixed(1) : '0.0'}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-xs opacity-75">Engagement</p>
-                  <p className="text-lg font-bold">{poasScore.engagement_score?.toFixed(1) || '0.0'}</p>
+                  <p className="text-lg font-bold">{poasScore.engagement_score ? Number(poasScore.engagement_score).toFixed(1) : '0.0'}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-xs opacity-75">Claim History</p>
-                  <p className="text-lg font-bold">{poasScore.claim_history?.toFixed(1) || '0.0'}</p>
+                  <p className="text-lg font-bold">{poasScore.claim_history ? Number(poasScore.claim_history).toFixed(1) : '0.0'}</p>
                 </div>
                 <div className="text-center">
                   <p className="text-xs opacity-75">Urgency</p>
-                  <p className="text-lg font-bold">{poasScore.urgency_factor?.toFixed(1) || '0.0'}</p>
+                  <p className="text-lg font-bold">{poasScore.urgency_factor ? Number(poasScore.urgency_factor).toFixed(1) : '0.0'}</p>
                 </div>
               </div>
               <p className="text-xs text-center opacity-90">
@@ -339,7 +339,7 @@ const StudentDashboard = () => {
                         </span>
                       </div>
                       <p className="text-xs text-gray-500 mb-3">
-                        POAS Score: {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'} | Fair allocation via blockchain
+                        POAS Score: {allocation.poas_score ? Number(allocation.poas_score).toFixed(2) : 'N/A'} | Fair allocation via blockchain
                       </p>
                       <PickupQRCode allocation={allocation} student={user} />
                     </div>

@@ -174,7 +174,7 @@ const PantryWorkerDashboard = () => {
                       Rank #{index + 1}
                     </span>
                     <span className="text-lg font-bold">
-                      {rec.poas_score ? rec.poas_score.toFixed(1) : 'N/A'}
+                      {rec.poas_score ? Number(rec.poas_score).toFixed(1) : 'N/A'}
                     </span>
                   </div>
                   <p className="text-sm font-semibold">Student ID: {rec.student_id?.substring(0, 8) || 'Unknown'}</p>
@@ -283,7 +283,7 @@ const PantryWorkerDashboard = () => {
                         </div>
                         <div className="text-right">
                           <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded text-xs font-medium block mb-1">
-                            POAS: {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
+                            POAS: {allocation.poas_score ? Number(allocation.poas_score).toFixed(2) : 'N/A'}
                           </span>
                           <span className="text-xs text-gray-500">
                             {new Date(allocation.allocation_date).toLocaleDateString()}

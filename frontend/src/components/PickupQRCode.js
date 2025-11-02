@@ -63,7 +63,7 @@ const PickupQRCode = ({ allocation, student }) => {
             <div className="flex justify-between">
               <span className="text-gray-600">POAS Score:</span>
               <span className="font-semibold text-primary-700">
-                {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
+                {allocation.poas_score ? Number(allocation.poas_score).toFixed(2) : 'N/A'}
               </span>
             </div>
           </div>

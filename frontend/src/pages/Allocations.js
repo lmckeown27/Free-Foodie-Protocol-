@@ -116,7 +116,7 @@ const Allocations = () => {
                       {allocation.quantity} {allocation.unit}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {allocation.poas_score ? allocation.poas_score.toFixed(2) : 'N/A'}
+                      {allocation.poas_score ? Number(allocation.poas_score).toFixed(2) : 'N/A'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${

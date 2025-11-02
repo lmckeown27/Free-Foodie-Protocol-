@@ -117,7 +117,7 @@ const VotingInterface = () => {
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="text-lg opacity-90">Your POAS Score</h3>
-                <p className="text-4xl font-bold">{myScore.poas_score.toFixed(1)}/100</p>
+                <p className="text-4xl font-bold">{Number(myScore.poas_score).toFixed(1)}/100</p>
                 <p className="text-sm opacity-75 mt-1">
                   Voting increases your allocation priority
                 </p>
