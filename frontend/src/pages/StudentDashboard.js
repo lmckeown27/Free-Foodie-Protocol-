@@ -122,7 +122,7 @@ const StudentDashboard = () => {
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Voting Power</h3>
             <p className="text-3xl font-bold text-primary-700 mt-2">{nfts.governance}</p>
-            <p className="text-xs text-gray-500 mt-1">Governance NFTs</p>
+            <p className="text-xs text-gray-500 mt-1">Active voting rights</p>
           </div>
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
@@ -187,8 +187,8 @@ const StudentDashboard = () => {
             to="/nfts"
             className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-8 hover:from-purple-600 hover:to-purple-700 transition transform hover:scale-105"
           >
-            <h2 className="text-2xl font-bold mb-2">My NFT Collection</h2>
-            <p className="text-purple-100">View your blockchain assets</p>
+            <h2 className="text-2xl font-bold mb-2">My Credentials</h2>
+            <p className="text-purple-100">View your achievements and records</p>
           </Link>
           
           <Link

@@ -89,7 +89,7 @@ const SupplierDashboard = () => {
     e.preventDefault();
     try {
       await inventoryAPI.addInventory(formData);
-      alert(`Donation logged successfully!\n\nSupplier NFT minted on Aptos blockchain\nItem: ${formData.item_name}\nQuantity: ${formData.quantity} ${formData.unit}\n\nThis NFT serves as your immutable donation receipt for compliance and impact tracking.`);
+      alert(`Donation logged successfully!\n\nReceipt created for your records\nItem: ${formData.item_name}\nQuantity: ${formData.quantity} ${formData.unit}\n\nYour donation has been verified and recorded for compliance and impact tracking.`);
       setShowAddForm(false);
       setFormData({
         item_name: '',
@@ -129,9 +129,9 @@ const SupplierDashboard = () => {
             <p className="text-sm text-gray-600">Welcome, {user.first_name}!</p>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-xs font-mono bg-blue-200 text-blue-800 px-2 py-1 rounded">
-                Supplier NFT Registered
+                Verified Supplier
               </span>
-              <span className="text-xs text-gray-500">Blockchain-verified donations</span>
+              <span className="text-xs text-gray-500">Approved for donations</span>
             </div>
           </div>
           <div className="flex gap-3 items-center">
@@ -179,11 +179,11 @@ const SupplierDashboard = () => {
           </div>
           
           <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Supplier NFTs</h3>
+            <h3 className="text-sm font-medium text-gray-600">Donation Receipts</h3>
             <p className="text-3xl font-bold text-blue-700 mt-2">
               {impactMetrics?.nftCount || stats?.supplier_nft_count || 0}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Blockchain receipts</p>
+            <p className="text-xs text-gray-500 mt-1">Verified donations</p>
           </div>
         </div>
         
@@ -309,10 +309,10 @@ const SupplierDashboard = () => {
           </div>
         )}
         
-        {/* Donation Lifecycle Tracker & NFT Records */}
+        {/* Donation Lifecycle Tracker & Receipt Records */}
         <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Donation Lifecycle Tracker & NFT Records</h2>
-          <p className="text-sm text-gray-600 mb-6">Track your donations from drop-off to student pickup with blockchain-verified NFT receipts</p>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Donation Lifecycle Tracker & Receipt Records</h2>
+          <p className="text-sm text-gray-600 mb-6">Track your donations from drop-off to student pickup with verified digital receipts</p>
           
           {donationTimeline.length === 0 ? (
             <div className="text-center py-8 bg-blue-50 rounded-lg">
@@ -344,7 +344,7 @@ const SupplierDashboard = () => {
                       </span>
                     </div>
                     
-                    {/* NFT Receipt Information */}
+                    {/* Digital Receipt Information */}
                     {nft && (
                       <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
                         <div className="flex items-start gap-3">
@@ -355,17 +355,17 @@ const SupplierDashboard = () => {
                           </div>
                           <div className="flex-1">
                             <p className="text-sm font-bold text-blue-900">{nftName}</p>
-                            <p className="text-xs text-blue-700 font-mono mt-1">NFT ID: {nft.nft_id}</p>
+                            <p className="text-xs text-blue-700 font-mono mt-1">Receipt ID: {nft.nft_id}</p>
                             {nft.transaction_hash && (
-                              <p className="text-xs text-blue-600 font-mono mt-1 break-all">Tx: {nft.transaction_hash}</p>
+                              <p className="text-xs text-blue-600 font-mono mt-1 break-all">Record: {nft.transaction_hash}</p>
                             )}
                             <p className="text-xs text-blue-800 mt-1">
-                              Blockchain-verified donation receipt
+                              Tamper-proof donation receipt
                             </p>
                           </div>
                           <div className="flex-shrink-0">
                             <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-600 text-white">
-                              Aptos
+                              Verified
                             </span>
                           </div>
                         </div>
@@ -417,14 +417,14 @@ const SupplierDashboard = () => {
             </div>
           )}
           
-          {/* NFT Summary */}
+          {/* Receipt Summary */}
           {nfts.length > 0 && (
             <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold text-blue-900">Total NFT Receipts: {nfts.length}</h3>
+                  <h3 className="font-bold text-blue-900">Total Donation Receipts: {nfts.length}</h3>
                   <p className="text-sm text-blue-700 mt-1">
-                    All your donations are blockchain-verified on Aptos
+                    All your donations are verified and recorded
                   </p>
                 </div>
                 <div className="text-right">
@@ -464,13 +464,13 @@ const SupplierDashboard = () => {
             <div>
               <h3 className="font-bold text-blue-900 mb-2">How FFQ Benefits Suppliers</h3>
               <p className="text-sm text-blue-800 mb-2">
-                Every donation you make is <strong>automatically minted as an NFT</strong> on the Aptos blockchain. This serves as your immutable donation receipt for tax deductions and compliance reporting.
+                Every donation you make is <strong>automatically verified and recorded</strong> with a tamper-proof digital receipt. This serves as your immutable donation record for tax deductions and compliance reporting.
               </p>
               <p className="text-sm text-blue-800 mb-2">
                 You're protected by the <strong>Bill Emerson Good Samaritan Act</strong> and <strong>California SB 1383</strong>, which shield you from liability when donating surplus food in good faith.
               </p>
               <p className="text-sm text-blue-800">
-                All blockchain transactions happen in the background—you just use this simple dashboard. No crypto knowledge required!
+                All verification happens automatically in the background—you just use this simple dashboard. No technical knowledge required!
               </p>
             </div>
           </div>

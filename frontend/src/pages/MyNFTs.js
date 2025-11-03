@@ -77,13 +77,19 @@ const MyNFTs = () => {
     }
   };
 
-  const getNFTDisplayName = (nft) => {
-    // For supplier NFTs, use the unique name from metadata
+  const getCredentialDisplayName = (nft) => {
+    // For supplier credentials, use the unique name from metadata
     if (nft.nft_type === 'supplier' && nft.metadata?.nft_name) {
       return nft.metadata.nft_name;
     }
-    // For other types, use the generic label
-    return nft.nft_type.charAt(0).toUpperCase() + nft.nft_type.slice(1) + ' NFT';
+    // For other types, use user-friendly labels
+    const labelMap = {
+      'governance': 'Voting Rights',
+      'allocation': 'Pickup Ticket',
+      'volunteer': 'Service Badge',
+      'supplier': 'Donation Receipt'
+    };
+    return labelMap[nft.nft_type] || nft.nft_type.charAt(0).toUpperCase() + nft.nft_type.slice(1);
   };
 
   const filteredNFTs = getNFTsByType(activeTab);
@@ -93,7 +99,7 @@ const MyNFTs = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading your NFTs...</p>
+          <p className="mt-4 text-gray-600">Loading your credentials...</p>
         </div>
       </div>
     );
@@ -107,13 +113,13 @@ const MyNFTs = () => {
           <Link to={user.role === 'student' ? '/student' : '/supplier'} className="text-primary-600 hover:text-primary-700 mb-4 inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">My NFT Collection</h1>
+          <h1 className="text-3xl font-bold text-gray-900">My Credentials & Records</h1>
           <p className="text-gray-600 mt-2">
-            View all your blockchain-verified digital assets held in the Pantry's custodial wallet
+            View all your verified credentials and achievements managed by the Pantry
           </p>
         </div>
 
-        {/* Custodial Wallet Info */}
+        {/* Security Info */}
         <div className="bg-gradient-to-r from-purple-100 to-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
           <div className="flex items-start gap-4">
             <div className="bg-purple-500 text-white rounded-full p-3">
@@ -122,29 +128,29 @@ const MyNFTs = () => {
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-purple-900 text-lg">Custodial Wallet Protection</h3>
+              <h3 className="font-bold text-purple-900 text-lg">Secure Record Keeping</h3>
               <p className="text-purple-800 text-sm mt-1">
-                All your NFTs are securely held in the Pantry's multi-sig custodial wallet on Aptos blockchain.
-                You don't need to manage private keys or pay gas fees—we handle everything for you!
+                All your credentials and records are securely managed by the Pantry.
+                You don't need to worry about losing anything—we handle everything for you!
               </p>
               <div className="mt-3 flex gap-4 text-xs text-purple-700">
                 <div className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Multi-sig Security</span>
+                  <span>Tamper-Proof</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>No Gas Fees</span>
+                  <span>100% Free</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Aptos Blockchain</span>
+                  <span>Always Accessible</span>
                 </div>
               </div>
             </div>
@@ -154,23 +160,23 @@ const MyNFTs = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-sm text-gray-600">Total NFTs</p>
+            <p className="text-sm text-gray-600">Total Records</p>
             <p className="text-3xl font-bold text-gray-900 mt-2">{nfts.length}</p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-sm text-gray-600">Governance NFTs</p>
+            <p className="text-sm text-gray-600">Voting Rights</p>
             <p className="text-3xl font-bold text-purple-600 mt-2">
               {nfts.filter(n => n.nft_type === 'governance').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-sm text-gray-600">Allocation NFTs</p>
+            <p className="text-sm text-gray-600">Pickup Tickets</p>
             <p className="text-3xl font-bold text-green-600 mt-2">
               {nfts.filter(n => n.nft_type === 'allocation').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-sm text-gray-600">Volunteer NFTs</p>
+            <p className="text-sm text-gray-600">Service Badges</p>
             <p className="text-3xl font-bold text-yellow-600 mt-2">
               {nfts.filter(n => n.nft_type === 'volunteer').length}
             </p>
@@ -181,19 +187,25 @@ const MyNFTs = () => {
         <div className="bg-white rounded-lg shadow mb-6">
           <div className="border-b border-gray-200">
             <nav className="flex -mb-px">
-              {['all', 'governance', 'allocation', 'volunteer', 'supplier'].map((tab) => (
+              {[
+                { key: 'all', label: 'All' },
+                { key: 'governance', label: 'Voting Rights' },
+                { key: 'allocation', label: 'Pickup Tickets' },
+                { key: 'volunteer', label: 'Service Badges' },
+                { key: 'supplier', label: 'Receipts' }
+              ].map((tab) => (
                 <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
                   className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                    activeTab === tab
+                    activeTab === tab.key
                       ? 'border-primary-500 text-primary-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {tab.label}
                   <span className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                    {tab === 'all' ? nfts.length : getNFTsByType(tab).length}
+                    {tab.key === 'all' ? nfts.length : getNFTsByType(tab.key).length}
                   </span>
                 </button>
               ))}
@@ -201,24 +213,24 @@ const MyNFTs = () => {
           </div>
         </div>
 
-        {/* NFT Grid */}
+        {/* Credentials Grid */}
         {filteredNFTs.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No NFTs Found</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No Records Found</h3>
             <p className="text-gray-600">
               {activeTab === 'all' 
-                ? "You don't have any NFTs yet. Start participating to earn them!"
-                : `You don't have any ${activeTab} NFTs yet.`}
+                ? "You don't have any credentials yet. Start participating to earn them!"
+                : `You don't have any ${activeTab === 'governance' ? 'voting rights' : activeTab === 'allocation' ? 'pickup tickets' : activeTab === 'volunteer' ? 'service badges' : 'receipts'} yet.`}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNFTs.map((nft) => (
               <div key={nft.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
-                {/* NFT Header */}
+                {/* Credential Header */}
                 <div className={`p-6 ${
                   nft.nft_type === 'governance' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
                   nft.nft_type === 'allocation' ? 'bg-gradient-to-br from-green-500 to-green-600' :
@@ -231,17 +243,17 @@ const MyNFTs = () => {
                       {nft.status}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold">{getNFTDisplayName(nft)}</h3>
+                  <h3 className="text-xl font-bold">{getCredentialDisplayName(nft)}</h3>
                   <p className="text-sm opacity-90 mt-1">
-                    Minted {new Date(nft.minted_at).toLocaleDateString()}
+                    Issued {new Date(nft.minted_at).toLocaleDateString()}
                   </p>
                 </div>
 
-                {/* NFT Details */}
+                {/* Credential Details */}
                 <div className="p-6">
                   <div className="space-y-3">
                     <div>
-                      <p className="text-xs text-gray-500 uppercase">NFT ID</p>
+                      <p className="text-xs text-gray-500 uppercase">Record ID</p>
                       <p className="text-sm font-mono text-gray-900 truncate">{nft.nft_id}</p>
                     </div>
                     
@@ -263,12 +275,6 @@ const MyNFTs = () => {
                           <div>
                             <p className="text-xs text-gray-500 uppercase">Quantity</p>
                             <p className="text-sm font-bold text-gray-900">{nft.metadata.quantity}</p>
-                          </div>
-                        )}
-                        {nft.metadata.poas_score && (
-                          <div>
-                            <p className="text-xs text-gray-500 uppercase">POAS Score</p>
-                            <p className="text-sm font-bold text-gray-900">{nft.metadata.poas_score}</p>
                           </div>
                         )}
                       </>

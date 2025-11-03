@@ -65,7 +65,7 @@ const LandingPage = () => {
       { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry manages your custodial wallet automatically' },
       { step: 2, title: 'Participate in Governance', description: 'Vote on platform proposals, supplier approvals, and policy changes' },
       { step: 3, title: 'Earn Priority', description: 'Gain priority access through governance participation, volunteering, and reliable pickups' },
-      { step: 4, title: 'Claim & Pickup', description: 'Receive Allocation NFT when approved, show QR code at pantry, collect food' }
+      { step: 4, title: 'Claim & Pickup', description: 'Receive pickup ticket when approved, show QR code at pantry, collect food' }
     ],
     pantry: [
       { step: 1, title: 'Manage Operations', description: 'Combined BNI + Pantry team handles supplier verification, inventory, and distribution logistics' },
@@ -74,7 +74,7 @@ const LandingPage = () => {
       { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered POAS (allocation algorithm), verify pickups via QR codes, monitor platform health' }
     ],
     supplier: [
-      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT for blockchain tracking' },
+      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies your credentials for donation tracking' },
       { step: 2, title: 'Receive Food Requests', description: 'Pantry sends food requests based on student governance votes and current needs' },
       { step: 3, title: 'Fulfill Donations', description: 'Log donations with type, quantity, and location - inventory automatically updated' },
       { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, CO₂ reduced, and blockchain-verified donation receipts' }
@@ -86,32 +86,27 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I get food from FFQ?",
-        answer: "Participate in platform governance by voting on proposals and volunteering in your community. When food becomes available, the pantry fairly allocates it based on multiple factors including your participation, need, and pickup reliability. If approved, you'll receive an Allocation NFT—a digital pickup ticket—stored in your custodial wallet. Present this at the pantry to collect your food! The more you engage with the platform, the better your priority access becomes."
+        answer: "Participate in platform governance by voting on proposals and volunteering in your community. When food becomes available, the pantry fairly allocates it based on multiple factors including your participation, need, and pickup reliability. If approved, you'll receive a digital pickup ticket managed by the Pantry. Present this at the pantry to collect your food! The more you engage with the platform, the better your priority access becomes."
       },
       {
         id: 2,
-        question: "What is an Allocation NFT and why do I need one?",
-        answer: "An Allocation NFT is like a digital pickup ticket stored in your wallet. When the pantry approves your food request, this NFT is automatically created and sent to you. It contains details like what food you're allocated and when to pick it up. Because it's on the blockchain, it can't be forged or stolen. When you arrive at the pantry, workers scan your NFT to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the NFT is 'redeemed' (marked as used) so no one can claim the same food twice."
+        question: "What is a pickup ticket and why do I need one?",
+        answer: "A pickup ticket is like a digital receipt that proves your food allocation. When the pantry approves your food request, this ticket is automatically created for you. It contains details like what food you're allocated and when to pick it up. Because it's securely managed by the Pantry, it can't be forged or stolen. When you arrive at the pantry, workers scan your ticket to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the ticket is marked as 'used' so no one can claim the same food twice."
       },
       {
         id: 3,
-        question: "Wait, aren't NFTs just those monkey pictures? How is this different?",
-        answer: "Great question! You're thinking of collectible NFTs (like Bored Apes, CryptoPunks, etc.)—digital art sold for speculation and status. FFQ uses utility NFTs, which serve completely different purposes. Collectible NFTs are bought/sold for money, used as profile pictures, purely aesthetic, and often expensive. FFQ's Utility NFTs are 100% FREE, serve as your voting rights and food pickup tickets, have specific practical purposes, and are not tradeable. They're digital certificates that prove rights, prevent fraud, and enable fair distribution. Think of them like digital tickets, receipts, and ID cards—not collectibles or investments."
+        question: "How does voting work and why does my vote matter?",
+        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded as a permanent, tamper-proof record. You also build voting power—the more you participate, the more influence you have in future decisions. Your participation helps the pantry predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
       },
       {
         id: 4,
-        question: "How does voting work and why does my vote matter?",
-        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded on the blockchain as a permanent, tamper-proof record. You also receive a Governance NFT—a digital certificate that proves you participated and gives you voting power in future decisions. The more you engage, the more influence you have. Your participation helps the pantry predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
+        question: "Do I need cryptocurrency or money to use FFQ?",
+        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto, pay any fees, or connect a wallet. The Pantry manages everything on your behalf—you just sign up with your Cal Poly ID and use the platform. All fees are covered by FFQ. The secure technology runs in the background; from your perspective, it's just a regular app. No technical knowledge required!"
       },
       {
         id: 5,
-        question: "Do I need cryptocurrency or money to use FFQ?",
-        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto, pay any fees, or connect a wallet. The Pantry holds a custodial wallet that handles all blockchain transactions on your behalf—you just sign up with your Cal Poly ID and use the platform. All transaction fees ('gas fees') are covered by FFQ. The blockchain tech runs in the background; from your perspective, it's just a regular app. No crypto knowledge required!"
-      },
-      {
-        id: 6,
         question: "Why is FFQ better than traditional food pantries?",
-        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ uses blockchain to create fair allocation (prioritizing need, participation, and reliability), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). Blockchain transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
+        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ provides fair allocation (prioritizing need, participation, and reliability), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). FFQ transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
       }
     ],
     pantry: [
@@ -150,12 +145,12 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I donate food through FFQ?",
-        answer: "After the Pantry approves your application, simply log in to your supplier portal and list your available surplus food with details like weight, type, and location. The Pantry's custodial wallet automatically handles all blockchain transactions—you don't need to connect a wallet or understand crypto. Once logged, a Supplier NFT (permanent, blockchain-verified donation receipt) is minted on your behalf. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent—you just focus on donating food!"
+        answer: "After the Pantry approves your application, simply log in to your supplier portal and list your available surplus food with details like weight, type, and location. The Pantry manages all verification automatically—you don't need any technical setup. Once logged, a permanent, verified donation receipt is created on your behalf. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent—you just focus on donating food!"
       },
       {
         id: 2,
-        question: "What is a Supplier NFT and how does it help my business?",
-        answer: "A Supplier NFT is a permanent, verifiable record of your food donation on the blockchain. It serves as: (1) IRS-compliant proof for tax deductions, (2) Public record of your community contribution (builds reputation), (3) Impact metrics showing exactly how many students you helped. Unlike paper receipts that can be lost or forged, blockchain records are permanent and instantly verifiable. This makes donating easier, safer, and more rewarding. You can show stakeholders real, auditable proof of your social impact."
+        question: "What is a donation receipt and how does it help my business?",
+        answer: "Your donation receipt is a permanent, verifiable record of your food donation. It serves as: (1) IRS-compliant proof for tax deductions, (2) Public record of your community contribution (builds reputation), (3) Impact metrics showing exactly how many students you helped. Unlike paper receipts that can be lost or forged, digital records are permanent and instantly verifiable. This makes donating easier, safer, and more rewarding. You can show stakeholders real, auditable proof of your social impact."
       },
       {
         id: 3,
@@ -169,13 +164,8 @@ const LandingPage = () => {
       },
       {
         id: 5,
-        question: "Wait, aren't NFTs just those monkey pictures? How is this different?",
-        answer: "Great question! You're thinking of collectible NFTs (like Bored Apes)—digital art sold for speculation. FFQ uses utility NFTs, which are completely different. Collectible NFTs are bought/sold for money, used as status symbols, and purely aesthetic. FFQ's Supplier NFTs are 100% FREE, serve as donation receipts for tax purposes, prove community impact, and are not tradeable. Think of them like digital receipts and certificates—not collectibles. You'll never see monkey pictures on FFQ, just functional blockchain tools that make donating easier and provide permanent proof of your contributions."
-      },
-      {
-        id: 6,
-        question: "Do I need cryptocurrency to participate?",
-        answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency or connect a wallet. The Pantry holds a custodial wallet that handles all blockchain transactions on your behalf. Any transaction fees are covered by FFQ—you'll never be charged. Just log in to your supplier portal and start donating food. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking. No crypto knowledge required!"
+        question: "Do I need any technical setup to participate?",
+        answer: "No! FFQ is completely free and requires no technical setup. The Pantry manages all the verification and record-keeping on your behalf. Any fees are covered by FFQ—you'll never be charged. Just log in to your supplier portal and start donating food. The secure technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that provides permanent verified proof and impact tracking. No technical knowledge required!"
       }
     ]
   };
