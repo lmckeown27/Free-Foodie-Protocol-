@@ -448,10 +448,24 @@ const seedMockData = async () => {
     // 7. CREATE SUPPLIER NFTs & CUSTODIAL MAPPINGS
     // ============================================
     
+    // Create supplier NFTs with unique names
+    const supplierNFTNames = [
+      'Verification Badge',
+      'Monthly Donation Receipt #001',
+      'Compliance Certificate',
+      'Weekly Delivery Receipt #042',
+      'Food Safety Verification',
+      'Donation Impact Certificate',
+      'Quarterly Contribution Record',
+      'Fresh Produce Receipt #128',
+      'Weekly Supply Receipt #089'
+    ];
+    
     for (let i = 0; i < supplierIds.length; i++) {
       const nftId = `SUPPLIER_NFT_${supplierIds[i]}`;
+      const nftName = supplierNFTNames[i] || `Donation Receipt #${i + 1}`;
       
-      // Create NFT record
+      // Create NFT record with unique name
       await client.query(`
         INSERT INTO nft_records (
           nft_type,
@@ -464,7 +478,12 @@ const seedMockData = async () => {
       `, [
         nftId,
         supplierIds[i],
-        JSON.stringify({ business: suppliers[i].business, approved_date: new Date().toISOString() }),
+        JSON.stringify({ 
+          business: suppliers[i].business, 
+          approved_date: new Date().toISOString(),
+          nft_name: nftName,
+          purpose: nftName.includes('Verification') || nftName.includes('Badge') ? 'verification' : 'donation_receipt'
+        }),
         `0xtx_supplier_${Date.now()}_${i}`
       ]);
       

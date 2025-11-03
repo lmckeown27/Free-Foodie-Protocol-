@@ -30,6 +30,17 @@ class NFTService {
       // Get pantry wallet
       const wallet = await walletService.getActivePantryWallet();
       
+      // Generate unique NFT name based on purpose
+      const nftNameOptions = [
+        'Verification Badge',
+        'Compliance Certificate',
+        'Food Safety Verification',
+        'Donor Verification',
+        'Supplier Authorization'
+      ];
+      const randomName = nftNameOptions[Math.floor(Math.random() * nftNameOptions.length)];
+      const uniqueName = supplierData.nftName || randomName;
+      
       // Prepare NFT metadata
       const metadata = {
         supplier_name: `${user.first_name} ${user.last_name}`,
@@ -39,14 +50,16 @@ class NFTService {
         license_number: supplierData.licenseNumber,
         ein: supplierData.ein,
         approved_date: new Date().toISOString(),
-        approved_by: approvedBy
+        approved_by: approvedBy,
+        nft_name: uniqueName,
+        purpose: 'verification'
       };
       
       // Mint NFT on Aptos
       const mintResult = await aptosService.mintNFT({
         collectionName: 'FFQ_Suppliers',
-        tokenName: `Supplier_${user.id}`,
-        description: `Verified FFQ Supplier: ${supplierData.businessName}`,
+        tokenName: uniqueName.replace(/\s+/g, '_'),
+        description: `${uniqueName} for ${supplierData.businessName}`,
         uri: `https://ffq.app/nft/supplier/${user.id}`,
         recipientAddress: wallet.wallet_address
       });
@@ -113,6 +126,113 @@ class NFTService {
     } catch (error) {
       await client.query('ROLLBACK');
       logger.error('Failed to mint Supplier NFT', error);
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+  
+  /**
+   * Mint a Donation Receipt NFT when supplier makes a donation
+   * @param {Object} params - Minting parameters
+   * @returns {Promise<Object>} Minting result
+   */
+  async mintDonationReceiptNFT({ supplierId, inventoryId, donationData }) {
+    const client = await pool.connect();
+    
+    try {
+      await client.query('BEGIN');
+      
+      // Get supplier info
+      const userResult = await client.query(
+        'SELECT * FROM users WHERE id = $1',
+        [supplierId]
+      );
+      const user = userResult.rows[0];
+      
+      // Get pantry wallet
+      const wallet = await walletService.getActivePantryWallet();
+      
+      // Generate unique donation receipt name
+      const receiptNumber = `${Date.now().toString().slice(-6)}`;
+      const nftName = `${donationData.itemType || 'Food'} Donation Receipt #${receiptNumber}`;
+      
+      // Prepare NFT metadata
+      const metadata = {
+        supplier_name: `${user.first_name} ${user.last_name}`,
+        business_name: donationData.businessName || user.email,
+        item_name: donationData.itemName,
+        item_type: donationData.itemType,
+        quantity: donationData.quantity,
+        unit: donationData.unit,
+        donation_date: new Date().toISOString(),
+        inventory_id: inventoryId,
+        nft_name: nftName,
+        purpose: 'donation_receipt'
+      };
+      
+      // Mint NFT on Aptos
+      const mintResult = await aptosService.mintNFT({
+        collectionName: 'FFQ_Suppliers',
+        tokenName: nftName.replace(/\s+/g, '_').replace(/#/g, 'No'),
+        description: `Donation Receipt for ${donationData.quantity} ${donationData.unit} of ${donationData.itemName}`,
+        uri: `https://ffq.app/nft/donation/${inventoryId}`,
+        recipientAddress: wallet.wallet_address
+      });
+      
+      // Record NFT in database
+      const nftResult = await client.query(`
+        INSERT INTO nft_records (
+          nft_type,
+          nft_id,
+          owner_id,
+          metadata,
+          transaction_hash,
+          status
+        ) VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *
+      `, [
+        'supplier',
+        mintResult.tokenId,
+        supplierId,
+        JSON.stringify(metadata),
+        mintResult.txHash,
+        'active'
+      ]);
+      
+      // Create custodial mapping
+      await walletService.createCustodialMapping({
+        userId: supplierId,
+        assetType: 'donation_receipt_nft',
+        assetIdentifier: mintResult.tokenId,
+        onChainAddress: wallet.wallet_address,
+        metadata
+      });
+      
+      // Update inventory with NFT ID
+      if (inventoryId) {
+        await client.query(`
+          UPDATE inventory
+          SET supplier_nft_id = $1
+          WHERE id = $2
+        `, [mintResult.tokenId, inventoryId]);
+      }
+      
+      await client.query('COMMIT');
+      
+      logger.info(`Minted Donation Receipt NFT for supplier ${supplierId}`, {
+        nftName,
+        tokenId: mintResult.tokenId,
+        txHash: mintResult.txHash
+      });
+      
+      return {
+        nft: nftResult.rows[0],
+        transaction: mintResult
+      };
+    } catch (error) {
+      await client.query('ROLLBACK');
+      logger.error('Failed to mint Donation Receipt NFT', error);
       throw error;
     } finally {
       client.release();
