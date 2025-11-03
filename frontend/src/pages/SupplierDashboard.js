@@ -432,14 +432,20 @@ const SupplierDashboard = () => {
                             ></div>
                           );
                         } else {
-                          // Multiple steps completed - show line from first to last completed
-                          const progressPercent = (lastCompletedIndex / (totalSteps - 1)) * 100;
+                          // Multiple steps completed - show line from first circle center to last completed circle center
+                          // Gray line spans from 1.25rem to right 1.25rem, so its length is (100% - 2.5rem)
+                          // We need to calculate what portion of the gray line to fill
+                          const progressFraction = lastCompletedIndex / (totalSteps - 1);
+                          // Width = progressFraction * (100% - 2.5rem)
+                          const widthPercent = progressFraction * 100;
+                          const widthOffset = -(progressFraction * 2.5);
+                          
                           return (
                             <div 
                               className="absolute top-5 h-0.5 bg-blue-600" 
                               style={{ 
                                 left: '1.25rem',
-                                width: `calc(${progressPercent}% + ${lastCompletedIndex * 1.25}rem)`,
+                                width: `calc(${widthPercent}% + ${widthOffset}rem)`,
                                 transform: 'translateY(-50%)'
                               }}
                             ></div>
