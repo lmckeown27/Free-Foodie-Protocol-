@@ -186,9 +186,13 @@ const UserDetailPage = () => {
           {/* NFT List */}
           <div className="space-y-3">
             {nfts.map((nft) => (
-              <div key={nft.mapping_id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50">
+              <div 
+                key={nft.mapping_id} 
+                className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 hover:border-purple-300 transition-all cursor-pointer"
+                onClick={() => navigate(`/nft/${nft.nft_id}`)}
+              >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-1">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${
                       nft.nft_type === 'governance' ? 'bg-purple-500' :
                       nft.nft_type === 'allocation' ? 'bg-green-500' :
@@ -197,22 +201,33 @@ const UserDetailPage = () => {
                     }`}>
                       {nft.nft_type.charAt(0).toUpperCase()}
                     </div>
-                    <div className="ml-4">
+                    <div className="ml-4 flex-1">
                       <p className="font-semibold text-gray-900 capitalize">{nft.nft_type} NFT</p>
                       <p className="text-xs text-gray-500 font-mono">{nft.nft_id.substring(0, 40)}...</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      nft.nft_status === 'active' ? 'bg-green-100 text-green-800' :
-                      nft.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {nft.nft_status}
-                    </span>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {new Date(nft.minted_at).toLocaleDateString()}
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        nft.nft_status === 'active' ? 'bg-green-100 text-green-800' :
+                        nft.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {nft.nft_status}
+                      </span>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(nft.minted_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/nft/${nft.nft_id}`);
+                      }}
+                      className="text-purple-600 hover:text-purple-900 font-medium text-sm whitespace-nowrap"
+                    >
+                      View Details →
+                    </button>
                   </div>
                 </div>
               </div>

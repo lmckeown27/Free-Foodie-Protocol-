@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import PantryDashboard from './pages/PantryDashboard';
 import UserDetailPage from './pages/UserDetailPage';
+import NFTDetailPage from './pages/NFTDetailPage';
 import SupplierDashboard from './pages/SupplierDashboard';
 import Inventory from './pages/Inventory';
 import Voting from './pages/Voting';
@@ -97,6 +98,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['pantry']}>
                     <UserDetailPage />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/nft/:nftId" 
+                element={
+                  <ProtectedRoute allowedRoles={['pantry']}>
+                    <NFTDetailPage />
                   </ProtectedRoute>
                 } 
               />
