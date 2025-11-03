@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { governanceAPI, nftAPI } from '../services/api';
+import { governanceAPI } from '../services/api';
 
 const GovernanceProposals = () => {
   const [proposals, setProposals] = useState([]);
@@ -18,8 +18,8 @@ const GovernanceProposals = () => {
       setLoading(true);
       const proposalsRes = await governanceAPI.getProposals();
       
-      // Handle different response structures
-      const proposalsData = proposalsRes.data?.proposals || proposalsRes.data || [];
+      // Backend returns { success: true, data: [...] }, axios wraps in .data
+      const proposalsData = proposalsRes.data?.data || [];
       setProposals(Array.isArray(proposalsData) ? proposalsData : []);
       
       // TODO: Fetch user's votes when endpoint is ready

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { nftAPI, walletAPI } from '../services/api';
+import { nftAPI } from '../services/api';
 
 const MyNFTs = () => {
   const [nfts, setNFTs] = useState([]);
-  const [custodialAssets, setCustodialAssets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -16,21 +15,15 @@ const MyNFTs = () => {
   const fetchNFTs = async () => {
     try {
       setLoading(true);
-      const [nftsRes, assetsRes] = await Promise.all([
-        nftAPI.getMyNFTs(),
-        walletAPI.getMyAssets()
-      ]);
+      const nftsRes = await nftAPI.getMyNFTs();
       
-      // Handle different response structures
-      const nftsData = nftsRes.data?.nfts || nftsRes.data || [];
-      const assetsData = assetsRes.data?.assets || assetsRes.data || [];
+      // Backend returns { success: true, data: [...] }, axios wraps in .data
+      const nftsData = nftsRes.data?.data || [];
       
       setNFTs(Array.isArray(nftsData) ? nftsData : []);
-      setCustodialAssets(Array.isArray(assetsData) ? assetsData : []);
     } catch (error) {
       console.error('Error fetching NFTs:', error);
       setNFTs([]);
-      setCustodialAssets([]);
     } finally {
       setLoading(false);
     }
