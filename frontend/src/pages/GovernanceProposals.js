@@ -17,7 +17,10 @@ const GovernanceProposals = () => {
     try {
       setLoading(true);
       const proposalsRes = await governanceAPI.getProposals();
-      setProposals(proposalsRes.data || []);
+      
+      // Handle different response structures
+      const proposalsData = proposalsRes.data?.proposals || proposalsRes.data || [];
+      setProposals(Array.isArray(proposalsData) ? proposalsData : []);
       
       // TODO: Fetch user's votes when endpoint is ready
       setMyVotes([]);

@@ -21,10 +21,16 @@ const MyNFTs = () => {
         walletAPI.getMyAssets()
       ]);
       
-      setNFTs(nftsRes.data || []);
-      setCustodialAssets(assetsRes.data || []);
+      // Handle different response structures
+      const nftsData = nftsRes.data?.nfts || nftsRes.data || [];
+      const assetsData = assetsRes.data?.assets || assetsRes.data || [];
+      
+      setNFTs(Array.isArray(nftsData) ? nftsData : []);
+      setCustodialAssets(Array.isArray(assetsData) ? assetsData : []);
     } catch (error) {
       console.error('Error fetching NFTs:', error);
+      setNFTs([]);
+      setCustodialAssets([]);
     } finally {
       setLoading(false);
     }
