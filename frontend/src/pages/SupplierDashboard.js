@@ -406,16 +406,46 @@ const SupplierDashboard = () => {
                       </div>
                       
                       {/* Progress line overlay */}
-                      {donation.statusSteps.some(s => s.completed) && (
-                        <div 
-                          className="absolute top-5 h-0.5 bg-blue-600" 
-                          style={{ 
-                            left: '1.25rem',
-                            width: `calc(${(donation.statusSteps.filter(s => s.completed).length - 1) * (100 / (donation.statusSteps.length - 1))}% + ${(donation.statusSteps.filter(s => s.completed).length - 1) * 2.5 / (donation.statusSteps.length - 1)}rem)`,
-                            transform: 'translateY(-50%)'
-                          }}
-                        ></div>
-                      )}
+                      {donation.statusSteps.some(s => s.completed) && (() => {
+                        const completedCount = donation.statusSteps.filter(s => s.completed).length;
+                        const totalSteps = donation.statusSteps.length;
+                        
+                        // Find the index of the last completed step
+                        let lastCompletedIndex = -1;
+                        for (let i = donation.statusSteps.length - 1; i >= 0; i--) {
+                          if (donation.statusSteps[i].completed) {
+                            lastCompletedIndex = i;
+                            break;
+                          }
+                        }
+                        
+                        if (lastCompletedIndex === 0) {
+                          // Only first step completed - show a short blue segment to first circle
+                          return (
+                            <div 
+                              className="absolute top-5 h-0.5 bg-blue-600" 
+                              style={{ 
+                                left: 0,
+                                width: '2rem',
+                                transform: 'translateY(-50%)'
+                              }}
+                            ></div>
+                          );
+                        } else {
+                          // Multiple steps completed - show line from first to last completed
+                          const progressPercent = (lastCompletedIndex / (totalSteps - 1)) * 100;
+                          return (
+                            <div 
+                              className="absolute top-5 h-0.5 bg-blue-600" 
+                              style={{ 
+                                left: '1.25rem',
+                                width: `calc(${progressPercent}% + ${lastCompletedIndex * 1.25}rem)`,
+                                transform: 'translateY(-50%)'
+                              }}
+                            ></div>
+                          );
+                        }
+                      })()}
                     </div>
                   </div>
                 );
