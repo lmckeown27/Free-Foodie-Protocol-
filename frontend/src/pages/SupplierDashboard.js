@@ -488,12 +488,6 @@ const SupplierDashboard = () => {
               </div>
             </div>
           )}
-          
-          <div className="mt-6 text-center">
-            <Link to="/inventory" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-              View Full Donation History →
-            </Link>
-          </div>
         </div>
         
         {/* Info Banner */}

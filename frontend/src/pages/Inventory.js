@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { inventoryAPI } from '../services/api';
 
 const Inventory = () => {
+  const navigate = useNavigate();
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [filter, setFilter] = useState('available');
@@ -10,6 +12,14 @@ const Inventory = () => {
   const [sortBy, setSortBy] = useState('name');
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+  
+  // Restrict access to Pantry workers only
+  useEffect(() => {
+    if (user.role !== 'pantry') {
+      alert('Access Denied: This page is only accessible to Pantry workers.');
+      navigate('/dashboard');
+    }
+  }, [user.role, navigate]);
   
   useEffect(() => {
     fetchInventory();
