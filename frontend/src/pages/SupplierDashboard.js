@@ -426,7 +426,7 @@ const SupplierDashboard = () => {
                               className="absolute top-5 h-0.5 bg-blue-600" 
                               style={{ 
                                 left: 0,
-                                width: '1.25rem',
+                                width: '2rem',
                                 transform: 'translateY(-50%)'
                               }}
                             ></div>
