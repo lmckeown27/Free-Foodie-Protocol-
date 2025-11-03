@@ -155,76 +155,22 @@ const StudentDashboard = () => {
           </Link>
         </div>
         
-        {/* POAS Score Display */}
+        {/* Impact & Engagement Banner */}
         <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="text-2xl font-bold">Your Allocation Priority Score</h2>
-              <p className="text-sm opacity-90">Based on governance participation, volunteering, and need</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur px-6 py-4 rounded-lg">
-              <p className="text-xs opacity-90 text-center">POAS Score</p>
-              <p className="text-4xl font-bold">
-                {poasScore?.poas_score ? Number(poasScore.poas_score).toFixed(1) : '—'}
-              </p>
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-2">Make an Impact</h2>
+            <p className="text-sm opacity-90 mb-4">
+              Participate in governance and volunteer to support the community and gain priority access to food allocations
+            </p>
+            <div className="flex justify-center gap-3">
+              <Link to="/volunteer" className="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium">
+                Log Volunteer Hours
+              </Link>
+              <Link to="/governance" className="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium">
+                View Governance
+              </Link>
             </div>
           </div>
-          
-          {poasScore ? (
-            <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Governance (35%)</p>
-                  <p className="text-lg font-bold">{poasScore.governance_participation ? Number(poasScore.governance_participation).toFixed(1) : '0.0'}</p>
-                </div>
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Volunteer (20%)</p>
-                  <p className="text-lg font-bold">{poasScore.volunteer_contribution ? Number(poasScore.volunteer_contribution).toFixed(1) : '0.0'}</p>
-                </div>
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Need (20%)</p>
-                  <p className="text-lg font-bold">{poasScore.need_factor ? Number(poasScore.need_factor).toFixed(1) : '0.0'}</p>
-                </div>
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Reliability (10%)</p>
-                  <p className="text-lg font-bold">{poasScore.redemption_rate ? Number(poasScore.redemption_rate).toFixed(1) : '0.0'}</p>
-                </div>
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Recent Activity (10%)</p>
-                  <p className="text-lg font-bold">{poasScore.recency ? Number(poasScore.recency).toFixed(1) : '0.0'}</p>
-                </div>
-                <div className="text-center bg-white/10 rounded-lg p-2">
-                  <p className="text-xs opacity-75">Equity (5%)</p>
-                  <p className="text-lg font-bold">{poasScore.equity ? Number(poasScore.equity).toFixed(1) : '0.0'}</p>
-                </div>
-              </div>
-              <p className="text-xs text-center opacity-90 mb-3">
-                Higher scores = priority access. Improve your score by participating in governance and volunteering!
-              </p>
-              <div className="flex justify-center gap-3">
-                <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  Log Volunteer Hours
-                </Link>
-                <Link to="/governance" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  View Governance
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
-              <p className="text-center text-white/90 mb-3">
-                Your POAS score will be calculated based on your governance participation, volunteer hours, and pickup reliability.
-              </p>
-              <div className="flex justify-center gap-3">
-                <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  Start Volunteering
-                </Link>
-                <Link to="/governance" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  View Governance
-                </Link>
-              </div>
-            </div>
-          )}
         </div>
         
         {/* Quick Actions */}

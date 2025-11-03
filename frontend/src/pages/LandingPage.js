@@ -24,7 +24,7 @@ const LandingPage = () => {
       sectionBg: 'bg-purple-100',
       title: 'Pantry',
       headline: 'Operate. Govern. Allocate with Intelligence.',
-      subheadline: 'Combined operations and governance with POAS-driven decisions, supplier verification, and blockchain accountability.',
+      subheadline: 'Combined operations and governance with AI-driven allocation, supplier verification, and blockchain accountability.',
       cta: 'Get Started',
       ctaAction: () => navigate('/login')
     },
@@ -47,8 +47,8 @@ const LandingPage = () => {
       description: 'Every transaction, vote, and allocation is recorded on Aptos for full accountability and auditability.'
     },
     {
-      title: 'Fair Allocation (POAS)',
-      description: 'Predicted Optimal Allocation Score ensures equitable distribution based on need, participation, and demand.'
+      title: 'Fair Allocation',
+      description: 'AI-powered algorithm ensures equitable distribution based on need, participation, and reliability.'
     },
     {
       title: 'Liability Protection',
@@ -64,14 +64,14 @@ const LandingPage = () => {
     student: [
       { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry manages your custodial wallet automatically' },
       { step: 2, title: 'Participate in Governance', description: 'Vote on platform proposals, supplier approvals, and policy changes' },
-      { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with governance participation, volunteering, and reliability' },
-      { step: 4, title: 'Claim & Pickup', description: 'Higher POAS = priority access. Receive Allocation NFT, show QR code, collect food' }
+      { step: 3, title: 'Earn Priority', description: 'Gain priority access through governance participation, volunteering, and reliable pickups' },
+      { step: 4, title: 'Claim & Pickup', description: 'Receive Allocation NFT when approved, show QR code at pantry, collect food' }
     ],
     pantry: [
       { step: 1, title: 'Manage Operations', description: 'Combined BNI + Pantry team handles supplier verification, inventory, and distribution logistics' },
       { step: 2, title: 'Create Proposals', description: 'Identify needs and create governance proposals for students to vote on - execute approved decisions via multi-sig' },
       { step: 3, title: 'Custodial Wallet Service', description: 'Hold ONE custodial wallet for ALL students - issue NFTs and execute blockchain transactions on their behalf' },
-      { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered allocation algorithm, verify pickups via QR codes, monitor platform health' }
+      { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered POAS (allocation algorithm), verify pickups via QR codes, monitor platform health' }
     ],
     supplier: [
       { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT for blockchain tracking' },
@@ -86,7 +86,7 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I get food from FFQ?",
-        answer: "Participate in platform governance by voting on proposals—this builds your POAS (Predicted Optimal Allocation Score). When food becomes available, the POAS algorithm fairly allocates it based on your governance participation (35%), volunteer hours (20%), need (20%), pickup reliability (10%), and recent activity (10%). Higher POAS = priority access. If approved, you'll receive an Allocation NFT—a digital pickup ticket—stored in your custodial wallet. Present this at the pantry to collect your food!"
+        answer: "Participate in platform governance by voting on proposals and volunteering in your community. When food becomes available, the pantry fairly allocates it based on multiple factors including your participation, need, and pickup reliability. If approved, you'll receive an Allocation NFT—a digital pickup ticket—stored in your custodial wallet. Present this at the pantry to collect your food! The more you engage with the platform, the better your priority access becomes."
       },
       {
         id: 2,
@@ -101,7 +101,7 @@ const LandingPage = () => {
       {
         id: 4,
         question: "How does voting work and why does my vote matter?",
-        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded on the blockchain as a permanent, tamper-proof record. You also receive a Governance NFT—a digital certificate that proves you participated and gives you voting power in future decisions. The more you engage, the more influence you have. The POAS algorithm uses voting data to predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
+        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded on the blockchain as a permanent, tamper-proof record. You also receive a Governance NFT—a digital certificate that proves you participated and gives you voting power in future decisions. The more you engage, the more influence you have. Your participation helps the pantry predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
       },
       {
         id: 5,
@@ -111,7 +111,7 @@ const LandingPage = () => {
       {
         id: 6,
         question: "Why is FFQ better than traditional food pantries?",
-        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ uses blockchain to create fair allocation (POAS algorithm ensures equity), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). Blockchain transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
+        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ uses blockchain to create fair allocation (prioritizing need, participation, and reliability), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). Blockchain transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
       }
     ],
     pantry: [
@@ -246,7 +246,7 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Left - FAQ & Features & POAS */}
+            {/* Left - FAQ & Features & How It Works */}
             <div className="flex items-center gap-8">
               <button
                 onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
@@ -261,10 +261,10 @@ const LandingPage = () => {
                 Features
               </button>
               <button
-                onClick={() => document.getElementById('poas')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
-                POAS
+                How It Works
               </button>
             </div>
             
@@ -361,202 +361,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* POAS Section */}
-      <section id="poas" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Fair Allocation Through POAS</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              The Predicted Optimal Allocation Score ensures every student gets a fair chance at food, 
-              based on need, participation, and engagement—not first-come, first-served.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-            {/* Left: Explanation */}
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">How POAS Works</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                POAS is an AI-powered algorithm that calculates each student's priority for receiving food allocations. 
-                Instead of rewarding those who can check the app most frequently, POAS considers multiple factors to 
-                ensure equitable distribution.
-              </p>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold">
-                    35%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Governance Participation</h4>
-                    <p className="text-sm text-gray-600">Voting on platform proposals, supplier approvals, and policy changes</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold">
-                    20%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Volunteer Contribution</h4>
-                    <p className="text-sm text-gray-600">Verified volunteer hours + tier NFT bonuses (Bronze to Platinum)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
-                    20%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Need Factor</h4>
-                    <p className="text-sm text-gray-600">Historical need - fewer past allocations = higher priority</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
-                    10%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Redemption Rate</h4>
-                    <p className="text-sm text-gray-600">Reliability in picking up allocated food (reduces waste)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
-                    10%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Recent Activity</h4>
-                    <p className="text-sm text-gray-600">Recent governance participation (within last 7-60 days)</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-400 text-white flex items-center justify-center font-bold">
-                    5%
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Equity Factor</h4>
-                    <p className="text-sm text-gray-600">Ensures fair baseline distribution across all students</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Visual/Example */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">POAS in Action</h3>
-              
-              {/* Example Student Cards */}
-              <div className="space-y-4">
-                <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 border-2 border-green-500">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-gray-900">Student A</span>
-                    <span className="px-3 py-1 bg-green-600 text-white rounded-full font-bold text-sm">
-                      POAS: 87.5
-                    </span>
-                  </div>
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <p>✓ Voted on 8/10 governance proposals</p>
-                    <p>✓ 15 volunteer hours (Silver tier)</p>
-                    <p>✓ 100% pickup rate</p>
-                    <p>✓ Last voted: 2 days ago</p>
-                  </div>
-                  <div className="mt-3 text-sm font-bold text-green-700">
-                    → High Priority for Allocation
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4 border-2 border-yellow-400">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-gray-900">Student B</span>
-                    <span className="px-3 py-1 bg-yellow-600 text-white rounded-full font-bold text-sm">
-                      POAS: 62.3
-                    </span>
-                  </div>
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <p>✓ Voted on 4/10 governance proposals</p>
-                    <p>• No volunteer hours yet</p>
-                    <p>• 85% pickup rate</p>
-                    <p>✓ Last voted: 12 days ago</p>
-                  </div>
-                  <div className="mt-3 text-sm font-bold text-yellow-700">
-                    → Medium Priority for Allocation
-                  </div>
-                </div>
-
-                <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 border-2 border-gray-300">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-gray-900">Student C</span>
-                    <span className="px-3 py-1 bg-gray-600 text-white rounded-full font-bold text-sm">
-                      POAS: 41.8
-                    </span>
-                  </div>
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <p>• Voted on 1/10 governance proposals</p>
-                    <p>• No platform participation</p>
-                    <p>• 50% pickup rate (high waste)</p>
-                    <p>• Last allocation: 1 day ago</p>
-                  </div>
-                  <div className="mt-3 text-sm font-bold text-gray-700">
-                    → Lower Priority for Allocation
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefits Section */}
-          <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl shadow-xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-6 text-center">Why POAS Is Fair</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                </div>
-                <h4 className="font-bold text-lg mb-2">Equal Opportunity</h4>
-                <p className="text-sm text-primary-100">
-                  Students with genuine need get priority, regardless of when they check the app
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h4 className="font-bold text-lg mb-2">Reduces Waste</h4>
-                <p className="text-sm text-primary-100">
-                  Rewards students who actually pick up their allocations, minimizing food waste
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h4 className="font-bold text-lg mb-2">Blockchain Verified</h4>
-                <p className="text-sm text-primary-100">
-                  All POAS calculations are recorded on Aptos for complete transparency
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-8 text-center">
-              <p className="text-lg font-semibold text-primary-100">
-                "Participate in governance, volunteer, and pick up your allocations reliably to increase your POAS score!"
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
