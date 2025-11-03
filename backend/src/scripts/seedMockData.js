@@ -229,7 +229,7 @@ const seedMockData = async () => {
         item.qty,
         item.unit,
         item.status,
-        `SUPPLIER_NFT_${supplierIds[item.supplier]}_${Date.now()}`
+        `SUPPLIER_NFT_${supplierIds[item.supplier]}`
       ]);
       inventoryIds.push(result.rows[0].id);
     }
