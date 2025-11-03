@@ -373,43 +373,48 @@ const SupplierDashboard = () => {
                     )}
                     
                     {/* Status Timeline */}
-                    <div className="relative">
-                      <div className="flex justify-between items-center">
+                    <div className="relative px-8">
+                      {/* Connecting line background */}
+                      <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200" style={{ transform: 'translateY(-50%)' }}></div>
+                      
+                      <div className="relative flex justify-between items-start">
                         {donation.statusSteps.map((step, index) => (
-                          <div key={index} className="flex-1 relative">
-                            <div className="flex flex-col items-center">
-                              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                                step.completed
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-gray-200 text-gray-500'
-                              }`}>
-                                {step.completed ? (
-                                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                  </svg>
-                                ) : (index + 1)}
-                              </div>
-                              <p className={`text-xs mt-2 font-medium ${
-                                step.completed ? 'text-blue-600' : 'text-gray-500'
-                              }`}>
-                                {step.label}
-                              </p>
-                              {step.date && (
-                                <p className="text-xs text-gray-400 mt-1">
-                                  {step.date.toLocaleDateString()}
-                                </p>
-                              )}
+                          <div key={index} className="flex flex-col items-center">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold relative z-10 ${
+                              step.completed
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-gray-200 text-gray-500'
+                            }`}>
+                              {step.completed ? (
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              ) : (index + 1)}
                             </div>
-                            {index < donation.statusSteps.length - 1 && (
-                              <div className={`absolute top-5 left-1/2 w-full h-0.5 ${
-                                step.completed && donation.statusSteps[index + 1].completed
-                                  ? 'bg-blue-600'
-                                  : 'bg-gray-200'
-                              }`} style={{ transform: 'translateY(-50%)' }}></div>
+                            <p className={`text-xs mt-2 font-medium text-center whitespace-nowrap ${
+                              step.completed ? 'text-blue-600' : 'text-gray-500'
+                            }`}>
+                              {step.label}
+                            </p>
+                            {step.date && (
+                              <p className="text-xs text-gray-400 mt-1 text-center">
+                                {step.date.toLocaleDateString()}
+                              </p>
                             )}
                           </div>
                         ))}
                       </div>
+                      
+                      {/* Progress line overlay */}
+                      {donation.statusSteps.some(s => s.completed) && (
+                        <div 
+                          className="absolute top-5 left-0 h-0.5 bg-blue-600" 
+                          style={{ 
+                            width: `${(donation.statusSteps.filter(s => s.completed).length - 1) * (100 / (donation.statusSteps.length - 1))}%`,
+                            transform: 'translateY(-50%)'
+                          }}
+                        ></div>
+                      )}
                     </div>
                   </div>
                 );
