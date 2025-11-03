@@ -21,7 +21,7 @@ const seedTestUsers = async () => {
         email: 'pantry@test.com',
         first_name: 'Test',
         last_name: 'Pantry',
-        role: 'pantry_worker',
+        role: 'pantry',
         verified: true
       },
       {
@@ -30,13 +30,6 @@ const seedTestUsers = async () => {
         last_name: 'Supplier',
         role: 'supplier',
         phone: '555-0123',
-        verified: true
-      },
-      {
-        email: 'bni@test.com',
-        first_name: 'Basic Needs',
-        last_name: 'Initiative',
-        role: 'bni',
         verified: true
       }
     ];
@@ -83,9 +76,8 @@ const seedTestUsers = async () => {
     logger.info('Test user seeding completed successfully!');
     logger.info('\nTest login credentials:');
     logger.info('- Student: student@test.com');
-    logger.info('- Pantry Worker: pantry@test.com');
+    logger.info('- Pantry: pantry@test.com');
     logger.info('- Supplier: supplier@test.com');
-    logger.info('- Basic Needs Initiative: bni@test.com');
     
   } catch (error) {
     logger.error('Test user seeding failed', error);

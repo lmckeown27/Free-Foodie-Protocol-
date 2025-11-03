@@ -6,9 +6,8 @@ import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
-import PantryWorkerDashboard from './pages/PantryWorkerDashboard';
+import PantryDashboard from './pages/PantryDashboard';
 import SupplierDashboard from './pages/SupplierDashboard';
-import BNIDashboard from './pages/BNIDashboard';
 import Inventory from './pages/Inventory';
 import Voting from './pages/Voting';
 import VotingInterface from './pages/VotingInterface';
@@ -40,12 +39,10 @@ const DashboardRedirect = () => {
   switch (user.role) {
     case 'student':
       return <Navigate to="/student" />;
-    case 'pantry_worker':
-      return <Navigate to="/pantry-worker" />;
+    case 'pantry':
+      return <Navigate to="/pantry" />;
     case 'supplier':
       return <Navigate to="/supplier" />;
-    case 'bni':
-      return <Navigate to="/bni" />;
     default:
       return <Navigate to="/login" />;
   }
@@ -83,10 +80,10 @@ function App() {
               />
               
               <Route 
-                path="/pantry-worker" 
+                path="/pantry" 
                 element={
-                  <ProtectedRoute allowedRoles={['pantry_worker']}>
-                    <PantryWorkerDashboard />
+                  <ProtectedRoute allowedRoles={['pantry']}>
+                    <PantryDashboard />
                   </ProtectedRoute>
                 } 
               />
@@ -96,15 +93,6 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['supplier']}>
                     <SupplierDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              <Route 
-                path="/bni" 
-                element={
-                  <ProtectedRoute allowedRoles={['bni']}>
-                    <BNIDashboard />
                   </ProtectedRoute>
                 } 
               />
@@ -148,7 +136,7 @@ function App() {
               <Route 
                 path="/analytics" 
                 element={
-                  <ProtectedRoute allowedRoles={['pantry_worker', 'bni']}>
+                  <ProtectedRoute allowedRoles={['pantry']}>
                     <Analytics />
                   </ProtectedRoute>
                 }

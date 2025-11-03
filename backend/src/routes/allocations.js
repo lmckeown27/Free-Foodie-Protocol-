@@ -56,9 +56,9 @@ router.get('/', authenticate, async (req, res, next) => {
 });
 
 // @route   POST /api/v1/allocations
-// @desc    Create allocation (pantry worker only)
-// @access  Private/PantryWorker
-router.post('/', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @desc    Create allocation (pantry only)
+// @access  Private/Pantry
+router.post('/', authenticate, authorize('pantry'), async (req, res, next) => {
   const client = await getClient();
   
   try {
@@ -132,9 +132,9 @@ router.post('/', authenticate, authorize('pantry_worker', 'admin'), async (req, 
 });
 
 // @route   PUT /api/v1/allocations/:id/redeem
-// @desc    Redeem allocation (pantry worker confirms)
-// @access  Private/PantryWorker
-router.put('/:id/redeem', authenticate, authorize('pantry_worker', 'admin'), async (req, res, next) => {
+// @desc    Redeem allocation (pantry confirms)
+// @access  Private/Pantry
+router.put('/:id/redeem', authenticate, authorize('pantry'), async (req, res, next) => {
   const client = await getClient();
   
   try {

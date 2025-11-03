@@ -8,8 +8,8 @@ const poasCalculator = new POASCalculator();
 
 // @route   GET /api/v1/poas/calculate-all
 // @desc    Calculate POAS for all students
-// @access  Private/PantryWorker/BNI
-router.get('/calculate-all', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/calculate-all', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     logger.info('Calculating POAS for all students');
     const scores = await poasCalculator.calculateScores();
@@ -74,8 +74,8 @@ router.get('/my-score', authenticate, authorize('student'), async (req, res, nex
 
 // @route   GET /api/v1/poas/recommendations/:itemId
 // @desc    Get recommended students for allocation based on POAS
-// @access  Private/PantryWorker/BNI
-router.get('/recommendations/:itemId', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/recommendations/:itemId', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const { itemId } = req.params;
     const { limit = 10 } = req.query;
@@ -102,8 +102,8 @@ router.get('/recommendations/:itemId', authenticate, authorize('pantry_worker', 
 
 // @route   POST /api/v1/poas/calculate-batch
 // @desc    Calculate POAS for specific students (batch)
-// @access  Private/PantryWorker/BNI
-router.post('/calculate-batch', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.post('/calculate-batch', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const { student_ids } = req.body;
     

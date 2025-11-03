@@ -22,8 +22,7 @@ const Login = () => {
       const roleEmails = {
         student: 'student@test.com',
         supplier: 'supplier@test.com',
-        pantry_worker: 'pantry@test.com',
-        bni: 'bni@test.com'
+        pantry: 'pantry@test.com'
       };
       
       const email = roleEmails[role];
@@ -38,14 +37,11 @@ const Login = () => {
         case 'student':
           navigate('/student');
           break;
-        case 'pantry_worker':
-          navigate('/pantry-worker');
+        case 'pantry':
+          navigate('/pantry');
           break;
         case 'supplier':
           navigate('/supplier');
-          break;
-        case 'bni':
-          navigate('/bni');
           break;
         default:
           navigate('/');
@@ -88,12 +84,12 @@ const Login = () => {
           )}
           
           {/* Role Selection Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Student */}
             <button
               onClick={() => handleRoleSelect('student')}
               disabled={loading}
-              className="group relative p-6 border-2 border-primary-300 rounded-lg hover:border-primary-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative p-8 border-2 border-primary-300 rounded-lg hover:border-primary-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Student</h3>
@@ -103,44 +99,30 @@ const Login = () => {
               </div>
             </button>
             
+            {/* Pantry */}
+            <button
+              onClick={() => handleRoleSelect('pantry')}
+              disabled={loading}
+              className="group relative p-8 border-2 border-purple-300 rounded-lg hover:border-purple-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pantry</h3>
+                <p className="text-sm text-gray-600">
+                  Operations & governance, manage allocations, approve suppliers, view analytics
+                </p>
+              </div>
+            </button>
+            
             {/* Supplier */}
             <button
               onClick={() => handleRoleSelect('supplier')}
               disabled={loading}
-              className="group relative p-6 border-2 border-blue-300 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative p-8 border-2 border-blue-300 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Supplier</h3>
                 <p className="text-sm text-gray-600">
                   Add donations, track impact, earn Supplier NFTs
-                </p>
-              </div>
-            </button>
-            
-            {/* Pantry Worker */}
-            <button
-              onClick={() => handleRoleSelect('pantry_worker')}
-              disabled={loading}
-              className="group relative p-6 border-2 border-purple-300 rounded-lg hover:border-purple-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Pantry Worker</h3>
-                <p className="text-sm text-gray-600">
-                  Manage allocations, view analytics, confirm redemptions
-                </p>
-              </div>
-            </button>
-            
-            {/* Basic Needs Initiative */}
-            <button
-              onClick={() => handleRoleSelect('bni')}
-              disabled={loading}
-              className="group relative p-6 border-2 border-orange-300 rounded-lg hover:border-orange-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Basic Needs Initiative</h3>
-                <p className="text-sm text-gray-600">
-                  System oversight, supplier approval, analytics dashboard
                 </p>
               </div>
             </button>

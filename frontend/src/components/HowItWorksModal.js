@@ -5,34 +5,34 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
 
   const getContent = () => {
     switch (userRole) {
-      case 'pantry_worker':
+      case 'pantry':
         return {
-          title: 'How This Works: Pantry Workers',
+          title: 'How This Works: Pantry',
           steps: [
             {
               number: 1,
-              title: 'Connect Your Petra Wallet',
-              description: 'Pantry Workers connect their personal Petra Wallet to FFQ.'
+              title: 'Connect Multi-Sig Petra Wallet',
+              description: 'Set up a Petra Vault multi-sig wallet with co-signers. Define approval threshold (e.g., 2-of-3) for secure operations and governance.'
             },
             {
               number: 2,
-              title: 'Create Multi-Sig Vault',
-              description: 'Set up a Petra Vault multi-sig wallet with co-signers. Define the approval threshold (e.g., 2-of-3).'
+              title: 'Verify & Approve Suppliers',
+              description: 'Review supplier applications and business credentials. Mint Supplier NFTs on Aptos blockchain to grant verified access to the platform.'
             },
             {
               number: 3,
-              title: 'Approve Operations',
-              description: 'Food rescue pickups, token allocations, and supplier confirmations require multi-sig approval. Ensures security, accountability, and auditability.'
+              title: 'Manage Custodial Wallets & NFTs',
+              description: 'Oversee student custodial wallets. Issue Governance NFTs (voting), Allocation NFTs (claims), and execute blockchain transactions for simplified student UX.'
             },
             {
               number: 4,
-              title: 'Track Inventory & POAS',
-              description: 'Access real-time inventory dashboard. Use POAS reports to guide allocations. Confirm pickups and token redemptions on-chain.'
+              title: 'Allocate Food with POAS',
+              description: 'Use POAS (Predicted Optimal Allocation Score) reports to guide fair food distribution. Accept donations, manage inventory, and allocate items to students.'
             },
             {
               number: 5,
-              title: 'Compliance & Reporting',
-              description: 'FFQ automatically logs Verifiable Logistics Checklist Protocol (VLCP) compliance. Provides auditable on-chain records for public health regulations.'
+              title: 'Verify Pickups & Monitor Compliance',
+              description: 'Scan student Allocation NFTs at pickup to confirm food distribution. Track analytics, audit logs, and ensure VLCP compliance with auditable on-chain records.'
             }
           ]
         };
@@ -96,43 +96,6 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           ]
         };
       
-      case 'bni':
-        return {
-          title: 'How This Works: Basic Needs Initiative Governance',
-          steps: [
-            {
-              number: 1,
-              title: 'System Oversight',
-              description: 'The Basic Needs Initiative provides governance infrastructure for the Free Foodie Quest platform without centralized control.'
-            },
-            {
-              number: 2,
-              title: 'Supplier Verification',
-              description: 'Review and approve supplier applications. Verify business credentials (EIN, licenses). Mint Supplier NFTs on Aptos blockchain to grant access.'
-            },
-            {
-              number: 3,
-              title: 'Custodial Wallet Management',
-              description: 'Manage custodial wallets for students through multi-sig system controlled by the Basic Needs Initiative. Execute blockchain transactions on behalf of students for simplified UX.'
-            },
-            {
-              number: 4,
-              title: 'Pantry Configuration',
-              description: 'Configure pantry multi-sig vaults. Assign Pantry Workers as co-signers. Set approval thresholds for security and accountability.'
-            },
-            {
-              number: 5,
-              title: 'Audit & Analytics',
-              description: 'Monitor system-wide metrics: student participation, supplier contributions, food rescued. Review on-chain audit logs for compliance and transparency.'
-            },
-            {
-              number: 6,
-              title: 'NFT & Smart Contract Control',
-              description: 'Mint Governance NFTs, Allocation NFTs, and Supplier NFTs. Manage smart contract upgrades and system parameters. Control treasury wallet for platform sustainability.'
-            }
-          ]
-        };
-
       default:
         return {
           title: 'How This Works',
@@ -156,7 +119,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           text: 'text-primary-900',
           textLight: 'text-primary-800'
         };
-      case 'pantry_worker':
+      case 'pantry':
         return {
           bg: 'bg-purple-100',
           bgDark: 'bg-purple-50',
@@ -175,16 +138,6 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           circleHover: 'hover:bg-blue-700',
           text: 'text-blue-900',
           textLight: 'text-blue-800'
-        };
-      case 'bni':
-        return {
-          bg: 'bg-orange-100',
-          bgDark: 'bg-orange-50',
-          border: 'border-orange-200',
-          circle: 'bg-orange-600',
-          circleHover: 'hover:bg-orange-700',
-          text: 'text-orange-900',
-          textLight: 'text-orange-800'
         };
       default:
         return {

@@ -22,9 +22,9 @@ const LandingPage = () => {
       gradient: 'from-purple-500 to-purple-600',
       bgColor: 'bg-gradient-to-b from-purple-100 to-white',
       sectionBg: 'bg-purple-100',
-      title: 'Pantry Workers',
-      headline: 'Smart Allocation. Multi-Sig Security. Zero Guesswork.',
-      subheadline: 'POAS-driven decisions backed by blockchain accountability.',
+      title: 'Pantry',
+      headline: 'Operate. Govern. Allocate with Intelligence.',
+      subheadline: 'Combined operations and governance with POAS-driven decisions, supplier verification, and blockchain accountability.',
       cta: 'Get Started',
       ctaAction: () => navigate('/login')
     },
@@ -36,17 +36,6 @@ const LandingPage = () => {
       title: 'Suppliers',
       headline: 'Donate Surplus. Track Impact. Stay Compliant.',
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
-      cta: 'Get Started',
-      ctaAction: () => navigate('/login')
-    },
-    bni: {
-      color: 'orange',
-      gradient: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-gradient-to-b from-orange-100 to-white',
-      sectionBg: 'bg-orange-100',
-      title: 'Basic Needs Initiative',
-      headline: 'Governance. Verification. System Oversight.',
-      subheadline: 'Empower the ecosystem through infrastructure, compliance, and blockchain oversight.',
       cta: 'Get Started',
       ctaAction: () => navigate('/login')
     }
@@ -73,28 +62,22 @@ const LandingPage = () => {
 
   const howItWorks = {
     student: [
-      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - BNI creates your custodial wallet' },
+      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry creates your custodial wallet' },
       { step: 2, title: 'Vote on Food', description: 'Browse available inventory and vote for items you need' },
       { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with voting activity and engagement' },
       { step: 4, title: 'Claim & Pickup', description: 'Receive allocation notification, show QR code, pick up food' }
     ],
     pantry: [
-      { step: 1, title: 'Accept Donations', description: 'Receive supplier donations and log them in inventory' },
-      { step: 2, title: 'View POAS Rankings', description: 'See AI-powered recommendations for fair allocation' },
-      { step: 3, title: 'Allocate Food', description: 'Assign items to students based on POAS priority scores' },
-      { step: 4, title: 'Verify Pickups', description: 'Scan student QR codes to confirm food distribution' }
+      { step: 1, title: 'Approve & Accept', description: 'Review supplier applications and accept/log donations in inventory' },
+      { step: 2, title: 'POAS Allocation', description: 'Use AI-powered recommendations to allocate food fairly to students' },
+      { step: 3, title: 'Manage NFTs & Wallets', description: 'Issue Governance NFTs, Allocation NFTs, and oversee custodial wallets' },
+      { step: 4, title: 'Verify & Monitor', description: 'Scan QR codes for pickup, track analytics, and ensure compliance' }
     ],
     supplier: [
-      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - BNI verifies and mints your Supplier NFT' },
+      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT' },
       { step: 2, title: 'Donate Surplus', description: 'Add food donations with details (type, quantity, expiration)' },
       { step: 3, title: 'Get Protected', description: 'Automatic compliance with Good Samaritan Act and SB 1383' },
       { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, and CO₂ reduced on blockchain' }
-    ],
-    bni: [
-      { step: 1, title: 'Approve Suppliers', description: 'Review applications and mint Supplier NFTs via Multi-Sig Vault' },
-      { step: 2, title: 'Manage Wallets', description: 'Create and oversee custodial wallets for all students' },
-      { step: 3, title: 'Mint NFTs', description: 'Issue Governance NFTs (voting) and Allocation NFTs (claims)' },
-      { step: 4, title: 'Monitor Compliance', description: 'Track system analytics, audit logs, and blockchain transactions' }
     ]
   };
 
@@ -134,33 +117,33 @@ const LandingPage = () => {
     pantry: [
       {
         id: 1,
-        question: "How does FFQ help manage food allocations?",
-        answer: "FFQ uses the POAS (Predicted Optimal Allocation Score) algorithm to automatically calculate fair food distribution. Instead of manual decisions or first-come-first-served, POAS considers factors like student need, participation history, timing, and current demand. The system provides allocation recommendations that you can review and approve. All allocation data is recorded on the blockchain for complete transparency and accountability. This eliminates bias, reduces manual work, and ensures equitable distribution."
+        question: "What are the Pantry's responsibilities in FFQ?",
+        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, manage student custodial wallets, mint NFTs), and monitor system health (track analytics, ensure compliance, audit blockchain transactions). The Pantry uses multi-sig security to ensure no single person controls critical functions, creating accountability and transparency through blockchain."
       },
       {
         id: 2,
-        question: "What is multi-sig security and why do we need it?",
-        answer: "Multi-signature (multi-sig) security requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses Petra Vault for 2-of-3 or 3-of-5 multi-sig setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for managing pantry operations with accountability and institutional trust."
+        question: "How does POAS help us allocate food fairly?",
+        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on student need, participation history, timing, and current demand. Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. All allocation data is recorded on the blockchain for complete transparency and accountability. This eliminates bias, reduces manual work, and ensures equitable distribution."
       },
       {
         id: 3,
-        question: "How does blockchain prevent fraud in our pantry operations?",
-        answer: "Blockchain prevents fraud through immutable records (once recorded, transactions can't be altered or deleted), unique NFTs (allocation tickets can't be copied or reused), automated smart contracts (no human can override fair allocation rules), and transparent auditing (anyone can verify the entire distribution chain). Traditional systems rely on trust and manual checks—blockchain replaces trust with mathematical proof. Students can't fake Allocation NFTs, suppliers can't falsify donations, and all pantry actions are permanently recorded. The system is fraud-proof by design."
+        question: "How do we verify and approve new suppliers?",
+        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you mint a Supplier NFT on the Aptos blockchain and send it to the supplier's wallet. This NFT acts as their verified credential to donate food through the platform. The entire verification process is recorded on-chain for transparency, ensuring only legitimate, compliant suppliers can participate."
       },
       {
         id: 4,
-        question: "What happens when we scan a student's Allocation NFT?",
-        answer: "When you scan a student's Allocation NFT at pickup, the system verifies: (1) The NFT is authentic and issued by your pantry, (2) The student's wallet owns this NFT, (3) The NFT hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' on the blockchain. The NFT status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
+        question: "What is multi-sig security and why is it critical?",
+        answer: "Multi-signature (multi-sig) security requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses Petra Vault for 2-of-3 or 3-of-5 multi-sig setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for institutional trust and accountability."
       },
       {
         id: 5,
-        question: "How do we track inventory and donations on blockchain?",
-        answer: "Every donation from suppliers is recorded on the blockchain with details like weight, type, expiry date, and source. Suppliers receive Supplier NFTs as permanent donation receipts. As you process donations and distribute food, all inventory movements are logged on-chain. You get real-time dashboards showing: current inventory levels, donation sources, allocation history, and compliance metrics. This creates complete supply chain visibility and automated reporting for audits or compliance checks."
+        question: "How do custodial wallets work for students?",
+        answer: "Custodial wallets are blockchain wallets managed by the Pantry on behalf of students. Students don't need to download wallet apps or manage private keys—the Pantry handles the technical blockchain interactions for them. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, the system executes blockchain transactions automatically."
       },
       {
         id: 6,
-        question: "Do we need technical blockchain knowledge to use FFQ?",
-        answer: "No! FFQ's interface looks and feels like a regular pantry management system. The blockchain runs in the background—you'll interact with familiar buttons, dashboards, and workflows. For setup, you'll need to create a Petra Wallet and configure multi-sig security (we provide step-by-step guides). Once set up, daily operations are simple: review POAS recommendations, scan student NFTs at pickup, and track inventory through intuitive dashboards. The complexity is hidden; the benefits are clear."
+        question: "What happens when we scan a student's Allocation NFT?",
+        answer: "When you scan a student's Allocation NFT at pickup, the system verifies: (1) The NFT is authentic and issued by your pantry, (2) The student's wallet owns this NFT, (3) The NFT hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' on the blockchain. The NFT status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
       }
     ],
     supplier: [
@@ -194,38 +177,6 @@ const LandingPage = () => {
         question: "Do I need cryptocurrency to participate?",
         answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency. We're running on Aptos testnet (a free test network). Any transaction fees are covered by FFQ—you'll never be charged. Just install the free Petra wallet and connect it to FFQ. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking."
       }
-    ],
-    bni: [
-      {
-        id: 1,
-        question: "What is the Basic Needs Initiative's role in FFQ?",
-        answer: "The Basic Needs Initiative (BNI) serves as the governance layer for the Free Foodie Quest platform. BNI provides oversight and infrastructure without centralized control. We verify suppliers, manage custodial wallets for students, configure pantry multi-sig vaults, monitor system-wide analytics, and ensure compliance. Think of BNI as the foundation that empowers each role to operate independently while maintaining transparency and accountability through blockchain technology."
-      },
-      {
-        id: 2,
-        question: "How do we verify and approve new suppliers?",
-        answer: "When suppliers apply to donate through FFQ, BNI reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, BNI mints a Supplier NFT on the Aptos blockchain and sends it to the supplier's wallet. This NFT acts as their verified credential to donate food through the platform. The entire verification process is recorded on-chain for transparency. This protects students and pantries by ensuring only legitimate, compliant suppliers can participate."
-      },
-      {
-        id: 3,
-        question: "What are custodial wallets and why do students need them?",
-        answer: "Custodial wallets are blockchain wallets managed by BNI on behalf of students. Students don't need to download wallet apps or manage private keys—BNI handles the technical blockchain interactions for them. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, BNI's system executes the blockchain transactions automatically. It's like having a bank account where BNI is the trusted custodian, but all transactions are transparent on the public blockchain."
-      },
-      {
-        id: 4,
-        question: "How does BNI configure pantry multi-sig vaults?",
-        answer: "BNI sets up Petra Vault multi-signature wallets for each pantry. These vaults require multiple pantry workers to approve important actions (like releasing allocations or accepting donations). BNI assigns co-signers, sets approval thresholds (e.g., 2-of-3 or 3-of-5), and registers the vault on the blockchain. This ensures no single person can make unauthorized changes, creating accountability and preventing fraud. BNI provides the infrastructure, but pantry workers maintain operational control."
-      },
-      {
-        id: 5,
-        question: "What kind of analytics and oversight does BNI monitor?",
-        answer: "BNI has access to comprehensive system-wide analytics: student participation rates and token usage, supplier contributions and donation patterns, pantry operations and allocation efficiency, POAS algorithm fairness metrics, and compliance logs and audit trails. This data helps BNI identify issues, optimize the platform, and provide transparency to stakeholders. All monitoring is based on blockchain data—BNI can see what's happening but cannot alter past transactions. It's oversight without control."
-      },
-      {
-        id: 6,
-        question: "How is BNI's governance different from traditional administration?",
-        answer: "Unlike traditional centralized administration, BNI provides governance without micromanagement. BNI manages infrastructure (wallets, vaults, verification) but doesn't control day-to-day operations. Pantry workers decide allocations, students vote on preferences, and suppliers choose what to donate—all independently. BNI's role is to ensure the system is fair, transparent, and compliant through blockchain oversight. Think of it as building roads (infrastructure) rather than directing traffic (operations). This creates a truly decentralized ecosystem where power is distributed among all participants."
-      }
     ]
   };
 
@@ -236,8 +187,7 @@ const LandingPage = () => {
   const buttonColors = {
     student: 'bg-primary-600 hover:bg-primary-700',
     pantry: 'bg-purple-600 hover:bg-purple-700',
-    supplier: 'bg-blue-600 hover:bg-blue-700',
-    bni: 'bg-orange-600 hover:bg-orange-700'
+    supplier: 'bg-blue-600 hover:bg-blue-700'
   };
 
   // Dynamic colors for How It Works section
@@ -259,12 +209,6 @@ const LandingPage = () => {
       inactiveTabBorder: 'border-blue-200',
       stepCircle: 'bg-blue-600',
       arrow: 'bg-blue-300'
-    },
-    bni: {
-      activeTab: 'bg-orange-600',
-      inactiveTabBorder: 'border-orange-200',
-      stepCircle: 'bg-orange-600',
-      arrow: 'bg-orange-300'
     }
   };
 
@@ -293,14 +237,6 @@ const LandingPage = () => {
       plusSign: 'text-blue-600',
       ctaBackground: 'bg-blue-200',
       ctaButton: 'bg-blue-600 hover:bg-blue-700'
-    },
-    bni: {
-      background: 'bg-orange-100',
-      border: 'border-orange-300',
-      hover: 'hover:bg-orange-200',
-      plusSign: 'text-orange-600',
-      ctaBackground: 'bg-orange-200',
-      ctaButton: 'bg-orange-600 hover:bg-orange-700'
     }
   };
 

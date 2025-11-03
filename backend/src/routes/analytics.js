@@ -5,8 +5,8 @@ const { authenticate, authorize } = require('../middleware/auth');
 
 // @route   GET /api/v1/analytics/dashboard
 // @desc    Get dashboard analytics
-// @access  Private/PantryWorker/BNI
-router.get('/dashboard', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/dashboard', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     // Total users by role
     const usersResult = await query(`
@@ -120,8 +120,8 @@ router.get('/demand', authenticate, async (req, res, next) => {
 
 // @route   GET /api/v1/analytics/inventory-health
 // @desc    Get inventory health metrics
-// @access  Private/PantryWorker/BNI
-router.get('/inventory-health', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/inventory-health', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
@@ -144,8 +144,8 @@ router.get('/inventory-health', authenticate, authorize('pantry_worker', 'bni'),
 
 // @route   GET /api/v1/analytics/student-engagement
 // @desc    Get student engagement metrics
-// @access  Private/PantryWorker/BNI
-router.get('/student-engagement', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/student-engagement', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
@@ -177,8 +177,8 @@ router.get('/student-engagement', authenticate, authorize('pantry_worker', 'bni'
 
 // @route   GET /api/v1/analytics/compliance
 // @desc    Get compliance metrics
-// @access  Private/PantryWorker/BNI
-router.get('/compliance', authenticate, authorize('pantry_worker', 'bni'), async (req, res, next) => {
+// @access  Private/Pantry
+router.get('/compliance', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const result = await query(`
       SELECT 
