@@ -5,11 +5,11 @@ const logger = require('./utils/logger');
  * POAS (Predicted Optimal Allocation Score) Calculator
  * 
  * Algorithm considers:
- * 1. Student voting history (frequency, priority)
+ * 1. Governance participation (voting on proposals, engagement level)
  * 2. Student need (historical allocations, redemption rate)
  * 3. Volunteer contribution (verified hours, tier NFTs)
  * 4. Inventory availability
- * 5. Time factors (vote recency, expiration urgency)
+ * 5. Time factors (participation recency)
  * 6. Equity factors (ensuring fair distribution)
  */
 
@@ -19,13 +19,12 @@ class POASCalculator {
     
     // POAS weights (configurable)
     this.weights = {
-      voting_engagement: 0.20,    // 20% - How actively student votes
-      vote_priority: 0.15,         // 15% - Priority given in votes
-      need_factor: 0.20,           // 20% - Historical need (fewer past allocations = higher need)
-      redemption_rate: 0.10,       // 10% - Student's redemption reliability
-      volunteer_contribution: 0.20,// 20% - Volunteer hours and tier benefits
-      recency: 0.10,               // 10% - Recency of votes
-      equity: 0.05                 // 5% - Ensures fair distribution across all students
+      governance_participation: 0.35, // 35% - Participation in governance votes
+      need_factor: 0.20,              // 20% - Historical need (fewer past allocations = higher need)
+      redemption_rate: 0.10,          // 10% - Student's redemption reliability
+      volunteer_contribution: 0.20,   // 20% - Volunteer hours and tier benefits
+      recency: 0.10,                  // 10% - Recency of governance participation
+      equity: 0.05                    // 5% - Ensures fair distribution across all students
     };
   }
   
@@ -62,31 +61,27 @@ class POASCalculator {
     const client = existingClient || await this.pool.connect();
     
     try {
-      // 1. Voting engagement score
-      const votingEngagement = await this.calculateVotingEngagement(studentId, client);
+      // 1. Governance participation score
+      const governanceParticipation = await this.calculateGovernanceParticipation(studentId, client);
       
-      // 2. Vote priority score
-      const votePriority = await this.calculateVotePriority(studentId, client);
-      
-      // 3. Need factor (inverse of past allocations)
+      // 2. Need factor (inverse of past allocations)
       const needFactor = await this.calculateNeedFactor(studentId, client);
       
-      // 4. Redemption rate
+      // 3. Redemption rate
       const redemptionRate = await this.calculateRedemptionRate(studentId, client);
       
-      // 5. Volunteer contribution
+      // 4. Volunteer contribution
       const volunteerContribution = await this.calculateVolunteerContribution(studentId, client);
       
-      // 6. Recency score
+      // 5. Recency score (governance participation)
       const recency = await this.calculateRecency(studentId, client);
       
-      // 7. Equity factor (ensures fairness)
+      // 6. Equity factor (ensures fairness)
       const equity = await this.calculateEquityFactor(studentId, client);
       
       // Calculate weighted POAS
       const poas = (
-        votingEngagement * this.weights.voting_engagement +
-        votePriority * this.weights.vote_priority +
+        governanceParticipation * this.weights.governance_participation +
         needFactor * this.weights.need_factor +
         redemptionRate * this.weights.redemption_rate +
         volunteerContribution * this.weights.volunteer_contribution +
@@ -95,8 +90,7 @@ class POASCalculator {
       );
       
       logger.debug(`POAS for student ${studentId}:`, {
-        votingEngagement,
-        votePriority,
+        governanceParticipation,
         needFactor,
         redemptionRate,
         volunteerContribution,
@@ -109,8 +103,7 @@ class POASCalculator {
         student_id: studentId,
         poas_score: Math.round(poas * 100) / 100, // Round to 2 decimals
         components: {
-          voting_engagement: votingEngagement,
-          vote_priority: votePriority,
+          governance_participation: governanceParticipation,
           need_factor: needFactor,
           redemption_rate: redemptionRate,
           volunteer_contribution: volunteerContribution,
@@ -127,33 +120,47 @@ class POASCalculator {
   }
   
   /**
-   * Calculate voting engagement (0-100)
+   * Calculate governance participation (0-100)
+   * Based on voting in governance proposals, not food preferences
    */
-  async calculateVotingEngagement(studentId, client) {
-    const result = await client.query(`
+  async calculateGovernanceParticipation(studentId, client) {
+    // Get governance votes in last 90 days
+    const votesResult = await client.query(`
       SELECT COUNT(*) as vote_count
-      FROM votes
-      WHERE student_id = $1 AND vote_date >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+      FROM governance_votes
+      WHERE voter_user_id = $1 
+        AND voter_entity = 'student'
+        AND voted_at >= CURRENT_TIMESTAMP - INTERVAL '90 days'
     `, [studentId]);
     
-    const voteCount = parseInt(result.rows[0].vote_count);
-    // Normalize: 10+ votes in 30 days = 100 score
-    return Math.min((voteCount / 10) * 100, 100);
-  }
-  
-  /**
-   * Calculate average vote priority (0-100)
-   */
-  async calculateVotePriority(studentId, client) {
-    const result = await client.query(`
-      SELECT AVG(priority) as avg_priority
-      FROM votes
-      WHERE student_id = $1 AND vote_date >= CURRENT_TIMESTAMP - INTERVAL '30 days'
-    `, [studentId]);
+    // Get total active proposals in that period
+    const proposalsResult = await client.query(`
+      SELECT COUNT(*) as total_proposals
+      FROM governance_proposals
+      WHERE status IN ('active', 'passed', 'failed', 'executed')
+        AND voting_starts_at >= CURRENT_TIMESTAMP - INTERVAL '90 days'
+    `);
     
-    const avgPriority = parseFloat(result.rows[0].avg_priority) || 0;
-    // Normalize: priority 5 = 100 score
-    return (avgPriority / 5) * 100;
+    const voteCount = parseInt(votesResult.rows[0].vote_count) || 0;
+    const totalProposals = parseInt(proposalsResult.rows[0].total_proposals) || 1;
+    
+    // Calculate participation rate
+    const participationRate = (voteCount / totalProposals) * 100;
+    
+    // Bonus for consistent voting
+    const consistencyBonus = Math.min(voteCount * 5, 20); // Up to 20 bonus points
+    
+    const totalScore = Math.min(participationRate + consistencyBonus, 100);
+    
+    logger.debug(`Governance participation for ${studentId}:`, {
+      voteCount,
+      totalProposals,
+      participationRate,
+      consistencyBonus,
+      totalScore
+    });
+    
+    return totalScore;
   }
   
   /**
@@ -239,24 +246,28 @@ class POASCalculator {
   }
   
   /**
-   * Calculate recency score - recent votes weighted higher (0-100)
+   * Calculate recency score - recent governance participation weighted higher (0-100)
    */
   async calculateRecency(studentId, client) {
     const result = await client.query(`
-      SELECT vote_date
-      FROM votes
-      WHERE student_id = $1
-      ORDER BY vote_date DESC
+      SELECT voted_at
+      FROM governance_votes
+      WHERE voter_user_id = $1 AND voter_entity = 'student'
+      ORDER BY voted_at DESC
       LIMIT 1
     `, [studentId]);
     
     if (result.rows.length === 0) return 0;
     
-    const lastVote = new Date(result.rows[0].vote_date);
+    const lastVote = new Date(result.rows[0].voted_at);
     const daysSinceLastVote = (Date.now() - lastVote.getTime()) / (1000 * 60 * 60 * 24);
     
-    // Vote within last day = 100, exponential decay after
-    return Math.max(100 - (daysSinceLastVote * 10), 0);
+    // Vote within last 7 days = 100, gradual decay after
+    if (daysSinceLastVote <= 7) return 100;
+    if (daysSinceLastVote <= 14) return 75;
+    if (daysSinceLastVote <= 30) return 50;
+    if (daysSinceLastVote <= 60) return 25;
+    return 0;
   }
   
   /**
