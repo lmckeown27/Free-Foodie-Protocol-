@@ -357,7 +357,7 @@ const SupplierDashboard = () => {
                             <p className="text-sm font-bold text-blue-900">{nftName}</p>
                             <p className="text-xs text-blue-700 font-mono mt-1">NFT ID: {nft.nft_id}</p>
                             {nft.transaction_hash && (
-                              <p className="text-xs text-blue-600 font-mono mt-1">Tx: {nft.transaction_hash.substring(0, 20)}...</p>
+                              <p className="text-xs text-blue-600 font-mono mt-1 break-all">Tx: {nft.transaction_hash}</p>
                             )}
                             <p className="text-xs text-blue-800 mt-1">
                               Blockchain-verified donation receipt
