@@ -309,51 +309,6 @@ const SupplierDashboard = () => {
           </div>
         )}
         
-        {/* Donation Tracking */}
-        <div className="bg-blue-100 rounded-lg shadow mb-6">
-            <div className="px-6 py-4 border-b border-blue-200">
-              <h2 className="text-xl font-semibold text-gray-800">Donation Tracking</h2>
-              <p className="text-sm text-gray-600">Where your donations go</p>
-            </div>
-            <div className="p-6">
-              {donations.length === 0 ? (
-                <p className="text-gray-500">No donations yet. Add your first donation above!</p>
-              ) : (
-                <div className="space-y-3">
-                  {donations.slice(0, 5).map((donation) => (
-                    <div key={donation.id} className="p-4 bg-white rounded-lg border border-blue-200">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <p className="font-bold text-gray-800">{donation.item_name}</p>
-                          <p className="text-sm text-gray-600">{donation.item_type}</p>
-                          <p className="text-xs text-gray-500">
-                            {donation.quantity} {donation.unit}
-                          </p>
-                        </div>
-                        <span className={`px-2 py-1 text-xs font-semibold rounded ${
-                          donation.status === 'available' ? 'bg-blue-100 text-blue-700' :
-                          donation.status === 'allocated' ? 'bg-blue-200 text-blue-800' :
-                          donation.status === 'redeemed' ? 'bg-blue-300 text-blue-900' :
-                          'bg-gray-100 text-gray-700'
-                        }`}>
-                          {donation.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500">
-                        {new Date(donation.donation_date).toLocaleDateString()}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="mt-4 text-center">
-                <Link to="/inventory" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                  View Full Donation History →
-                </Link>
-              </div>
-            </div>
-        </div>
-        
         {/* Donation Lifecycle Tracker & NFT Records */}
         <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Donation Lifecycle Tracker & NFT Records</h2>
