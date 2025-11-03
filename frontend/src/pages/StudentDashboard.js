@@ -162,7 +162,7 @@ const StudentDashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-2xl font-bold">Your Allocation Priority Score</h2>
-              <p className="text-sm opacity-90">Fair AI-powered distribution based on your needs</p>
+              <p className="text-sm opacity-90">Based on governance participation, volunteering, and need</p>
             </div>
             <div className="bg-white/20 backdrop-blur px-6 py-4 rounded-lg">
               <p className="text-xs opacity-90 text-center">POAS Score</p>
@@ -174,42 +174,56 @@ const StudentDashboard = () => {
           
           {poasScore ? (
             <div className="bg-white/10 backdrop-blur rounded-lg p-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
-                <div className="text-center">
-                  <p className="text-xs opacity-75">Vote Weight</p>
-                  <p className="text-lg font-bold">{poasScore.vote_weight ? Number(poasScore.vote_weight).toFixed(1) : '0.0'}</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-3">
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Governance (35%)</p>
+                  <p className="text-lg font-bold">{poasScore.governance_participation ? Number(poasScore.governance_participation).toFixed(1) : '0.0'}</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xs opacity-75">Engagement</p>
-                  <p className="text-lg font-bold">{poasScore.engagement_score ? Number(poasScore.engagement_score).toFixed(1) : '0.0'}</p>
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Volunteer (20%)</p>
+                  <p className="text-lg font-bold">{poasScore.volunteer_contribution ? Number(poasScore.volunteer_contribution).toFixed(1) : '0.0'}</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xs opacity-75">Claim History</p>
-                  <p className="text-lg font-bold">{poasScore.claim_history ? Number(poasScore.claim_history).toFixed(1) : '0.0'}</p>
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Need (20%)</p>
+                  <p className="text-lg font-bold">{poasScore.need_factor ? Number(poasScore.need_factor).toFixed(1) : '0.0'}</p>
                 </div>
-                <div className="text-center">
-                  <p className="text-xs opacity-75">Urgency</p>
-                  <p className="text-lg font-bold">{poasScore.urgency_factor ? Number(poasScore.urgency_factor).toFixed(1) : '0.0'}</p>
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Reliability (10%)</p>
+                  <p className="text-lg font-bold">{poasScore.redemption_rate ? Number(poasScore.redemption_rate).toFixed(1) : '0.0'}</p>
+                </div>
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Recent Activity (10%)</p>
+                  <p className="text-lg font-bold">{poasScore.recency ? Number(poasScore.recency).toFixed(1) : '0.0'}</p>
+                </div>
+                <div className="text-center bg-white/10 rounded-lg p-2">
+                  <p className="text-xs opacity-75">Equity (5%)</p>
+                  <p className="text-lg font-bold">{poasScore.equity ? Number(poasScore.equity).toFixed(1) : '0.0'}</p>
                 </div>
               </div>
-              <p className="text-xs text-center opacity-90">
-                Higher scores mean you'll have priority when claiming food. Vote more and engage with the platform to improve your score!
+              <p className="text-xs text-center opacity-90 mb-3">
+                Higher scores = priority access. Improve your score by participating in governance and volunteering!
               </p>
-              <div className="mt-3 text-center">
-                <Link to="/vote" className="inline-block px-6 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  Vote to Increase Your Score →
+              <div className="flex justify-center gap-3">
+                <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  Log Volunteer Hours
                 </Link>
+                <button className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm" disabled>
+                  View Governance (Coming Soon)
+                </button>
               </div>
             </div>
           ) : (
             <div className="bg-white/10 rounded-lg p-4 backdrop-blur">
-              <p className="text-center text-white/90">
-                Your POAS score will be calculated once you start voting and engaging with the platform.
+              <p className="text-center text-white/90 mb-3">
+                Your POAS score will be calculated based on your governance participation, volunteer hours, and pickup reliability.
               </p>
-              <div className="mt-3 text-center">
-                <Link to="/vote" className="inline-block px-6 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
-                  Start Voting Now →
+              <div className="flex justify-center gap-3">
+                <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  Start Volunteering
                 </Link>
+                <button className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm" disabled>
+                  View Governance (Coming Soon)
+                </button>
               </div>
             </div>
           )}
