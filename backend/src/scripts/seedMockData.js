@@ -15,6 +15,28 @@ const seedMockData = async () => {
     logger.info('Starting comprehensive mock data seeding...');
     
     // ============================================
+    // 0. CLEAR EXISTING DATA
+    // ============================================
+    logger.info('Clearing existing data...');
+    
+    // Delete in correct order to respect foreign key constraints
+    await client.query('DELETE FROM analytics_events');
+    await client.query('DELETE FROM compliance_logs');
+    await client.query('DELETE FROM governance_votes');
+    await client.query('DELETE FROM governance_proposals');
+    await client.query('DELETE FROM volunteer_nfts');
+    await client.query('DELETE FROM volunteer_hours');
+    await client.query('DELETE FROM votes');
+    await client.query('DELETE FROM allocations');
+    await client.query('DELETE FROM inventory');
+    await client.query('DELETE FROM custodial_mappings');
+    await client.query('DELETE FROM nft_records');
+    await client.query('DELETE FROM pantry_wallets');
+    await client.query('DELETE FROM users');
+    
+    logger.info('Existing data cleared');
+    
+    // ============================================
     // 1. CREATE USERS (Students, Pantry, Suppliers)
     // ============================================
     
