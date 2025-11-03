@@ -7,9 +7,10 @@ const logger = require('./utils/logger');
  * Algorithm considers:
  * 1. Student voting history (frequency, priority)
  * 2. Student need (historical allocations, redemption rate)
- * 3. Inventory availability
- * 4. Time factors (vote recency, expiration urgency)
- * 5. Equity factors (ensuring fair distribution)
+ * 3. Volunteer contribution (verified hours, tier NFTs)
+ * 4. Inventory availability
+ * 5. Time factors (vote recency, expiration urgency)
+ * 6. Equity factors (ensuring fair distribution)
  */
 
 class POASCalculator {
@@ -18,10 +19,11 @@ class POASCalculator {
     
     // POAS weights (configurable)
     this.weights = {
-      voting_engagement: 0.25,    // 25% - How actively student votes
-      vote_priority: 0.20,         // 20% - Priority given in votes
-      need_factor: 0.25,           // 25% - Historical need (fewer past allocations = higher need)
-      redemption_rate: 0.15,       // 15% - Student's redemption reliability
+      voting_engagement: 0.20,    // 20% - How actively student votes
+      vote_priority: 0.15,         // 15% - Priority given in votes
+      need_factor: 0.20,           // 20% - Historical need (fewer past allocations = higher need)
+      redemption_rate: 0.10,       // 10% - Student's redemption reliability
+      volunteer_contribution: 0.20,// 20% - Volunteer hours and tier benefits
       recency: 0.10,               // 10% - Recency of votes
       equity: 0.05                 // 5% - Ensures fair distribution across all students
     };
@@ -72,10 +74,13 @@ class POASCalculator {
       // 4. Redemption rate
       const redemptionRate = await this.calculateRedemptionRate(studentId, client);
       
-      // 5. Recency score
+      // 5. Volunteer contribution
+      const volunteerContribution = await this.calculateVolunteerContribution(studentId, client);
+      
+      // 6. Recency score
       const recency = await this.calculateRecency(studentId, client);
       
-      // 6. Equity factor (ensures fairness)
+      // 7. Equity factor (ensures fairness)
       const equity = await this.calculateEquityFactor(studentId, client);
       
       // Calculate weighted POAS
@@ -84,6 +89,7 @@ class POASCalculator {
         votePriority * this.weights.vote_priority +
         needFactor * this.weights.need_factor +
         redemptionRate * this.weights.redemption_rate +
+        volunteerContribution * this.weights.volunteer_contribution +
         recency * this.weights.recency +
         equity * this.weights.equity
       );
@@ -93,6 +99,7 @@ class POASCalculator {
         votePriority,
         needFactor,
         redemptionRate,
+        volunteerContribution,
         recency,
         equity,
         final: poas
@@ -106,6 +113,7 @@ class POASCalculator {
           vote_priority: votePriority,
           need_factor: needFactor,
           redemption_rate: redemptionRate,
+          volunteer_contribution: volunteerContribution,
           recency,
           equity
         },
@@ -182,6 +190,52 @@ class POASCalculator {
     if (total === 0) return 75; // Default score for new students
     
     return (redeemed / total) * 100;
+  }
+  
+  /**
+   * Calculate volunteer contribution - based on verified hours and tier (0-100)
+   * Volunteer tiers provide significant POAS boosts:
+   * - Bronze (5+ hrs): +10% boost
+   * - Silver (15+ hrs): +20% boost
+   * - Gold (30+ hrs): +35% boost
+   * - Platinum (50+ hrs): +50% boost
+   */
+  async calculateVolunteerContribution(studentId, client) {
+    // Get verified volunteer hours
+    const hoursResult = await client.query(`
+      SELECT COALESCE(SUM(hours), 0) as total_hours
+      FROM volunteer_hours
+      WHERE student_id = $1 AND status = 'verified'
+    `, [studentId]);
+    
+    const totalHours = parseFloat(hoursResult.rows[0].total_hours);
+    
+    // Base score from hours (0-50 points)
+    // 50+ hours = max 50 points
+    const hoursScore = Math.min((totalHours / 50) * 50, 50);
+    
+    // Tier bonus (0-50 points)
+    let tierBonus = 0;
+    if (totalHours >= 50) {
+      tierBonus = 50; // Platinum: +50%
+    } else if (totalHours >= 30) {
+      tierBonus = 35; // Gold: +35%
+    } else if (totalHours >= 15) {
+      tierBonus = 20; // Silver: +20%
+    } else if (totalHours >= 5) {
+      tierBonus = 10; // Bronze: +10%
+    }
+    
+    const totalScore = hoursScore + tierBonus;
+    
+    logger.debug(`Volunteer contribution for ${studentId}:`, {
+      totalHours,
+      hoursScore,
+      tierBonus,
+      totalScore
+    });
+    
+    return Math.min(totalScore, 100);
   }
   
   /**

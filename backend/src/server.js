@@ -14,6 +14,7 @@ const analyticsRoutes = require('./routes/analytics');
 const nftRoutes = require('./routes/nft');
 const poasRoutes = require('./routes/poas');
 const notificationRoutes = require('./routes/notifications');
+const volunteerRoutes = require('./routes/volunteers');
 
 const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
@@ -83,6 +84,7 @@ app.use(`${API_PREFIX}/analytics`, analyticsRoutes);
 app.use(`${API_PREFIX}/nft`, nftRoutes);
 app.use(`${API_PREFIX}/poas`, poasRoutes);
 app.use(`${API_PREFIX}/notifications`, notificationRoutes);
+app.use(`${API_PREFIX}/volunteers`, volunteerRoutes);
 
 // 404 handler
 app.use((req, res) => {

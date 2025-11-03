@@ -135,6 +135,40 @@ const setupDatabase = async () => {
       );
     `);
     
+    // Volunteer hours table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS volunteer_hours (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        student_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        activity_type VARCHAR(100) NOT NULL,
+        hours DECIMAL(5,2) NOT NULL,
+        description TEXT,
+        date DATE NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'verified', 'rejected')),
+        verified_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        verified_at TIMESTAMP,
+        volunteer_nft_id VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Volunteer NFTs table (tracks milestone NFTs earned)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS volunteer_nfts (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        student_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        nft_id VARCHAR(255) UNIQUE NOT NULL,
+        tier VARCHAR(50) NOT NULL CHECK (tier IN ('bronze', 'silver', 'gold', 'platinum')),
+        hours_required INTEGER NOT NULL,
+        hours_at_mint INTEGER NOT NULL,
+        metadata JSONB,
+        minted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        transaction_hash VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
     // Create indexes for better performance
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);');
@@ -147,6 +181,10 @@ const setupDatabase = async () => {
     await client.query('CREATE INDEX IF NOT EXISTS idx_nft_records_type ON nft_records(nft_type);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(read);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_hours_student ON volunteer_hours(student_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_hours_status ON volunteer_hours(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_nfts_student ON volunteer_nfts(student_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_nfts_tier ON volunteer_nfts(tier);');
     
     logger.info('Database setup completed successfully!');
   } catch (error) {

@@ -116,5 +116,17 @@ export const notificationsAPI = {
   createNotification: (data) => api.post('/notifications', data),
 };
 
+// Volunteer API
+export const volunteerAPI = {
+  logHours: (data) => api.post('/volunteers/log', data),
+  getMyHours: () => api.get('/volunteers/my-hours'),
+  getPendingHours: () => api.get('/volunteers/pending'),
+  getAllHours: (params) => api.get('/volunteers/all', { params }),
+  verifyHours: (id, data) => api.put(`/volunteers/${id}/verify`, data),
+  getLeaderboard: (limit = 10) => api.get(`/volunteers/leaderboard?limit=${limit}`),
+  getOpportunities: () => api.get('/volunteers/opportunities'),
+  getStats: () => api.get('/volunteers/stats'),
+};
+
 export default api;
 

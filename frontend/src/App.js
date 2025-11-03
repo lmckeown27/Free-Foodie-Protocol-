@@ -14,6 +14,7 @@ import VotingInterface from './pages/VotingInterface';
 import Allocations from './pages/Allocations';
 import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
+import VolunteerHub from './pages/VolunteerHub';
 import './styles/App.css';
 
 // Protected route component
@@ -120,6 +121,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['student']}>
                     <VotingInterface />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/volunteer" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <VolunteerHub />
                   </ProtectedRoute>
                 } 
               />
