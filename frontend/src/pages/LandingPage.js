@@ -106,7 +106,7 @@ const LandingPage = () => {
       {
         id: 5,
         question: "Do I need cryptocurrency or money to use FFQ?",
-        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto or pay any fees. We're running on Aptos testnet (a test blockchain network) where everything is free. Any small transaction fees ('gas fees') are covered by FFQ—you'll never be charged. Just install the free Petra wallet, sign up with your Cal Poly ID, and start using FFQ. The blockchain tech runs in the background; from your perspective, it's just a regular app. No crypto knowledge required!"
+        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto, pay any fees, or connect a wallet. The Pantry holds a custodial wallet that handles all blockchain transactions on your behalf—you just sign up with your Cal Poly ID and use the platform. All transaction fees ('gas fees') are covered by FFQ. The blockchain tech runs in the background; from your perspective, it's just a regular app. No crypto knowledge required!"
       },
       {
         id: 6,
@@ -128,7 +128,7 @@ const LandingPage = () => {
       {
         id: 3,
         question: "How do we verify and approve new suppliers?",
-        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you mint a Supplier NFT on the Aptos blockchain and send it to the supplier's wallet. This NFT acts as their verified credential to donate food through the platform. The entire verification process is recorded on-chain for transparency, ensuring only legitimate, compliant suppliers can participate."
+        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you mint a Supplier NFT on the Aptos blockchain via the Pantry's multi-sig custodial wallet. This NFT acts as their verified credential to donate food through the platform. Suppliers don't need their own wallets—the Pantry's custodial wallet handles all blockchain transactions on their behalf. The entire verification process is recorded on-chain for transparency, ensuring only legitimate, compliant suppliers can participate."
       },
       {
         id: 4,
@@ -150,7 +150,7 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I donate food through FFQ?",
-        answer: "Connect your Petra Wallet to FFQ, then list your available surplus food with details like weight, type, and location. FFQ's smart contracts automatically handle the custody transfer—you don't need manual paperwork. Once logged, you immediately receive a Supplier NFT: a permanent, blockchain-verified donation receipt. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent."
+        answer: "After the Pantry approves your application, simply log in to your supplier portal and list your available surplus food with details like weight, type, and location. The Pantry's custodial wallet automatically handles all blockchain transactions—you don't need to connect a wallet or understand crypto. Once logged, a Supplier NFT (permanent, blockchain-verified donation receipt) is minted on your behalf. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent—you just focus on donating food!"
       },
       {
         id: 2,
@@ -175,7 +175,7 @@ const LandingPage = () => {
       {
         id: 6,
         question: "Do I need cryptocurrency to participate?",
-        answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency. We're running on Aptos testnet (a free test network). Any transaction fees are covered by FFQ—you'll never be charged. Just install the free Petra wallet and connect it to FFQ. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking."
+        answer: "No! FFQ is completely free for suppliers. You don't need to buy any cryptocurrency or connect a wallet. The Pantry holds a custodial wallet that handles all blockchain transactions on your behalf. Any transaction fees are covered by FFQ—you'll never be charged. Just log in to your supplier portal and start donating food. The blockchain technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that happens to provide blockchain-verified proof and impact tracking. No crypto knowledge required!"
       }
     ]
   };

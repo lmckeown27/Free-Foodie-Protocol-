@@ -87,7 +87,7 @@ const PantryDashboard = () => {
   
   const handleApproveSupplier = async (supplierId) => {
     try {
-      alert(`Supplier approved!\n\nSupplier NFT minted on Aptos\nVerification email sent\n\nThe supplier can now connect their Petra Wallet and begin donating.`);
+      alert(`Supplier approved!\n\nSupplier NFT minted on Aptos via Pantry's custodial wallet\nVerification email sent\n\nThe supplier can now log in and begin donating food (all blockchain transactions handled by Pantry).`);
       fetchDashboardData();
     } catch (error) {
       alert('Failed to approve supplier: ' + error.message);

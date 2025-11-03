@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI, volunteerAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
-import WalletConnect from '../components/WalletConnect';
 import PickupQRCode from '../components/PickupQRCode';
 
 const StudentDashboard = () => {
@@ -86,7 +85,6 @@ const StudentDashboard = () => {
             <p className="text-sm text-gray-600">Welcome, {user.first_name}!</p>
           </div>
           <div className="flex gap-3 items-center">
-            <WalletConnect />
             <button
               onClick={() => setShowHowItWorks(true)}
               className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"

@@ -43,23 +43,23 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           steps: [
             {
               number: 1,
-              title: 'Connect Your Petra Wallet',
-              description: 'Suppliers connect a Petra Wallet to list donations.'
+              title: 'Apply & Get Approved',
+              description: 'Submit application with business credentials. Pantry verifies and mints your Supplier NFT on Aptos via their custodial wallet. No wallet connection needed!'
             },
             {
               number: 2,
-              title: 'List Available Food',
-              description: 'List inventory using weight, type, and location. Inventory flows through the Decentralized Oracle Network (DON) to FFQ smart contracts.'
+              title: 'Log Donations',
+              description: 'Log available food donations with weight, type, and location through the web portal. All blockchain transactions (NFT minting, on-chain receipts) are handled automatically by the Pantry\'s custodial wallet.'
             },
             {
               number: 3,
-              title: 'Smart Contract Execution',
-              description: 'When students bid using tokens, contracts automatically execute: Transfers custody to Pantry multi-sig Vault and updates inventory in real-time.'
+              title: 'Blockchain Verification',
+              description: 'Pantry\'s custodial wallet records your donation on Aptos blockchain. You receive a blockchain-verified donation receipt (Supplier NFT transaction) for tax purposes and compliance, without needing to manage crypto.'
             },
             {
               number: 4,
-              title: 'Compliance & Liability Protection',
-              description: 'Smart contracts enforce VLCP protocols (handling, temperature). Immutable ledger ensures suppliers are protected under the Good Samaritan Act.'
+              title: 'Track Impact & Governance',
+              description: 'View real-time metrics (pounds donated, meals saved, CO₂ reduced) on your dashboard. Participate in governance votes (20% voting weight) on logistics and distribution policies—all off-chain with Pantry executing multi-sig decisions.'
             }
           ]
         };

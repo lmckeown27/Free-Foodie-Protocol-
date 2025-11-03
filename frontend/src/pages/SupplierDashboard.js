@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { supplierAPI, inventoryAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
-import WalletConnect from '../components/WalletConnect';
 
 const SupplierDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -129,7 +128,6 @@ const SupplierDashboard = () => {
             </div>
           </div>
           <div className="flex gap-3 items-center">
-            <WalletConnect />
             <button
               onClick={() => setShowHowItWorks(true)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
