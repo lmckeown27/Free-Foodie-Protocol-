@@ -18,8 +18,9 @@ const seedMockData = async () => {
     // 1. CREATE USERS (Students, Pantry, Suppliers)
     // ============================================
     
-    // Students (20 students)
+    // Students (20 students + 1 test user)
     const studentEmails = [
+      'student@test.com', // Test login user - MUST BE FIRST
       'alice.student@calpoly.edu',
       'bob.garcia@calpoly.edu',
       'carol.martinez@calpoly.edu',
@@ -44,22 +45,33 @@ const seedMockData = async () => {
     
     const studentIds = [];
     for (let i = 0; i < studentEmails.length; i++) {
+      let firstName, lastName;
+      
+      if (i === 0) {
+        // Special handling for test user
+        firstName = 'Test';
+        lastName = 'Student';
+      } else {
+        firstName = studentEmails[i].split('.')[0].charAt(0).toUpperCase() + studentEmails[i].split('.')[0].slice(1);
+        lastName = studentEmails[i].split('.')[1].split('@')[0].charAt(0).toUpperCase() + studentEmails[i].split('.')[1].split('@')[0].slice(1);
+      }
+      
       const result = await client.query(`
         INSERT INTO users (email, calpoly_id, first_name, last_name, role, verified, governance_nft_count)
         VALUES ($1, $2, $3, $4, 'student', true, $5)
         RETURNING id
       `, [
         studentEmails[i],
-        `CP${100000 + i}`,
-        studentEmails[i].split('.')[0].charAt(0).toUpperCase() + studentEmails[i].split('.')[0].slice(1),
-        studentEmails[i].split('.')[1].split('@')[0].charAt(0).toUpperCase() + studentEmails[i].split('.')[1].split('@')[0].slice(1),
+        i === 0 ? 'TEST001' : `CP${100000 + i}`,
+        firstName,
+        lastName,
         Math.floor(Math.random() * 10)
       ]);
       studentIds.push(result.rows[0].id);
     }
     
-    // Pantry workers (3 pantry staff)
-    const pantryEmails = ['pantry1@calpoly.edu', 'pantry2@calpoly.edu', 'pantry3@calpoly.edu'];
+    // Pantry workers (3 pantry staff + 1 test user)
+    const pantryEmails = ['pantry@test.com', 'pantry1@calpoly.edu', 'pantry2@calpoly.edu', 'pantry3@calpoly.edu'];
     const pantryIds = [];
     for (let i = 0; i < pantryEmails.length; i++) {
       const result = await client.query(`
@@ -68,14 +80,15 @@ const seedMockData = async () => {
         RETURNING id
       `, [
         pantryEmails[i],
-        `Pantry${i + 1}`,
-        'Staff'
+        i === 0 ? 'Test' : `Pantry${i}`,
+        i === 0 ? 'Pantry' : 'Staff'
       ]);
       pantryIds.push(result.rows[0].id);
     }
     
-    // Suppliers (8 suppliers)
+    // Suppliers (8 suppliers + 1 test user)
     const suppliers = [
+      { email: 'supplier@test.com', name: 'Test', business: 'Test Supplier Market' }, // Test login user - MUST BE FIRST
       { email: 'trader.joes@ffq.app', name: 'Trader Joes', business: 'Trader Joes SLO' },
       { email: 'albertsons@ffq.app', name: 'Albertsons', business: 'Albertsons Market' },
       { email: 'costco@ffq.app', name: 'Costco', business: 'Costco Wholesale' },
