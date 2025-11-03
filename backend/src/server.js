@@ -34,7 +34,7 @@ app.use(cors({
 // Rate limiting - extremely lenient for development
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 50000, // Extremely high limit for development
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100000, // Extremely high limit for development
   message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -46,7 +46,7 @@ app.use('/api/', limiter);
 // Ultra-lenient rate limiting specifically for auth during development
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 25000, // Ultra-lenient for testing
+  max: 50000, // Ultra-lenient for testing
   message: { error: 'Too many login attempts, please try again later.' },
   skipSuccessfulRequests: true, // Don't count successful logins
 });
