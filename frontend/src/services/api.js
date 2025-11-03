@@ -128,5 +128,16 @@ export const volunteerAPI = {
   getStats: () => api.get('/volunteers/stats'),
 };
 
+// Governance API
+export const governanceAPI = {
+  createProposal: (data) => api.post('/governance/proposals', data),
+  getProposals: (params) => api.get('/governance/proposals', { params }),
+  getProposal: (id) => api.get(`/governance/proposals/${id}`),
+  voteOnProposal: (id, data) => api.post(`/governance/proposals/${id}/vote`, data),
+  addMultiSigApproval: (id, data) => api.post(`/governance/proposals/${id}/multi-sig`, data),
+  executeProposal: (id, data) => api.post(`/governance/proposals/${id}/execute`, data),
+  getStats: () => api.get('/governance/stats'),
+};
+
 export default api;
 

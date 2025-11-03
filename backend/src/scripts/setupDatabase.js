@@ -169,6 +169,87 @@ const setupDatabase = async () => {
       );
     `);
     
+    // Governance proposals table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS governance_proposals (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        proposal_type VARCHAR(100) NOT NULL CHECK (proposal_type IN (
+          'supplier_onboarding',
+          'supplier_removal', 
+          'parameter_change',
+          'policy_update',
+          'distribution_change',
+          'emergency_action',
+          'community_initiative'
+        )),
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        proposed_by_entity VARCHAR(50) NOT NULL CHECK (proposed_by_entity IN ('pantry', 'supplier', 'student')),
+        proposed_by_user UUID REFERENCES users(id) ON DELETE SET NULL,
+        status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('draft', 'active', 'passed', 'failed', 'executed', 'cancelled')),
+        voting_starts_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        voting_ends_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP + INTERVAL '7 days'),
+        execution_data JSONB,
+        on_chain_hash VARCHAR(255),
+        quorum_required DECIMAL(5,2) DEFAULT 60.00,
+        executed_at TIMESTAMP,
+        executed_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        execution_tx_hash VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Governance votes table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS governance_votes (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        proposal_id UUID NOT NULL REFERENCES governance_proposals(id) ON DELETE CASCADE,
+        voter_entity VARCHAR(50) NOT NULL CHECK (voter_entity IN ('pantry', 'supplier', 'student')),
+        voter_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+        vote VARCHAR(20) NOT NULL CHECK (vote IN ('yes', 'no', 'abstain')),
+        vote_weight DECIMAL(5,2) NOT NULL,
+        reasoning TEXT,
+        signature VARCHAR(512),
+        voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(proposal_id, voter_user_id)
+      );
+    `);
+    
+    // Multi-sig approvals table (Pantry Vault)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS multi_sig_approvals (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        proposal_id UUID REFERENCES governance_proposals(id) ON DELETE CASCADE,
+        action_type VARCHAR(100) NOT NULL,
+        signer_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        signer_name VARCHAR(255) NOT NULL,
+        signature VARCHAR(512),
+        approved BOOLEAN NOT NULL,
+        notes TEXT,
+        signed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Governance actions audit log
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS governance_actions (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        proposal_id UUID REFERENCES governance_proposals(id) ON DELETE SET NULL,
+        action_type VARCHAR(100) NOT NULL,
+        action_data JSONB NOT NULL,
+        executed_by_entity VARCHAR(50) NOT NULL,
+        executed_by_user UUID REFERENCES users(id) ON DELETE SET NULL,
+        transaction_hash VARCHAR(255),
+        on_chain_confirmed BOOLEAN DEFAULT false,
+        result TEXT,
+        executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
     // Create indexes for better performance
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);');
@@ -185,6 +266,14 @@ const setupDatabase = async () => {
     await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_hours_status ON volunteer_hours(status);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_nfts_student ON volunteer_nfts(student_id);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_volunteer_nfts_tier ON volunteer_nfts(tier);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_proposals_status ON governance_proposals(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_proposals_type ON governance_proposals(proposal_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_proposals_entity ON governance_proposals(proposed_by_entity);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_votes_proposal ON governance_votes(proposal_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_votes_entity ON governance_votes(voter_entity);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_multi_sig_approvals_proposal ON multi_sig_approvals(proposal_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_actions_proposal ON governance_actions(proposal_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_governance_actions_type ON governance_actions(action_type);');
     
     logger.info('Database setup completed successfully!');
   } catch (error) {
