@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI, volunteerAPI } from '../services/api';
+import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI, volunteerAPI, walletAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
 
@@ -14,6 +14,7 @@ const PantryDashboard = () => {
   const [pendingSuppliers, setPendingSuppliers] = useState([]);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
   const [volunteerStats, setVolunteerStats] = useState(null);
+  const [custodialNFTs, setCustodialNFTs] = useState([]);
   const [scanMode, setScanMode] = useState(false);
   const [scannedId, setScannedId] = useState('');
   const [loading, setLoading] = useState(true);
@@ -26,17 +27,19 @@ const PantryDashboard = () => {
   
   const fetchDashboardData = async () => {
     try {
-      const [dashboardRes, allocationsRes, healthRes, inventoryRes, complianceRes] = await Promise.all([
+      const [dashboardRes, allocationsRes, healthRes, inventoryRes, complianceRes, nftsRes] = await Promise.all([
         analyticsAPI.getDashboard(),
         allocationAPI.getAllocations({ status: 'approved', limit: 10 }),
         analyticsAPI.getInventoryHealth(),
         inventoryAPI.getInventory({ limit: 1 }),
-        analyticsAPI.getCompliance()
+        analyticsAPI.getCompliance(),
+        walletAPI.getCustodialNFTs()
       ]);
       
       setDashboard(dashboardRes.data.data);
       setPendingAllocations(allocationsRes.data.data);
       setInventoryHealth(healthRes.data.data);
+      setCustodialNFTs(nftsRes.data?.data || []);
       
       // System metrics from dashboard data
       setSystemMetrics({
@@ -443,6 +446,149 @@ const PantryDashboard = () => {
                     </p>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Custodial NFTs Section */}
+        <div className="bg-gradient-to-r from-purple-100 to-purple-50 rounded-lg shadow mb-6">
+          <div className="px-6 py-4 border-b border-purple-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800">Custodial NFT Vault</h2>
+                <p className="text-sm text-gray-600 mt-1">
+                  NFTs held in custody on behalf of students and suppliers
+                </p>
+              </div>
+              <div className="bg-purple-500 text-white rounded-full px-4 py-2">
+                <span className="text-xl font-bold">{custodialNFTs.length}</span>
+                <span className="text-xs ml-1">Total NFTs</span>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-6">
+            {custodialNFTs.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                <p>No NFTs in custody yet</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* NFT Type Summary */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-purple-100 border border-purple-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-purple-600">
+                      {custodialNFTs.filter(n => n.nft_type === 'governance').length}
+                    </p>
+                    <p className="text-xs text-gray-600">Governance NFTs</p>
+                  </div>
+                  <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-green-600">
+                      {custodialNFTs.filter(n => n.nft_type === 'allocation').length}
+                    </p>
+                    <p className="text-xs text-gray-600">Allocation NFTs</p>
+                  </div>
+                  <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-yellow-600">
+                      {custodialNFTs.filter(n => n.nft_type === 'volunteer').length}
+                    </p>
+                    <p className="text-xs text-gray-600">Volunteer NFTs</p>
+                  </div>
+                  <div className="bg-blue-100 border border-blue-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-blue-600">
+                      {custodialNFTs.filter(n => n.nft_type === 'supplier').length}
+                    </p>
+                    <p className="text-xs text-gray-600">Supplier NFTs</p>
+                  </div>
+                </div>
+
+                {/* NFT List */}
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-purple-200">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          NFT Type
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          Owner Details
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          Minted
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                          Transaction
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {custodialNFTs.slice(0, 10).map((nft) => (
+                        <tr key={nft.mapping_id} className="hover:bg-purple-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                                nft.nft_type === 'governance' ? 'bg-purple-500' :
+                                nft.nft_type === 'allocation' ? 'bg-green-500' :
+                                nft.nft_type === 'volunteer' ? 'bg-yellow-500' :
+                                'bg-blue-500'
+                              }`}>
+                                {nft.nft_type.charAt(0).toUpperCase()}
+                              </div>
+                              <div className="ml-3">
+                                <p className="text-sm font-medium text-gray-900 capitalize">{nft.nft_type}</p>
+                                <p className="text-xs text-gray-500 font-mono truncate max-w-xs">{nft.nft_id.substring(0, 20)}...</p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">
+                                {nft.first_name} {nft.last_name}
+                              </p>
+                              <p className="text-xs text-gray-500">{nft.email}</p>
+                              {nft.calpoly_id && (
+                                <p className="text-xs text-purple-600 font-semibold">ID: {nft.calpoly_id}</p>
+                              )}
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 mt-1 capitalize">
+                                {nft.role}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {new Date(nft.minted_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              nft.nft_status === 'active' ? 'bg-green-100 text-green-800' :
+                              nft.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
+                              'bg-red-100 text-red-800'
+                            }`}>
+                              {nft.nft_status}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-xs font-mono text-gray-500 truncate max-w-xs">
+                            {nft.transaction_hash.substring(0, 15)}...
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {custodialNFTs.length > 10 && (
+                  <div className="text-center mt-4">
+                    <p className="text-sm text-gray-600">
+                      Showing 10 of {custodialNFTs.length} NFTs
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -324,5 +324,52 @@ router.post('/reconciliation/discrepancies/:id/resolve', authenticate, authorize
   }
 });
 
+/**
+ * GET /api/v1/wallet/custodial-nfts
+ * Get all NFTs held in custody with user details
+ * Pantry only
+ */
+router.get('/custodial-nfts', authenticate, authorize('pantry'), async (req, res) => {
+  try {
+    const { query } = require('../config/database');
+    
+    // Get all NFTs with custodial mappings and user details
+    const result = await query(`
+      SELECT 
+        cm.id as mapping_id,
+        cm.asset_type,
+        cm.asset_identifier,
+        cm.status as mapping_status,
+        cm.created_at as mapped_at,
+        nft.nft_id,
+        nft.nft_type,
+        nft.metadata,
+        nft.status as nft_status,
+        nft.minted_at,
+        nft.transaction_hash,
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        u.calpoly_id,
+        u.role
+      FROM custodial_mappings cm
+      JOIN nft_records nft ON cm.asset_identifier = nft.nft_id
+      JOIN users u ON cm.user_id = u.id
+      WHERE cm.status = 'active'
+      ORDER BY cm.created_at DESC
+    `);
+    
+    res.json({
+      success: true,
+      count: result.rows.length,
+      data: result.rows
+    });
+  } catch (error) {
+    logger.error('Error fetching custodial NFTs', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
 

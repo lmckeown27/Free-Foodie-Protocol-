@@ -144,6 +144,7 @@ export const walletAPI = {
   getMyAssets: () => api.get('/wallet/assets/my'),
   getActivePantryWallet: () => api.get('/wallet/vault/active'),
   getTransactions: (params) => api.get('/wallet/transactions', { params }),
+  getCustodialNFTs: () => api.get('/wallet/custodial-nfts'),
 };
 
 export default api;
