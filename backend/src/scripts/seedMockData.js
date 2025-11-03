@@ -207,8 +207,103 @@ const seedMockData = async () => {
       { supplier: 7, name: 'Trail Mix', type: 'Snacks', qty: 30, unit: 'bags', status: 'available' }
     ];
     
+    // Unique donation receipt names
+    const donationReceiptNames = [
+      'Bread Donation Receipt',
+      'Milk Donation Receipt',
+      'Apple Donation Receipt',
+      'Pasta Donation Receipt',
+      'Rice Donation Receipt',
+      'Banana Donation Receipt',
+      'Peanut Butter Receipt',
+      'Canned Soup Receipt',
+      'Cereal Donation Receipt',
+      'Cheese Donation Receipt',
+      'Apple Juice Receipt',
+      'Crackers Donation Receipt',
+      'Broccoli Donation Receipt',
+      'Carrots Donation Receipt',
+      'Orange Juice Receipt',
+      'Granola Donation Receipt',
+      'Trail Mix Receipt',
+      'Tomato Donation Receipt',
+      'Chicken Donation Receipt',
+      'Spinach Donation Receipt',
+      'Ground Beef Receipt',
+      'Yogurt Donation Receipt',
+      'Eggs Donation Receipt',
+      'Butter Donation Receipt',
+      'Lettuce Donation Receipt',
+      'Canned Beans Receipt',
+      'Oatmeal Donation Receipt',
+      'Turkey Donation Receipt',
+      'Strawberries Receipt',
+      'Potatoes Donation Receipt',
+      'Onions Donation Receipt',
+      'Salsa Donation Receipt',
+      'Tortillas Receipt',
+      'Green Beans Receipt',
+      'Corn Donation Receipt',
+      'Pears Donation Receipt',
+      'Canned Tuna Receipt',
+      'Spaghetti Sauce Receipt',
+      'Bagels Donation Receipt',
+      'Cream Cheese Receipt'
+    ];
+
     const inventoryIds = [];
-    for (const item of inventoryItems) {
+    for (let idx = 0; idx < inventoryItems.length; idx++) {
+      const item = inventoryItems[idx];
+      const supplierId = supplierIds[item.supplier];
+      
+      // Create unique NFT ID for this donation
+      const nftId = `SUPPLIER_NFT_${supplierId}_DONATION_${idx}`;
+      const receiptNumber = String(idx + 1).padStart(3, '0');
+      const nftName = donationReceiptNames[idx] || `${item.name} Donation Receipt #${receiptNumber}`;
+      
+      // First create the NFT record for this donation
+      await client.query(`
+        INSERT INTO nft_records (
+          nft_type,
+          nft_id,
+          owner_id,
+          metadata,
+          status,
+          transaction_hash
+        ) VALUES ('supplier', $1, $2, $3, 'active', $4)
+      `, [
+        nftId,
+        supplierId,
+        JSON.stringify({
+          nft_name: nftName,
+          purpose: 'donation_receipt',
+          donation_item: item.name,
+          donation_type: item.type,
+          donation_quantity: item.qty,
+          donation_unit: item.unit,
+          receipt_number: receiptNumber
+        }),
+        `0xtx_supplier_donation_${Date.now()}_${idx}`
+      ]);
+      
+      // Create custodial mapping for this NFT
+      await client.query(`
+        INSERT INTO custodial_mappings (
+          user_id,
+          asset_type,
+          asset_identifier,
+          on_chain_address,
+          custodian_wallet_id,
+          status
+        ) VALUES ($1, 'supplier_nft', $2, $3, $4, 'active')
+      `, [
+        supplierId,
+        nftId,
+        '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+        walletId
+      ]);
+      
+      // Now create the inventory item with the NFT ID
       const result = await client.query(`
         INSERT INTO inventory (
           supplier_id,
@@ -223,18 +318,18 @@ const seedMockData = async () => {
         ) VALUES ($1, $2, $3, $4, $5, $6, 'Pantry Storage A', NOW() - INTERVAL '${Math.floor(Math.random() * 7)} days', $7)
         RETURNING id
       `, [
-        supplierIds[item.supplier],
+        supplierId,
         item.name,
         item.type,
         item.qty,
         item.unit,
         item.status,
-        `SUPPLIER_NFT_${supplierIds[item.supplier]}`
+        nftId
       ]);
       inventoryIds.push(result.rows[0].id);
     }
     
-    logger.info(`Created ${inventoryIds.length} inventory items`);
+    logger.info(`Created ${inventoryIds.length} inventory items with ${inventoryIds.length} donation receipt NFTs`);
     
     // ============================================
     // 4. CREATE GOVERNANCE PROPOSALS & VOTES
@@ -445,67 +540,10 @@ const seedMockData = async () => {
     logger.info('Created allocations for all students');
     
     // ============================================
-    // 7. CREATE SUPPLIER NFTs & CUSTODIAL MAPPINGS
+    // 7. SUPPLIER NFTs ALREADY CREATED
     // ============================================
-    
-    // Create supplier NFTs with unique names
-    const supplierNFTNames = [
-      'Verification Badge',
-      'Monthly Donation Receipt #001',
-      'Compliance Certificate',
-      'Weekly Delivery Receipt #042',
-      'Food Safety Verification',
-      'Donation Impact Certificate',
-      'Quarterly Contribution Record',
-      'Fresh Produce Receipt #128',
-      'Weekly Supply Receipt #089'
-    ];
-    
-    for (let i = 0; i < supplierIds.length; i++) {
-      const nftId = `SUPPLIER_NFT_${supplierIds[i]}`;
-      const nftName = supplierNFTNames[i] || `Donation Receipt #${i + 1}`;
-      
-      // Create NFT record with unique name
-      await client.query(`
-        INSERT INTO nft_records (
-          nft_type,
-          nft_id,
-          owner_id,
-          metadata,
-          status,
-          transaction_hash
-        ) VALUES ('supplier', $1, $2, $3, 'active', $4)
-      `, [
-        nftId,
-        supplierIds[i],
-        JSON.stringify({ 
-          business: suppliers[i].business, 
-          approved_date: new Date().toISOString(),
-          nft_name: nftName,
-          purpose: nftName.includes('Verification') || nftName.includes('Badge') ? 'verification' : 'donation_receipt'
-        }),
-        `0xtx_supplier_${Date.now()}_${i}`
-      ]);
-      
-      // Create custodial mapping
-      await client.query(`
-        INSERT INTO custodial_mappings (
-          user_id,
-          asset_type,
-          asset_identifier,
-          on_chain_address,
-          custodian_wallet_id,
-          status
-        ) VALUES ($1, 'supplier_nft', $2, $3, $4, 'active')
-      `, [
-        supplierIds[i],
-        nftId,
-        '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
-        walletId
-      ]);
-    }
-    
-    logger.info('Created supplier NFTs and custodial mappings');
+    // NOTE: Supplier NFTs (donation receipts) are now created 
+    // per-donation in section 3, not per-supplier organization
     
     // ============================================
     // 8. CREATE GOVERNANCE NFTs FOR ACTIVE VOTERS
@@ -643,7 +681,11 @@ const seedMockData = async () => {
     console.log(`Inventory Items: ${inventoryIds.length}`);
     console.log(`Governance Proposals: ${proposalIds.length}`);
     console.log(`Allocations: ~${studentIds.length * 3}`);
-    console.log(`NFT Records: ~${supplierIds.length + studentIds.length * 2}`);
+    console.log(`Donation Receipt NFTs: ${inventoryIds.length} (one per donation)`);
+    console.log(`Allocation NFTs: ~${Math.floor(studentIds.length * 2.5)}`);
+    console.log(`Governance NFTs: 15`);
+    console.log(`Volunteer NFTs: ${Math.floor(studentIds.length / 3)}`);
+    console.log(`Total NFTs: ~${inventoryIds.length + Math.floor(studentIds.length * 2.5) + 15 + Math.floor(studentIds.length / 3)}`);
     console.log(`Notifications: ${studentIds.length * 2}`);
     console.log('========================================\n');
     
