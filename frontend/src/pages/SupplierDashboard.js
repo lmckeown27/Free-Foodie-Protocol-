@@ -434,8 +434,8 @@ const SupplierDashboard = () => {
                         } else {
                           // Multiple steps completed - show line from first circle center to last completed circle center
                           // Gray line spans from 1.25rem to right 1.25rem, so its length is (100% - 2.5rem)
-                          // We need to calculate what portion of the gray line to fill
-                          const progressFraction = lastCompletedIndex / (totalSteps - 1);
+                          // Progress should be in fourths: 1/4, 2/4, 3/4, 4/4
+                          const progressFraction = (lastCompletedIndex + 1) / totalSteps;
                           // Width = progressFraction * (100% - 2.5rem)
                           const widthPercent = progressFraction * 100;
                           const widthOffset = -(progressFraction * 2.5);
