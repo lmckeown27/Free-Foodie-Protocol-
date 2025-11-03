@@ -216,10 +216,13 @@ const PantryDashboard = () => {
             <p className="text-purple-100">View comprehensive metrics</p>
           </Link>
 
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg shadow-lg p-6 cursor-pointer hover:from-purple-700 hover:to-purple-800 transition">
+          <Link
+            to="/nft-management"
+            className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg shadow-lg p-6 hover:from-purple-700 hover:to-purple-800 transition"
+          >
             <h2 className="text-xl font-bold mb-2">NFT Management</h2>
             <p className="text-purple-100">Mint and manage NFTs</p>
-          </div>
+          </Link>
         </div>
 
         {/* Inventory Health */}
