@@ -420,13 +420,13 @@ const SupplierDashboard = () => {
                         }
                         
                         if (lastCompletedIndex === 0) {
-                          // Only first step completed - show a short blue segment to first circle
+                          // Only first step completed - show a short blue segment to first circle center
                           return (
                             <div 
                               className="absolute top-5 h-0.5 bg-blue-600" 
                               style={{ 
                                 left: 0,
-                                width: '2rem',
+                                width: '1.25rem',
                                 transform: 'translateY(-50%)'
                               }}
                             ></div>
