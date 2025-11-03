@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI } from '../services/api';
+import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI, volunteerAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
 import PickupQRCode from '../components/PickupQRCode';
@@ -11,6 +11,7 @@ const StudentDashboard = () => {
   const [nfts, setNfts] = useState({ governance: 0, allocation: 0 });
   const [trending, setTrending] = useState([]);
   const [poasScore, setPoasScore] = useState(null);
+  const [volunteerData, setVolunteerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -44,6 +45,15 @@ const StudentDashboard = () => {
       } catch (poasError) {
         console.log('POAS score not available yet', poasError);
         setPoasScore(null);
+      }
+      
+      // Fetch volunteer data
+      try {
+        const volunteerRes = await volunteerAPI.getMyHours();
+        setVolunteerData(volunteerRes.data.data);
+      } catch (volunteerError) {
+        console.log('Volunteer data not available', volunteerError);
+        setVolunteerData(null);
       }
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
@@ -109,7 +119,7 @@ const StudentDashboard = () => {
         </div>
         
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Voting Power</h3>
@@ -128,6 +138,23 @@ const StudentDashboard = () => {
             <p className="text-3xl font-bold text-primary-800 mt-2">{nfts.allocation}</p>
             <p className="text-xs text-gray-500 mt-1">Lifetime claims</p>
           </div>
+          
+          {/* Volunteer Stats Card */}
+          <Link 
+            to="/volunteer"
+            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition group"
+          >
+            <h3 className="text-sm font-medium text-white opacity-90">Volunteer Hours</h3>
+            <p className="text-3xl font-bold text-white mt-2">
+              {volunteerData?.summary?.verified_hours || 0}
+            </p>
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-xs text-white opacity-75">
+                {volunteerData?.summary?.current_tier ? `${volunteerData.summary.current_tier.charAt(0).toUpperCase() + volunteerData.summary.current_tier.slice(1)} Tier` : 'Start volunteering!'}
+              </p>
+              <span className="text-white opacity-75 group-hover:opacity-100 transition">→</span>
+            </div>
+          </Link>
         </div>
         
         {/* POAS Score Display */}
