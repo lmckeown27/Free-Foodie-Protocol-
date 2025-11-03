@@ -128,6 +128,12 @@ const SupplierDashboard = () => {
             </div>
           </div>
           <div className="flex gap-3 items-center">
+            <Link
+              to="/nfts"
+              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+            >
+              My NFTs
+            </Link>
             <button
               onClick={() => setShowHowItWorks(true)}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"

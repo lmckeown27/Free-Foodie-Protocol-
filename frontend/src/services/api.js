@@ -139,5 +139,12 @@ export const governanceAPI = {
   getStats: () => api.get('/governance/stats'),
 };
 
+// Wallet API
+export const walletAPI = {
+  getMyAssets: () => api.get('/wallet/assets/my'),
+  getActivePantryWallet: () => api.get('/wallet/vault/active'),
+  getTransactions: (params) => api.get('/wallet/transactions', { params }),
+};
+
 export default api;
 

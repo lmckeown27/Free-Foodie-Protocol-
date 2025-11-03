@@ -205,9 +205,9 @@ const StudentDashboard = () => {
                 <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
                   Log Volunteer Hours
                 </Link>
-                <button className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm" disabled>
-                  View Governance (Coming Soon)
-                </button>
+                <Link to="/governance" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  View Governance
+                </Link>
               </div>
             </div>
           ) : (
@@ -219,16 +219,16 @@ const StudentDashboard = () => {
                 <Link to="/volunteer" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
                   Start Volunteering
                 </Link>
-                <button className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition font-medium text-sm" disabled>
-                  View Governance (Coming Soon)
-                </button>
+                <Link to="/governance" className="px-4 py-2 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium text-sm">
+                  View Governance
+                </Link>
               </div>
             </div>
           )}
         </div>
         
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Link
             to="/inventory"
             className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-8 hover:from-primary-600 hover:to-primary-700 transition transform hover:scale-105"
@@ -238,11 +238,19 @@ const StudentDashboard = () => {
           </Link>
           
           <Link
-            to="/voting"
+            to="/nfts"
+            className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-8 hover:from-purple-600 hover:to-purple-700 transition transform hover:scale-105"
+          >
+            <h2 className="text-2xl font-bold mb-2">My NFT Collection</h2>
+            <p className="text-purple-100">View your blockchain assets</p>
+          </Link>
+          
+          <Link
+            to="/governance"
             className="bg-gradient-to-r from-primary-400 to-primary-500 text-white rounded-lg shadow-lg p-8 hover:from-primary-500 hover:to-primary-600 transition transform hover:scale-105"
           >
-            <h2 className="text-2xl font-bold mb-2">Vote for Items</h2>
-            <p className="text-primary-100">Earn Governance NFTs by voting</p>
+            <h2 className="text-2xl font-bold mb-2">Governance</h2>
+            <p className="text-primary-100">Vote on proposals to increase POAS</p>
           </Link>
         </div>
         

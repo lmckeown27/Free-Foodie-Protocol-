@@ -15,6 +15,8 @@ import Allocations from './pages/Allocations';
 import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
 import VolunteerHub from './pages/VolunteerHub';
+import MyNFTs from './pages/MyNFTs';
+import GovernanceProposals from './pages/GovernanceProposals';
 import './styles/App.css';
 
 // Protected route component
@@ -157,6 +159,24 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Reports />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route 
+                path="/nfts" 
+                element={
+                  <ProtectedRoute allowedRoles={['student', 'supplier']}>
+                    <MyNFTs />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route 
+                path="/governance" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <GovernanceProposals />
                   </ProtectedRoute>
                 }
               />
