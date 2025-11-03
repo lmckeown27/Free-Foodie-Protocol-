@@ -157,7 +157,7 @@ const SupplierDashboard = () => {
           <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Pounds Donated</h3>
             <p className="text-3xl font-bold text-blue-600 mt-2">
-              {impactMetrics?.totalPounds || 0}
+              {impactMetrics?.totalPounds || 0} lbs
             </p>
             <p className="text-xs text-gray-500 mt-1">Lifetime surplus rescued</p>
           </div>
