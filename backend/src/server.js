@@ -31,26 +31,34 @@ app.use(cors({
   credentials: true
 }));
 
-// Rate limiting - extremely lenient for development
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100000, // Extremely high limit for development
-  message: { error: 'Too many requests, please try again later.' },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// Rate limiting - DISABLED for localhost, enabled for production
+const isProduction = process.env.NODE_ENV === 'production';
 
-// Apply general rate limiting to all API routes
-app.use('/api/', limiter);
-
-// Ultra-lenient rate limiting specifically for auth during development
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50000, // Ultra-lenient for testing
-  message: { error: 'Too many login attempts, please try again later.' },
-  skipSuccessfulRequests: true, // Don't count successful logins
-});
-app.use('/api/v1/auth', authLimiter);
+if (isProduction) {
+  // Production rate limiting - reasonable limits for real-world use
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // 1000 requests per 15 minutes per IP
+    message: { error: 'Too many requests, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+  
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // 100 auth attempts per 15 minutes per IP
+    message: { error: 'Too many login attempts, please try again later.' },
+    skipSuccessfulRequests: true,
+  });
+  
+  app.use('/api/', limiter);
+  app.use('/api/v1/auth', authLimiter);
+  
+  console.log('✅ Production mode: Rate limiting enabled');
+} else {
+  // Development mode - NO rate limiting
+  console.log('🔓 Development mode: Rate limiting DISABLED for localhost');
+}
 
 // Body parsing middleware
 app.use(express.json());
