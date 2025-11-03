@@ -27,7 +27,7 @@ router.post('/register', async (req, res, next) => {
     }
     
     // Validate role
-    const validRoles = ['student', 'pantry_worker', 'supplier', 'admin'];
+    const validRoles = ['student', 'pantry', 'supplier'];
     if (!validRoles.includes(role)) {
       return next(new AppError('Invalid role', 400));
     }
