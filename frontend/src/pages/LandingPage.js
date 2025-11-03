@@ -62,22 +62,22 @@ const LandingPage = () => {
 
   const howItWorks = {
     student: [
-      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry handles blockchain for you via custodial wallet' },
-      { step: 2, title: 'Vote on Food', description: 'Browse available inventory and vote for items you need' },
-      { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with voting activity and engagement' },
-      { step: 4, title: 'Claim & Pickup', description: 'Receive allocation notification, show QR code, pick up food' }
+      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry manages your custodial wallet automatically' },
+      { step: 2, title: 'Participate in Governance', description: 'Vote on platform proposals, supplier approvals, and policy changes' },
+      { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with governance participation, volunteering, and reliability' },
+      { step: 4, title: 'Claim & Pickup', description: 'Higher POAS = priority access. Receive Allocation NFT, show QR code, collect food' }
     ],
     pantry: [
-      { step: 1, title: 'Approve & Accept', description: 'Review supplier applications and accept/log donations in inventory' },
-      { step: 2, title: 'POAS Allocation', description: 'Use AI-powered recommendations to allocate food fairly to students' },
-      { step: 3, title: 'Custodial Wallet & NFTs', description: 'Hold custodial wallet for students, issue Governance NFTs and Allocation NFTs, execute blockchain transactions' },
-      { step: 4, title: 'Verify & Monitor', description: 'Scan QR codes for pickup, track analytics, and ensure compliance' }
+      { step: 1, title: 'Manage Operations', description: 'Combined BNI + Pantry team handles supplier verification, inventory, and distribution logistics' },
+      { step: 2, title: 'Execute Governance', description: 'Create proposals, collect multi-sig approvals, execute decisions via Petra Vault (70% voting weight)' },
+      { step: 3, title: 'Custodial Wallet Service', description: 'Hold ONE custodial wallet for ALL students - issue NFTs and execute blockchain transactions on their behalf' },
+      { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered allocation algorithm, verify pickups via QR codes, monitor platform health' }
     ],
     supplier: [
-      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT' },
-      { step: 2, title: 'Donate Surplus', description: 'Add food donations with details (type, quantity, location)' },
-      { step: 3, title: 'Get Protected', description: 'Automatic compliance with Good Samaritan Act and SB 1383' },
-      { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, and CO₂ reduced on blockchain' }
+      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT for blockchain tracking' },
+      { step: 2, title: 'Donate Surplus', description: 'Log donations with type, quantity, and location - inventory automatically updated' },
+      { step: 3, title: 'Participate in Governance', description: 'Vote on logistics and distribution proposals as part of Supplier Vault (20% voting weight)' },
+      { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, CO₂ reduced, and blockchain-verified donation receipts' }
     ]
   };
 
@@ -86,7 +86,7 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I get food from FFQ?",
-        answer: "First, vote on the food items you'd like to see in the pantry. Your votes help determine what gets stocked. When food becomes available, you can request it through the platform. The POAS (Predicted Optimal Allocation Score) algorithm fairly distributes food based on need, participation, and timing. If approved, you'll receive an Allocation NFT—a digital pickup ticket—in your wallet. Present this at the pantry to collect your food!"
+        answer: "Participate in platform governance by voting on proposals—this builds your POAS (Predicted Optimal Allocation Score). When food becomes available, the POAS algorithm fairly allocates it based on your governance participation (35%), volunteer hours (20%), need (20%), pickup reliability (10%), and recent activity (10%). Higher POAS = priority access. If approved, you'll receive an Allocation NFT—a digital pickup ticket—stored in your custodial wallet. Present this at the pantry to collect your food!"
       },
       {
         id: 2,
@@ -123,7 +123,7 @@ const LandingPage = () => {
       {
         id: 2,
         question: "How does POAS help us allocate food fairly?",
-        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on student need, participation history, timing, and current demand. Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. All allocation data is recorded on the blockchain for complete transparency and accountability. This eliminates bias, reduces manual work, and ensures equitable distribution."
+        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on: governance participation (35% - students who vote on proposals), volunteer hours (20% - community contributors), need factor (20% - fewer past allocations), pickup reliability (10% - redemption rate), and recent activity (10%). Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. This rewards engaged, responsible students while ensuring those in need get priority. All allocation data is recorded on the blockchain for complete transparency and accountability."
       },
       {
         id: 3,
@@ -384,22 +384,22 @@ const LandingPage = () => {
 
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
-                    40%
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold">
+                    35%
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Vote Weight</h4>
-                    <p className="text-sm text-gray-600">Your voting activity and preferences for food items</p>
+                    <h4 className="font-bold text-gray-900 mb-1">Governance Participation</h4>
+                    <p className="text-sm text-gray-600">Voting on platform proposals, supplier approvals, and policy changes</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
-                    30%
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-purple-600 text-white flex items-center justify-center font-bold">
+                    20%
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Engagement Score</h4>
-                    <p className="text-sm text-gray-600">Platform activity and community participation</p>
+                    <h4 className="font-bold text-gray-900 mb-1">Volunteer Contribution</h4>
+                    <p className="text-sm text-gray-600">Verified volunteer hours + tier NFT bonuses (Bronze to Platinum)</p>
                   </div>
                 </div>
 
@@ -408,7 +408,17 @@ const LandingPage = () => {
                     20%
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Claim History</h4>
+                    <h4 className="font-bold text-gray-900 mb-1">Need Factor</h4>
+                    <p className="text-sm text-gray-600">Historical need - fewer past allocations = higher priority</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary-600 text-white flex items-center justify-center font-bold">
+                    10%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Redemption Rate</h4>
                     <p className="text-sm text-gray-600">Reliability in picking up allocated food (reduces waste)</p>
                   </div>
                 </div>
@@ -418,8 +428,18 @@ const LandingPage = () => {
                     10%
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 mb-1">Urgency Factor</h4>
-                    <p className="text-sm text-gray-600">Time since last allocation to ensure regular access</p>
+                    <h4 className="font-bold text-gray-900 mb-1">Recent Activity</h4>
+                    <p className="text-sm text-gray-600">Recent governance participation (within last 7-60 days)</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-400 text-white flex items-center justify-center font-bold">
+                    5%
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 mb-1">Equity Factor</h4>
+                    <p className="text-sm text-gray-600">Ensures fair baseline distribution across all students</p>
                   </div>
                 </div>
               </div>
@@ -439,10 +459,10 @@ const LandingPage = () => {
                     </span>
                   </div>
                   <div className="text-xs text-gray-600 space-y-1">
-                    <p>✓ Voted 15 times this week</p>
-                    <p>✓ High engagement (5 logins)</p>
+                    <p>✓ Voted on 8/10 governance proposals</p>
+                    <p>✓ 15 volunteer hours (Silver tier)</p>
                     <p>✓ 100% pickup rate</p>
-                    <p>✓ Last allocation: 5 days ago</p>
+                    <p>✓ Last voted: 2 days ago</p>
                   </div>
                   <div className="mt-3 text-sm font-bold text-green-700">
                     → High Priority for Allocation
@@ -457,10 +477,10 @@ const LandingPage = () => {
                     </span>
                   </div>
                   <div className="text-xs text-gray-600 space-y-1">
-                    <p>✓ Voted 5 times this week</p>
-                    <p>• Moderate engagement (2 logins)</p>
-                    <p>• 75% pickup rate</p>
-                    <p>✓ Last allocation: 3 days ago</p>
+                    <p>✓ Voted on 4/10 governance proposals</p>
+                    <p>• No volunteer hours yet</p>
+                    <p>• 85% pickup rate</p>
+                    <p>✓ Last voted: 12 days ago</p>
                   </div>
                   <div className="mt-3 text-sm font-bold text-yellow-700">
                     → Medium Priority for Allocation
@@ -475,8 +495,8 @@ const LandingPage = () => {
                     </span>
                   </div>
                   <div className="text-xs text-gray-600 space-y-1">
-                    <p>• Voted 1 time this week</p>
-                    <p>• Low engagement (1 login)</p>
+                    <p>• Voted on 1/10 governance proposals</p>
+                    <p>• No platform participation</p>
                     <p>• 50% pickup rate (high waste)</p>
                     <p>• Last allocation: 1 day ago</p>
                   </div>
@@ -531,7 +551,7 @@ const LandingPage = () => {
 
             <div className="mt-8 text-center">
               <p className="text-lg font-semibold text-primary-100">
-                "Vote more, engage with the platform, and pick up your allocations to increase your POAS score!"
+                "Participate in governance, volunteer, and pick up your allocations reliably to increase your POAS score!"
               </p>
             </div>
           </div>
