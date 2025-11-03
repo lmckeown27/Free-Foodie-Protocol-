@@ -62,7 +62,7 @@ const LandingPage = () => {
 
   const howItWorks = {
     student: [
-      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry creates your custodial wallet' },
+      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry handles blockchain for you via custodial wallet' },
       { step: 2, title: 'Vote on Food', description: 'Browse available inventory and vote for items you need' },
       { step: 3, title: 'Earn Priority', description: 'Your POAS score increases with voting activity and engagement' },
       { step: 4, title: 'Claim & Pickup', description: 'Receive allocation notification, show QR code, pick up food' }
@@ -70,7 +70,7 @@ const LandingPage = () => {
     pantry: [
       { step: 1, title: 'Approve & Accept', description: 'Review supplier applications and accept/log donations in inventory' },
       { step: 2, title: 'POAS Allocation', description: 'Use AI-powered recommendations to allocate food fairly to students' },
-      { step: 3, title: 'Manage NFTs & Wallets', description: 'Issue Governance NFTs, Allocation NFTs, and oversee custodial wallets' },
+      { step: 3, title: 'Custodial Wallet & NFTs', description: 'Hold custodial wallet for students, issue Governance NFTs and Allocation NFTs, execute blockchain transactions' },
       { step: 4, title: 'Verify & Monitor', description: 'Scan QR codes for pickup, track analytics, and ensure compliance' }
     ],
     supplier: [
@@ -118,7 +118,7 @@ const LandingPage = () => {
       {
         id: 1,
         question: "What are the Pantry's responsibilities in FFQ?",
-        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, manage student custodial wallets, mint NFTs), and monitor system health (track analytics, ensure compliance, audit blockchain transactions). The Pantry uses multi-sig security to ensure no single person controls critical functions, creating accountability and transparency through blockchain."
+        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, hold custodial wallet for students, mint NFTs), and monitor system health (track analytics, ensure compliance, audit blockchain transactions). The Pantry holds a single custodial wallet that executes blockchain transactions on behalf of all students, so they don't need to manage wallets themselves. The Pantry uses multi-sig security to ensure no single person controls critical functions."
       },
       {
         id: 2,
@@ -137,8 +137,8 @@ const LandingPage = () => {
       },
       {
         id: 5,
-        question: "How do custodial wallets work for students?",
-        answer: "Custodial wallets are blockchain wallets managed by the Pantry on behalf of students. Students don't need to download wallet apps or manage private keys—the Pantry handles the technical blockchain interactions for them. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, the system executes blockchain transactions automatically."
+        question: "How does the custodial wallet work for students?",
+        answer: "The Pantry holds a single custodial wallet (multi-sig Petra Vault) that executes blockchain transactions on behalf of all students. Students don't need to download wallet apps, manage private keys, or pay gas fees—the Pantry's custodial wallet handles all technical blockchain interactions. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, the Pantry's wallet automatically executes transactions and mints/transfers NFTs. Students interact with FFQ like a regular app, while blockchain runs in the background."
       },
       {
         id: 6,
@@ -635,7 +635,7 @@ const LandingPage = () => {
                     </div>
                     <div className="hidden sm:flex gap-2 text-xs">
                       <div className="bg-white/20 rounded-lg px-3 py-1">Approve Suppliers</div>
-                      <div className="bg-white/20 rounded-lg px-3 py-1">Manage Wallets</div>
+                      <div className="bg-white/20 rounded-lg px-3 py-1">Custodial Wallet</div>
                       <div className="bg-white/20 rounded-lg px-3 py-1">Mint NFTs</div>
                     </div>
                   </div>

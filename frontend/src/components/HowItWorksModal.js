@@ -21,8 +21,8 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             },
             {
               number: 3,
-              title: 'Manage Custodial Wallets & NFTs',
-              description: 'Oversee student custodial wallets. Issue Governance NFTs (voting), Allocation NFTs (claims), and execute blockchain transactions for simplified student UX.'
+              title: 'Custodial Wallet & NFT Operations',
+              description: 'Hold a custodial wallet that executes blockchain transactions on behalf of students. Issue Governance NFTs (voting), Allocation NFTs (claims), and handle all on-chain operations for simplified student UX.'
             },
             {
               number: 4,

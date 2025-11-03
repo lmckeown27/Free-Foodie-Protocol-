@@ -28,10 +28,10 @@ Free Foodie Quest is a decentralized food pantry platform built on Aptos blockch
 
 ### 4. **Basic Needs Initiative (BNI)** (Orange Theme)
 - Institutional governance body (e.g., university department)
-- Oversees entire system and manages custodial wallets
+- Oversees entire system and holds custodial wallet for all students
 - Approves new suppliers and mints NFTs
 - Monitors system-wide analytics and compliance
-- Operates multi-sig Petra Vault for all blockchain transactions
+- Operates multi-sig Petra Vault for all blockchain transactions on behalf of students
 
 ---
 
@@ -44,12 +44,12 @@ Free Foodie Quest is a decentralized food pantry platform built on Aptos blockch
 │  • System Oversight & Governance                                       │
 │  • Multi-Sig Petra Vault Management                                    │
 │  • Supplier Approval & NFT Minting                                     │
-│  • Custodial Wallet Management (for all users)                         │
+│  • Custodial Wallet Service (for all students)                         │
 │  • Compliance Monitoring                                               │
 │                                                                         │
 └──────────┬────────────────────────────────────────────────┬─────────────┘
            │                                                │
-           │ (1) Approves & Mints NFT                       │ (2) Manages Wallets
+           │ (1) Approves & Mints NFT                       │ (2) Holds Custodial Wallet
            ↓                                                ↓
 ┌──────────────────────┐                        ┌───────────────────────┐
 │      SUPPLIER        │                        │    STUDENT            │
@@ -259,7 +259,7 @@ All pickup events recorded on Aptos:
 **Daily Operations**
 ```
 BNI Dashboard displays real-time metrics:
-- Active Students (custodial wallets managed)
+- Active Students (served via custodial wallet)
 - Verified Suppliers (Supplier NFTs issued)
 - Active Pantries (multi-sig vaults configured)
 - Total Donations (all food items donated)
@@ -279,17 +279,20 @@ BNI receives supplier application
         REJECT → Send notification
 ```
 
-**Student Wallet Management**
+**Student Custodial Wallet Service**
 ```
 Student registers with Cal Poly ID (OAuth2/SSO)
                 ↓
-        BNI creates custodial wallet on Aptos
+        Student account linked to BNI's custodial wallet system
                 ↓
-        BNI mints Governance NFT → student's custodial wallet
+        BNI's custodial wallet mints Governance NFT on student's behalf
                 ↓
         Student can now vote (1 NFT = 1 vote weight)
                 ↓
         More votes = more Governance NFTs = higher influence
+        
+Note: BNI holds ONE custodial wallet that executes transactions 
+      on behalf of ALL students - students don't manage individual wallets
 ```
 
 **System Analytics**
@@ -342,7 +345,7 @@ Aptos Smart Contracts (Move)
 
 BNI Multi-Sig Petra Vault
 ├── Signs all NFT transactions
-├── Manages custodial wallets
+├── Holds custodial wallet for all students
 ├── Ensures decentralized governance
 └── Provides audit trail
 ```
@@ -376,8 +379,9 @@ Python/Node.js Service
 - **SB 1383**: California food waste reduction compliance
 - **VLCP**: Verifiable Logistics Checklist Protocol for food safety
 
-### 4. Privacy (Custodial Wallets)
-- BNI manages all wallets (students don't need crypto knowledge)
+### 4. Privacy (Custodial Wallet Model)
+- BNI holds ONE custodial wallet that executes transactions for ALL students
+- Students don't need crypto knowledge or wallet management
 - Student identity protected (anonymous on-chain addresses)
 - Only authorized parties see personal information
 
@@ -402,7 +406,7 @@ Python/Node.js Service
 | Mint NFTs | ❌ | ❌ | ❌ | ✅ |
 | Approve suppliers | ❌ | ❌ | ❌ | ✅ |
 | View all analytics | ❌ | ❌ | ⚠️ (limited) | ✅ |
-| Manage wallets | ❌ | ❌ | ❌ | ✅ |
+| Hold custodial wallet | ❌ | ❌ | ❌ | ✅ |
 
 ### Authentication Flow
 ```
@@ -548,7 +552,7 @@ For questions about system flows, integration, or partnerships:
 1. **Fair**: POAS ensures equitable distribution
 2. **Transparent**: Blockchain audit trail
 3. **Compliant**: Legal protections for all parties
-4. **Private**: Custodial wallets protect student identity
+4. **Private**: Custodial wallet model protects student identity (no crypto knowledge needed)
 5. **Efficient**: Real-time data flows minimize waste
 6. **Scalable**: Architecture supports multi-site deployment
 
