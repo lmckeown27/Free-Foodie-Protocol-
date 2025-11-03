@@ -75,7 +75,7 @@ const LandingPage = () => {
     ],
     supplier: [
       { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT' },
-      { step: 2, title: 'Donate Surplus', description: 'Add food donations with details (type, quantity, expiration)' },
+      { step: 2, title: 'Donate Surplus', description: 'Add food donations with details (type, quantity, location)' },
       { step: 3, title: 'Get Protected', description: 'Automatic compliance with Good Samaritan Act and SB 1383' },
       { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, and CO₂ reduced on blockchain' }
     ]
@@ -91,7 +91,7 @@ const LandingPage = () => {
       {
         id: 2,
         question: "What is an Allocation NFT and why do I need one?",
-        answer: "An Allocation NFT is like a digital pickup ticket stored in your wallet. When the pantry approves your food request, this NFT is automatically created and sent to you. It contains details like what food you're allocated, when to pick it up, and expiration dates. Because it's on the blockchain, it can't be forged or stolen. When you arrive at the pantry, workers scan your NFT to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the NFT is 'redeemed' (marked as used) so no one can claim the same food twice."
+        answer: "An Allocation NFT is like a digital pickup ticket stored in your wallet. When the pantry approves your food request, this NFT is automatically created and sent to you. It contains details like what food you're allocated and when to pick it up. Because it's on the blockchain, it can't be forged or stolen. When you arrive at the pantry, workers scan your NFT to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the NFT is 'redeemed' (marked as used) so no one can claim the same food twice."
       },
       {
         id: 3,
@@ -150,7 +150,7 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I donate food through FFQ?",
-        answer: "Connect your Petra Wallet to FFQ, then list your available surplus food with details like weight, type, and expiration date. FFQ's smart contracts automatically handle the custody transfer—you don't need manual paperwork. Once logged, you immediately receive a Supplier NFT: a permanent, blockchain-verified donation receipt. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent."
+        answer: "Connect your Petra Wallet to FFQ, then list your available surplus food with details like weight, type, and location. FFQ's smart contracts automatically handle the custody transfer—you don't need manual paperwork. Once logged, you immediately receive a Supplier NFT: a permanent, blockchain-verified donation receipt. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent."
       },
       {
         id: 2,
@@ -160,7 +160,7 @@ const LandingPage = () => {
       {
         id: 3,
         question: "How does FFQ protect us from liability when donating food?",
-        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through smart contracts. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, expiration dates, and handling procedures—all recorded on-chain. Smart contracts create an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have blockchain-verified proof that all safety and legal requirements were met at the time of donation."
+        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through smart contracts. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, handling procedures, and donation timestamps—all recorded on-chain. Smart contracts create an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have blockchain-verified proof that all safety and legal requirements were met at the time of donation."
       },
       {
         id: 4,

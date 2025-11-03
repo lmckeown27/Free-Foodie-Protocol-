@@ -219,32 +219,28 @@ const PantryDashboard = () => {
         {/* Inventory Health */}
         <div className="bg-purple-100 rounded-lg shadow p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Inventory Health</h2>
-          {inventoryHealth ? (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
-                <p className="text-2xl font-bold text-purple-600">{inventoryHealth.total_items || 0}</p>
-                <p className="text-xs text-gray-600">Total Items</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center border-2 border-green-200">
-                <p className="text-2xl font-bold text-green-600">{inventoryHealth.available_items || 0}</p>
-                <p className="text-xs text-gray-600">Available</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center border-2 border-yellow-200">
-                <p className="text-2xl font-bold text-yellow-600">{inventoryHealth.expiring_soon || 0}</p>
-                <p className="text-xs text-gray-600">Expiring Soon</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center border-2 border-red-200">
-                <p className="text-2xl font-bold text-red-600">{inventoryHealth.expired_items || 0}</p>
-                <p className="text-xs text-gray-600">Expired</p>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
-                <p className="text-2xl font-bold text-purple-600">{inventoryHealth.available_quantity || 0}</p>
-                <p className="text-xs text-gray-600">Available Qty</p>
-              </div>
+        {inventoryHealth ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
+              <p className="text-2xl font-bold text-purple-600">{inventoryHealth.total_items || 0}</p>
+              <p className="text-xs text-gray-600">Total Items</p>
             </div>
-          ) : (
-            <p className="text-gray-500">Loading inventory health data...</p>
-          )}
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-green-200">
+              <p className="text-2xl font-bold text-green-600">{inventoryHealth.available_items || 0}</p>
+              <p className="text-xs text-gray-600">Available Now</p>
+            </div>
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-blue-200">
+              <p className="text-2xl font-bold text-blue-600">{inventoryHealth.coming_soon_items || 0}</p>
+              <p className="text-xs text-gray-600">Coming Soon</p>
+            </div>
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
+              <p className="text-2xl font-bold text-purple-600">{inventoryHealth.available_quantity || 0}</p>
+              <p className="text-xs text-gray-600">Available Qty</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500">Loading inventory health data...</p>
+        )}
         </div>
 
         {/* POAS Recommendations */}

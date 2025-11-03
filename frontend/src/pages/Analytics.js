@@ -150,16 +150,16 @@ const Analytics = () => {
               <p className="text-xs text-green-600 mt-1">Quantity: {inventoryHealth?.available_quantity || 0}</p>
             </div>
             
-            <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-              <p className="text-sm text-yellow-600 font-medium">Expiring Soon (7d)</p>
-              <p className="text-2xl font-bold text-yellow-700">{inventoryHealth?.expiring_soon || 0}</p>
-              <p className="text-xs text-yellow-600 mt-1">Requires attention</p>
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-600 font-medium">Coming Soon</p>
+              <p className="text-2xl font-bold text-blue-700">{inventoryHealth?.coming_soon_items || 0}</p>
+              <p className="text-xs text-blue-600 mt-1">In transit / pending</p>
             </div>
             
-            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-              <p className="text-sm text-red-600 font-medium">Expired Items</p>
-              <p className="text-2xl font-bold text-red-700">{inventoryHealth?.expired_items || 0}</p>
-              <p className="text-xs text-red-600 mt-1">Requires removal</p>
+            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <p className="text-sm text-purple-600 font-medium">Total Quantity</p>
+              <p className="text-2xl font-bold text-purple-700">{inventoryHealth?.available_quantity || 0}</p>
+              <p className="text-xs text-purple-600 mt-1">Available units</p>
             </div>
           </div>
         </div>

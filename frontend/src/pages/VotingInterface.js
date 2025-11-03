@@ -167,10 +167,8 @@ const VotingInterface = () => {
                         <h3 className="font-bold text-gray-900">{item.item_name}</h3>
                         <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
                           <span>Available: {item.quantity} {item.unit}</span>
-                          {item.expiration_date && (
-                            <span>
-                              Expires: {new Date(item.expiration_date).toLocaleDateString()}
-                            </span>
+                          {item.status === 'pending' && (
+                            <span className="text-blue-600 font-medium">Coming Soon</span>
                           )}
                         </div>
                       </div>

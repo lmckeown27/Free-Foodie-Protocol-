@@ -230,11 +230,6 @@ const StudentDashboard = () => {
                       </span>
                     </div>
                     <p className="text-xs text-gray-500">Available: {item.quantity} {item.unit}</p>
-                    {item.expiration_date && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        Expires: {new Date(item.expiration_date).toLocaleDateString()}
-                      </p>
-                    )}
                   </div>
                 ))}
               </div>

@@ -49,7 +49,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             {
               number: 2,
               title: 'List Available Food',
-              description: 'List inventory using weight, expiry, and type. Inventory flows through the Decentralized Oracle Network (DON) to FFQ smart contracts.'
+              description: 'List inventory using weight, type, and location. Inventory flows through the Decentralized Oracle Network (DON) to FFQ smart contracts.'
             },
             {
               number: 3,

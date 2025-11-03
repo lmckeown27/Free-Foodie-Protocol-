@@ -126,10 +126,10 @@ router.get('/inventory-health', authenticate, authorize('pantry'), async (req, r
     const result = await query(`
       SELECT 
         COUNT(*) as total_items,
-        COUNT(CASE WHEN expiration_date < CURRENT_DATE THEN 1 END) as expired_items,
-        COUNT(CASE WHEN expiration_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '7 days' THEN 1 END) as expiring_soon,
         COUNT(CASE WHEN status = 'available' THEN 1 END) as available_items,
-        SUM(CASE WHEN status = 'available' THEN quantity ELSE 0 END) as available_quantity
+        COUNT(CASE WHEN status = 'pending' THEN 1 END) as coming_soon_items,
+        SUM(CASE WHEN status = 'available' THEN quantity ELSE 0 END) as available_quantity,
+        SUM(CASE WHEN status = 'pending' THEN quantity ELSE 0 END) as coming_soon_quantity
       FROM inventory
     `);
     

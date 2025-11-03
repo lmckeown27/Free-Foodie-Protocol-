@@ -58,7 +58,7 @@ const Allocations = () => {
         {/* Filter Tabs */}
         <div className="bg-primary-100 rounded-lg shadow mb-6">
           <div className="flex border-b border-primary-200">
-            {['pending', 'approved', 'redeemed', 'expired'].map((status) => (
+            {['pending', 'approved', 'redeemed'].map((status) => (
               <button
                 key={status}
                 onClick={() => setFilter(status)}

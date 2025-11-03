@@ -38,7 +38,7 @@ const setupDatabase = async () => {
         unit VARCHAR(50),
         expiration_date DATE,
         donation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        status VARCHAR(50) DEFAULT 'available' CHECK (status IN ('available', 'allocated', 'redeemed', 'expired')),
+        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'available', 'allocated', 'redeemed')),
         location VARCHAR(255),
         temperature_log JSONB,
         handling_notes TEXT,

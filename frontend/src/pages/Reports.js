@@ -70,7 +70,7 @@ const Reports = () => {
           const inventoryRes = await inventoryAPI.getInventory({ limit: 1000 });
           data = formatDataForExport(
             inventoryRes.data.data,
-            ['donation_date', 'expiration_date'],
+            ['donation_date'],
             ['quantity']
           );
           filename = `inventory_report_${Date.now()}`;
