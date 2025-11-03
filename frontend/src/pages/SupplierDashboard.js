@@ -375,7 +375,7 @@ const SupplierDashboard = () => {
                     {/* Status Timeline */}
                     <div className="relative px-8">
                       {/* Connecting line background */}
-                      <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200" style={{ transform: 'translateY(-50%)' }}></div>
+                      <div className="absolute top-5 h-0.5 bg-gray-200" style={{ left: '1.25rem', right: '1.25rem', transform: 'translateY(-50%)' }}></div>
                       
                       <div className="relative flex justify-between items-start">
                         {donation.statusSteps.map((step, index) => (
@@ -408,9 +408,10 @@ const SupplierDashboard = () => {
                       {/* Progress line overlay */}
                       {donation.statusSteps.some(s => s.completed) && (
                         <div 
-                          className="absolute top-5 left-0 h-0.5 bg-blue-600" 
+                          className="absolute top-5 h-0.5 bg-blue-600" 
                           style={{ 
-                            width: `${(donation.statusSteps.filter(s => s.completed).length - 1) * (100 / (donation.statusSteps.length - 1))}%`,
+                            left: '1.25rem',
+                            width: `calc(${(donation.statusSteps.filter(s => s.completed).length - 1) * (100 / (donation.statusSteps.length - 1))}% + ${(donation.statusSteps.filter(s => s.completed).length - 1) * 2.5 / (donation.statusSteps.length - 1)}rem)`,
                             transform: 'translateY(-50%)'
                           }}
                         ></div>
