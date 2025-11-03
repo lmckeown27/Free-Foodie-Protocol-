@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI } from '../services/api';
+import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI, volunteerAPI } from '../services/api';
 import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
 
@@ -12,6 +12,8 @@ const PantryDashboard = () => {
   const [systemMetrics, setSystemMetrics] = useState(null);
   const [auditLogs, setAuditLogs] = useState([]);
   const [pendingSuppliers, setPendingSuppliers] = useState([]);
+  const [pendingVolunteers, setPendingVolunteers] = useState([]);
+  const [volunteerStats, setVolunteerStats] = useState(null);
   const [scanMode, setScanMode] = useState(false);
   const [scannedId, setScannedId] = useState('');
   const [loading, setLoading] = useState(true);
