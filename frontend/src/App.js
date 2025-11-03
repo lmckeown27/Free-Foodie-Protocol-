@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import StudentDashboard from './pages/StudentDashboard';
 import PantryDashboard from './pages/PantryDashboard';
+import UserDetailPage from './pages/UserDetailPage';
 import SupplierDashboard from './pages/SupplierDashboard';
 import Inventory from './pages/Inventory';
 import Voting from './pages/Voting';
@@ -87,6 +88,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['pantry']}>
                     <PantryDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/user/:userId" 
+                element={
+                  <ProtectedRoute allowedRoles={['pantry']}>
+                    <UserDetailPage />
                   </ProtectedRoute>
                 } 
               />
