@@ -421,12 +421,13 @@ const SupplierDashboard = () => {
                         
                         if (lastCompletedIndex === 0) {
                           // Only first step completed - show a short blue segment to first circle center
+                          // Width = padding (px-8 = 2rem) + circle radius (w-10 / 2 = 1.25rem) = 3.25rem
                           return (
                             <div 
                               className="absolute top-5 h-0.5 bg-blue-600" 
                               style={{ 
                                 left: 0,
-                                width: '2rem',
+                                width: '3.25rem',
                                 transform: 'translateY(-50%)'
                               }}
                             ></div>
