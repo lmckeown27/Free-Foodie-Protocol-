@@ -16,6 +16,7 @@ const poasRoutes = require('./routes/poas');
 const notificationRoutes = require('./routes/notifications');
 const volunteerRoutes = require('./routes/volunteers');
 const governanceRoutes = require('./routes/governance');
+const walletRoutes = require('./routes/wallet');
 
 const { errorHandler } = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
@@ -87,6 +88,7 @@ app.use(`${API_PREFIX}/poas`, poasRoutes);
 app.use(`${API_PREFIX}/notifications`, notificationRoutes);
 app.use(`${API_PREFIX}/volunteers`, volunteerRoutes);
 app.use(`${API_PREFIX}/governance`, governanceRoutes);
+app.use(`${API_PREFIX}/wallet`, walletRoutes);
 
 // 404 handler
 app.use((req, res) => {

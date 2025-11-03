@@ -250,6 +250,159 @@ const setupDatabase = async () => {
       );
     `);
     
+    // Pantry Wallets (Petra Vault multi-sig)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS pantry_wallets (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        wallet_address VARCHAR(66) UNIQUE NOT NULL,
+        wallet_type VARCHAR(50) DEFAULT 'petra_vault' CHECK (wallet_type IN ('petra_vault', 'single_sig')),
+        vault_name VARCHAR(255),
+        threshold INTEGER NOT NULL DEFAULT 2,
+        total_signers INTEGER NOT NULL DEFAULT 3,
+        signer_addresses JSONB NOT NULL,
+        metadata JSONB,
+        status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'deprecated')),
+        created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Wallet Transactions (all blockchain transactions)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS wallet_transactions (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        transaction_hash VARCHAR(66) UNIQUE NOT NULL,
+        wallet_id UUID REFERENCES pantry_wallets(id) ON DELETE CASCADE,
+        transaction_type VARCHAR(100) NOT NULL CHECK (transaction_type IN (
+          'mint_supplier_nft',
+          'mint_allocation_nft',
+          'mint_governance_nft',
+          'mint_volunteer_nft',
+          'transfer_nft',
+          'burn_nft',
+          'redeem_allocation',
+          'register_supplier',
+          'create_listing',
+          'other'
+        )),
+        from_address VARCHAR(66),
+        to_address VARCHAR(66),
+        related_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+        related_entity_type VARCHAR(50),
+        related_entity_id UUID,
+        payload JSONB NOT NULL,
+        gas_used BIGINT,
+        gas_price BIGINT,
+        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'failed', 'cancelled')),
+        block_number BIGINT,
+        block_timestamp TIMESTAMP,
+        error_message TEXT,
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        confirmed_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Transaction Proposals (for multi-sig operations)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS transaction_proposals (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        wallet_id UUID NOT NULL REFERENCES pantry_wallets(id) ON DELETE CASCADE,
+        proposal_type VARCHAR(100) NOT NULL,
+        transaction_payload JSONB NOT NULL,
+        proposed_by UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        required_signatures INTEGER NOT NULL,
+        current_signatures INTEGER DEFAULT 0,
+        status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'executed', 'rejected', 'expired')),
+        expiration_date TIMESTAMP,
+        executed_transaction_id UUID REFERENCES wallet_transactions(id) ON DELETE SET NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Proposal Signatures (tracking who signed what)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS proposal_signatures (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        proposal_id UUID NOT NULL REFERENCES transaction_proposals(id) ON DELETE CASCADE,
+        signer_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        signer_address VARCHAR(66) NOT NULL,
+        signature VARCHAR(512) NOT NULL,
+        signed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(proposal_id, signer_address)
+      );
+    `);
+    
+    // Custodial Mappings (off-chain user to on-chain assets)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS custodial_mappings (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        asset_type VARCHAR(50) NOT NULL CHECK (asset_type IN (
+          'supplier_nft',
+          'allocation_nft',
+          'governance_nft',
+          'volunteer_nft',
+          'token_balance'
+        )),
+        asset_identifier VARCHAR(255) NOT NULL,
+        on_chain_address VARCHAR(66),
+        custodian_wallet_id UUID REFERENCES pantry_wallets(id) ON DELETE CASCADE,
+        metadata JSONB,
+        status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('active', 'redeemed', 'burned', 'transferred')),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, asset_type, asset_identifier)
+      );
+    `);
+    
+    // Blockchain Audit Logs (comprehensive audit trail)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS blockchain_audit_logs (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        event_type VARCHAR(100) NOT NULL,
+        actor_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+        actor_role VARCHAR(50),
+        target_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+        transaction_id UUID REFERENCES wallet_transactions(id) ON DELETE SET NULL,
+        action_description TEXT NOT NULL,
+        before_state JSONB,
+        after_state JSONB,
+        ip_address INET,
+        user_agent TEXT,
+        event_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
+    // Reconciliation Records (sync on-chain vs off-chain state)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS reconciliation_records (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        reconciliation_type VARCHAR(50) NOT NULL CHECK (reconciliation_type IN (
+          'nft_ownership',
+          'token_balance',
+          'allocation_status',
+          'transaction_status'
+        )),
+        entity_type VARCHAR(50) NOT NULL,
+        entity_id UUID NOT NULL,
+        off_chain_state JSONB NOT NULL,
+        on_chain_state JSONB NOT NULL,
+        discrepancy_found BOOLEAN DEFAULT false,
+        discrepancy_details TEXT,
+        resolution_status VARCHAR(50) DEFAULT 'pending' CHECK (resolution_status IN ('pending', 'resolved', 'ignored')),
+        resolved_at TIMESTAMP,
+        resolved_by UUID REFERENCES users(id) ON DELETE SET NULL,
+        checked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    
     // Create indexes for better performance
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);');
@@ -274,6 +427,25 @@ const setupDatabase = async () => {
     await client.query('CREATE INDEX IF NOT EXISTS idx_multi_sig_approvals_proposal ON multi_sig_approvals(proposal_id);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_governance_actions_proposal ON governance_actions(proposal_id);');
     await client.query('CREATE INDEX IF NOT EXISTS idx_governance_actions_type ON governance_actions(action_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_pantry_wallets_address ON pantry_wallets(wallet_address);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_pantry_wallets_status ON pantry_wallets(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_wallet_transactions_hash ON wallet_transactions(transaction_hash);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_wallet_transactions_wallet ON wallet_transactions(wallet_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_wallet_transactions_type ON wallet_transactions(transaction_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_wallet_transactions_status ON wallet_transactions(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_wallet_transactions_user ON wallet_transactions(related_user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_transaction_proposals_wallet ON transaction_proposals(wallet_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_transaction_proposals_status ON transaction_proposals(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_proposal_signatures_proposal ON proposal_signatures(proposal_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_proposal_signatures_signer ON proposal_signatures(signer_user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_custodial_mappings_user ON custodial_mappings(user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_custodial_mappings_asset_type ON custodial_mappings(asset_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_custodial_mappings_status ON custodial_mappings(status);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_blockchain_audit_logs_actor ON blockchain_audit_logs(actor_user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_blockchain_audit_logs_target ON blockchain_audit_logs(target_user_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_blockchain_audit_logs_event_type ON blockchain_audit_logs(event_type);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_reconciliation_records_entity ON reconciliation_records(entity_type, entity_id);');
+    await client.query('CREATE INDEX IF NOT EXISTS idx_reconciliation_records_discrepancy ON reconciliation_records(discrepancy_found);');
     
     logger.info('Database setup completed successfully!');
   } catch (error) {
