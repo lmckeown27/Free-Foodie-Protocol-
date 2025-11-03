@@ -12,6 +12,7 @@ import NFTDetailPage from './pages/NFTDetailPage';
 import NFTManagementPage from './pages/NFTManagementPage';
 import SupplierDashboard from './pages/SupplierDashboard';
 import Inventory from './pages/Inventory';
+import DonationHistory from './pages/DonationHistory';
 import Voting from './pages/Voting';
 import VotingInterface from './pages/VotingInterface';
 import Allocations from './pages/Allocations';
@@ -135,6 +136,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Inventory />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/donation-history" 
+                element={
+                  <ProtectedRoute allowedRoles={['supplier']}>
+                    <DonationHistory />
                   </ProtectedRoute>
                 } 
               />

@@ -204,7 +204,63 @@ const seedMockData = async () => {
       { supplier: 7, name: 'Carrots', type: 'Produce', qty: 32, unit: 'lbs', status: 'available' },
       { supplier: 7, name: 'Orange Juice', type: 'Beverages', qty: 20, unit: 'bottles', status: 'available' },
       { supplier: 7, name: 'Granola', type: 'Snacks', qty: 25, unit: 'bags', status: 'available' },
-      { supplier: 7, name: 'Trail Mix', type: 'Snacks', qty: 30, unit: 'bags', status: 'available' }
+      { supplier: 7, name: 'Trail Mix', type: 'Snacks', qty: 30, unit: 'bags', status: 'available' },
+      
+      // REDEEMED DONATIONS (Historical Records)
+      // Trader Joes - Past donations
+      { supplier: 0, name: 'Strawberries', type: 'Produce', qty: 15, unit: 'lbs', status: 'redeemed' },
+      { supplier: 0, name: 'Blueberries', type: 'Produce', qty: 10, unit: 'lbs', status: 'redeemed' },
+      { supplier: 0, name: 'Sourdough Bread', type: 'Bakery', qty: 12, unit: 'loaves', status: 'redeemed' },
+      { supplier: 0, name: 'Grape Tomatoes', type: 'Produce', qty: 8, unit: 'lbs', status: 'redeemed' },
+      
+      // Albertsons - Past donations
+      { supplier: 1, name: 'Turkey Breast', type: 'Protein', qty: 20, unit: 'lbs', status: 'redeemed' },
+      { supplier: 1, name: 'Pork Chops', type: 'Protein', qty: 15, unit: 'lbs', status: 'redeemed' },
+      { supplier: 1, name: 'Canned Corn', type: 'Canned Goods', qty: 40, unit: 'cans', status: 'redeemed' },
+      { supplier: 1, name: 'Spaghetti', type: 'Grains', qty: 35, unit: 'boxes', status: 'redeemed' },
+      { supplier: 1, name: 'Brown Rice', type: 'Grains', qty: 50, unit: 'lbs', status: 'redeemed' },
+      
+      // Costco - Past donations
+      { supplier: 2, name: 'Cheese Blocks', type: 'Dairy', qty: 20, unit: 'lbs', status: 'redeemed' },
+      { supplier: 2, name: 'Yogurt Cups', type: 'Dairy', qty: 60, unit: 'cups', status: 'redeemed' },
+      { supplier: 2, name: 'Whole Chickens', type: 'Protein', qty: 8, unit: 'whole', status: 'redeemed' },
+      { supplier: 2, name: 'Frozen Vegetables', type: 'Produce', qty: 35, unit: 'bags', status: 'redeemed' },
+      { supplier: 2, name: 'Orange Juice', type: 'Beverages', qty: 25, unit: 'bottles', status: 'redeemed' },
+      
+      // Whole Foods - Past donations
+      { supplier: 3, name: 'Organic Kale', type: 'Produce', qty: 12, unit: 'lbs', status: 'redeemed' },
+      { supplier: 3, name: 'Organic Carrots', type: 'Produce', qty: 18, unit: 'lbs', status: 'redeemed' },
+      { supplier: 3, name: 'Brown Eggs', type: 'Dairy', qty: 20, unit: 'dozens', status: 'redeemed' },
+      { supplier: 3, name: 'Almond Milk', type: 'Dairy', qty: 15, unit: 'bottles', status: 'redeemed' },
+      { supplier: 3, name: 'Tofu', type: 'Protein', qty: 25, unit: 'blocks', status: 'redeemed' },
+      
+      // Campus Dining - Past donations
+      { supplier: 4, name: 'Burgers', type: 'Prepared Food', qty: 30, unit: 'burgers', status: 'redeemed' },
+      { supplier: 4, name: 'Salad Bowls', type: 'Prepared Food', qty: 40, unit: 'bowls', status: 'redeemed' },
+      { supplier: 4, name: 'Muffins', type: 'Bakery', qty: 50, unit: 'muffins', status: 'redeemed' },
+      { supplier: 4, name: 'Brownies', type: 'Bakery', qty: 45, unit: 'brownies', status: 'redeemed' },
+      { supplier: 4, name: 'Apple Juice', type: 'Beverages', qty: 30, unit: 'bottles', status: 'redeemed' },
+      
+      // Farmers Market - Past donations
+      { supplier: 5, name: 'Heirloom Tomatoes', type: 'Produce', qty: 22, unit: 'lbs', status: 'redeemed' },
+      { supplier: 5, name: 'Zucchini', type: 'Produce', qty: 18, unit: 'lbs', status: 'redeemed' },
+      { supplier: 5, name: 'Sweet Corn', type: 'Produce', qty: 40, unit: 'ears', status: 'redeemed' },
+      { supplier: 5, name: 'Fresh Peaches', type: 'Produce', qty: 15, unit: 'lbs', status: 'redeemed' },
+      { supplier: 5, name: 'Local Jam', type: 'Pantry', qty: 12, unit: 'jars', status: 'redeemed' },
+      
+      // Smart & Final - Past donations
+      { supplier: 6, name: 'Canned Tuna', type: 'Canned Goods', qty: 60, unit: 'cans', status: 'redeemed' },
+      { supplier: 6, name: 'Pasta Sauce', type: 'Canned Goods', qty: 45, unit: 'jars', status: 'redeemed' },
+      { supplier: 6, name: 'Oatmeal', type: 'Grains', qty: 30, unit: 'boxes', status: 'redeemed' },
+      { supplier: 6, name: 'Granola Bars', type: 'Snacks', qty: 50, unit: 'boxes', status: 'redeemed' },
+      { supplier: 6, name: 'Pretzels', type: 'Snacks', qty: 40, unit: 'bags', status: 'redeemed' },
+      
+      // Sprouts - Past donations
+      { supplier: 7, name: 'Cauliflower', type: 'Produce', qty: 20, unit: 'lbs', status: 'redeemed' },
+      { supplier: 7, name: 'Bell Peppers', type: 'Produce', qty: 25, unit: 'lbs', status: 'redeemed' },
+      { supplier: 7, name: 'Hummus', type: 'Pantry', qty: 30, unit: 'containers', status: 'redeemed' },
+      { supplier: 7, name: 'Pita Bread', type: 'Bakery', qty: 35, unit: 'bags', status: 'redeemed' },
+      { supplier: 7, name: 'Apple Cider', type: 'Beverages', qty: 18, unit: 'bottles', status: 'redeemed' }
     ];
     
     // Unique donation receipt names
@@ -248,7 +304,47 @@ const seedMockData = async () => {
       'Canned Tuna Receipt',
       'Spaghetti Sauce Receipt',
       'Bagels Donation Receipt',
-      'Cream Cheese Receipt'
+      'Cream Cheese Receipt',
+      // Redeemed donation receipts
+      'Strawberries Donation Receipt',
+      'Blueberries Donation Receipt',
+      'Sourdough Bread Receipt',
+      'Grape Tomatoes Receipt',
+      'Turkey Breast Receipt',
+      'Pork Chops Donation Receipt',
+      'Canned Corn Receipt',
+      'Spaghetti Donation Receipt',
+      'Brown Rice Receipt',
+      'Cheese Blocks Receipt',
+      'Yogurt Cups Donation Receipt',
+      'Whole Chickens Receipt',
+      'Frozen Vegetables Receipt',
+      'Orange Juice Donation Receipt',
+      'Organic Kale Receipt',
+      'Organic Carrots Donation Receipt',
+      'Brown Eggs Receipt',
+      'Almond Milk Donation Receipt',
+      'Tofu Receipt',
+      'Burgers Donation Receipt',
+      'Salad Bowls Receipt',
+      'Muffins Donation Receipt',
+      'Brownies Receipt',
+      'Apple Juice Donation Receipt',
+      'Heirloom Tomatoes Receipt',
+      'Zucchini Donation Receipt',
+      'Sweet Corn Receipt',
+      'Fresh Peaches Donation Receipt',
+      'Local Jam Receipt',
+      'Canned Tuna Donation Receipt',
+      'Pasta Sauce Receipt',
+      'Oatmeal Receipt',
+      'Granola Bars Donation Receipt',
+      'Pretzels Receipt',
+      'Cauliflower Donation Receipt',
+      'Bell Peppers Receipt',
+      'Hummus Donation Receipt',
+      'Pita Bread Receipt',
+      'Apple Cider Donation Receipt'
     ];
 
     const inventoryIds = [];
