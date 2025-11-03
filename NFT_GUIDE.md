@@ -17,19 +17,20 @@ Governance NFTs grant students voting rights in the FFQ platform's decentralized
 
 **Key Details:**
 - **Voting Power:** 1 vote per NFT
-- **Collective Weight:** Students collectively hold 10% of total governance voting power
+- **Collective Weight:** Students hold 100% of total governance voting power
 - **Issuance:** Minted automatically when a student registers via Cal Poly SSO
 - **Transferability:** Non-transferable (soul-bound to student account)
 - **Status:** Active for duration of student enrollment
 - **POAS Impact:** Governance participation (voting frequency, consistency) accounts for 35% of POAS score
 
 **Governance Scope:**
-Students can vote on:
+Students vote on proposals created by Pantry workers:
 - Platform feature changes
 - Food distribution policy adjustments
 - Supplier approval/removal
 - Budget allocation for campus food security initiatives
 - Volunteer program structure
+- Food inventory requests from suppliers
 
 **Technical Details:**
 - **Contract:** `GovernanceNFT` collection on Aptos
@@ -141,12 +142,12 @@ Student B logs 12 volunteer hours helping with pantry operations. After verifica
 **User Type:** **Supplier**
 
 **Purpose:**
-Supplier NFTs serve as **verification badges** for approved food donors. They track donation history, ensure compliance with food safety standards, and grant governance participation rights.
+Supplier NFTs serve as **verification badges** for approved food donors. They track donation history and ensure compliance with food safety standards.
 
 **Key Details:**
 - **Issuance:** Minted after Pantry verification and approval
 - **Quantity:** One per approved supplier organization
-- **Collective Weight:** Suppliers collectively hold 20% of governance voting power
+- **Role:** Food donation and fulfillment of Pantry requests
 - **Transferability:** Non-transferable (tied to verified organization)
 - **Status:** Active (renewable annually with compliance review)
 - **Compliance:** Must maintain Good Samaritan Act and SB 1383 standards
@@ -161,20 +162,21 @@ Supplier NFTs serve as **verification badges** for approved food donors. They tr
 - Facility inspection (for food service suppliers)
 
 **Supplier Benefits:**
-- **Governance Voice:** 20% collective voting power on platform decisions
 - **Tax Deductions:** Documentation for food donation tax benefits
 - **Public Recognition:** Profile displayed on FFQ platform
 - **Impact Tracking:** Dashboard showing pounds donated, students served
 - **Compliance Assistance:** Support with regulatory requirements
 - **Networking:** Connection to other sustainable food partners
+- **Request Fulfillment:** Receive food requests from Pantry based on student needs
 
-**Governance Participation:**
-Suppliers vote through a **Supplier Vault** (multi-sig representing all suppliers) on:
-- Logistics and scheduling improvements
-- Incentive program structures
-- Platform sustainability initiatives
-- Technology and feature enhancements
-- New supplier onboarding criteria
+**Supplier Responsibilities:**
+Suppliers respond to food requests from Pantry workers:
+- Monitor dashboard for Pantry food requests
+- Fulfill requests based on availability and capacity
+- Maintain food safety and quality standards
+- Log donations accurately through the platform
+- Coordinate delivery/pickup with Pantry schedule
+- Renew verification annually
 
 **Technical Details:**
 - **Contract:** `SupplierNFT` collection on Aptos
@@ -200,10 +202,10 @@ Local Restaurant X applies to become an FFQ supplier. After Pantry verifies thei
 
 | NFT Type | User Type | Quantity per User | Purpose | Governance Weight | POAS Impact |
 |----------|-----------|-------------------|---------|-------------------|-------------|
-| **Governance** | Student | 1 (permanent) | Voting rights | 10% collective | 35% (participation) |
+| **Governance** | Student | 1 (permanent) | Voting rights | 100% (students only) | 35% (participation) |
 | **Allocation** | Student | Variable (weekly) | Food claim right | N/A | 10% (redemption rate) |
 | **Volunteer** | Student | 4 max (tiers) | Milestone reward | N/A | 20% (contribution) |
-| **Supplier** | Supplier | 1 (renewable) | Verification badge | 20% collective | N/A |
+| **Supplier** | Supplier | 1 (renewable) | Verification badge | None | N/A |
 
 ---
 
@@ -299,19 +301,26 @@ Local Restaurant X applies to become an FFQ supplier. After Pantry verifies thei
 
 ## Governance Model Recap
 
-**Three-Entity Structure:**
+**Student-Centric Democratic Structure:**
 
-| Entity | Voting Power | Representation |
-|--------|-------------|----------------|
-| **Pantry** | 70% | Multi-sig Petra Vault (5 staff members) |
-| **Suppliers** | 20% | Supplier Vault (collective multi-sig) |
-| **Students** | 10% | Individual Governance NFTs (aggregated) |
+| Entity | Voting Power | Role |
+|--------|-------------|------|
+| **Students** | 100% | Vote on all governance proposals |
+| **Pantry** | 0% (Proposal Creation) | Create and execute approved proposals |
+| **Suppliers** | 0% (Food Provision) | Fulfill Pantry food requests |
 
-**Decision Types:**
-- **Operational:** Pantry executes with 70% authority
-- **Strategic:** Requires majority across all three entities
-- **Platform Changes:** Weighted voting with proposal threshold
-- **Supplier Onboarding:** Pantry approval required, supplier input considered
+**Decision Process:**
+1. **Proposal Creation:** Pantry workers identify needs and create governance proposals
+2. **Student Voting:** All students with Governance NFTs vote (100% weight)
+3. **Execution:** Pantry executes approved proposals via multi-sig wallet
+4. **Supplier Fulfillment:** Suppliers provide food based on Pantry requests (driven by student votes)
+
+**Proposal Types:**
+- **Food Requests:** Students vote on what foods should be requested from suppliers
+- **Platform Features:** Students vote on new features and improvements
+- **Supplier Selection:** Students vote on approving/removing suppliers
+- **Policy Changes:** Students vote on distribution policies and eligibility
+- **Budget Allocation:** Students vote on how resources are allocated
 
 ---
 

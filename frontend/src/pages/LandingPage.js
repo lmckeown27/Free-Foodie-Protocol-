@@ -69,14 +69,14 @@ const LandingPage = () => {
     ],
     pantry: [
       { step: 1, title: 'Manage Operations', description: 'Combined BNI + Pantry team handles supplier verification, inventory, and distribution logistics' },
-      { step: 2, title: 'Execute Governance', description: 'Create proposals, collect multi-sig approvals, execute decisions via Petra Vault (70% voting weight)' },
+      { step: 2, title: 'Create Proposals', description: 'Identify needs and create governance proposals for students to vote on - execute approved decisions via multi-sig' },
       { step: 3, title: 'Custodial Wallet Service', description: 'Hold ONE custodial wallet for ALL students - issue NFTs and execute blockchain transactions on their behalf' },
       { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered allocation algorithm, verify pickups via QR codes, monitor platform health' }
     ],
     supplier: [
       { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies and mints your Supplier NFT for blockchain tracking' },
-      { step: 2, title: 'Donate Surplus', description: 'Log donations with type, quantity, and location - inventory automatically updated' },
-      { step: 3, title: 'Participate in Governance', description: 'Vote on logistics and distribution proposals as part of Supplier Vault (20% voting weight)' },
+      { step: 2, title: 'Receive Food Requests', description: 'Pantry sends food requests based on student governance votes and current needs' },
+      { step: 3, title: 'Fulfill Donations', description: 'Log donations with type, quantity, and location - inventory automatically updated' },
       { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, CO₂ reduced, and blockchain-verified donation receipts' }
     ]
   };
@@ -564,7 +564,7 @@ const LandingPage = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Three entities collaborate through decentralized governance to create a fair, transparent food distribution system
+              Student-driven democratic governance: students vote, Pantry executes, suppliers fulfill requests
             </p>
             
             {/* Visual Flow Diagram */}
@@ -572,59 +572,17 @@ const LandingPage = () => {
               
               {/* Title: Governance Model */}
               <div className="text-center mb-6">
-                <h3 className="text-lg font-bold text-gray-900">Multi-Sig Governance Model</h3>
-                <p className="text-xs text-gray-600 mt-1">All three entities participate in platform decisions via weighted voting</p>
+                <h3 className="text-lg font-bold text-gray-900">Student-Centric Governance Model</h3>
+                <p className="text-xs text-gray-600 mt-1">Students have 100% voting power on all platform decisions</p>
               </div>
 
-              {/* Three Entities with Governance Weights */}
+              {/* Three Entities with Roles */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {/* Pantry (70%) */}
-                <div className="relative">
-                  <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="absolute -top-3 -right-3 bg-white text-purple-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-sm shadow-md border-2 border-purple-600">
-                      70%
-                    </div>
-                    <div className="mb-3">
-                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <div className="font-bold text-lg text-center">Pantry</div>
-                    <div className="text-xs text-purple-100 text-center mt-1 mb-3">BNI + Operations</div>
-                    <div className="space-y-1 text-xs text-purple-100">
-                      <div className="bg-white/10 rounded px-2 py-1">Multi-sig execution</div>
-                      <div className="bg-white/10 rounded px-2 py-1">Custodial wallet</div>
-                      <div className="bg-white/10 rounded px-2 py-1">POAS allocation</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Supplier (20%) */}
-                <div className="relative">
-                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="absolute -top-3 -right-3 bg-white text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-sm shadow-md border-2 border-blue-600">
-                      20%
-                    </div>
-                    <div className="mb-3">
-                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                    </div>
-                    <div className="font-bold text-lg text-center">Suppliers</div>
-                    <div className="text-xs text-blue-100 text-center mt-1 mb-3">Collective Vault</div>
-                    <div className="space-y-1 text-xs text-blue-100">
-                      <div className="bg-white/10 rounded px-2 py-1">Donate surplus</div>
-                      <div className="bg-white/10 rounded px-2 py-1">Vote on logistics</div>
-                      <div className="bg-white/10 rounded px-2 py-1">Track impact</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Students (10%) */}
+                {/* Students (100% Voting Power) */}
                 <div className="relative">
                   <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="absolute -top-3 -right-3 bg-white text-primary-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-sm shadow-md border-2 border-primary-600">
-                      10%
+                    <div className="absolute -top-3 -right-3 bg-white text-primary-600 rounded-full w-14 h-14 flex items-center justify-center font-bold text-base shadow-md border-2 border-primary-600">
+                      100%
                     </div>
                     <div className="mb-3">
                       <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -634,11 +592,53 @@ const LandingPage = () => {
                       </svg>
                     </div>
                     <div className="font-bold text-lg text-center">Students</div>
-                    <div className="text-xs text-primary-100 text-center mt-1 mb-3">Community Voice</div>
+                    <div className="text-xs text-primary-100 text-center mt-1 mb-3">Full Voting Power</div>
                     <div className="space-y-1 text-xs text-primary-100">
-                      <div className="bg-white/10 rounded px-2 py-1">Vote on policies</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Vote on ALL proposals</div>
                       <div className="bg-white/10 rounded px-2 py-1">Earn via POAS</div>
-                      <div className="bg-white/10 rounded px-2 py-1">Volunteer hours</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Volunteer & engage</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pantry (Proposal Creation) */}
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="absolute -top-3 -right-3 bg-purple-200 text-purple-900 rounded-full w-14 h-14 flex items-center justify-center font-bold text-xs shadow-md border-2 border-purple-600 leading-tight">
+                      <div className="text-center">Create<br/>Proposals</div>
+                    </div>
+                    <div className="mb-3">
+                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <div className="font-bold text-lg text-center">Pantry</div>
+                    <div className="text-xs text-purple-100 text-center mt-1 mb-3">BNI + Operations</div>
+                    <div className="space-y-1 text-xs text-purple-100">
+                      <div className="bg-white/10 rounded px-2 py-1">Create proposals</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Execute decisions</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Custodial wallet</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Suppliers (Food Provision) */}
+                <div className="relative">
+                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="absolute -top-3 -right-3 bg-blue-200 text-blue-900 rounded-full w-14 h-14 flex items-center justify-center font-bold text-xs shadow-md border-2 border-blue-600 leading-tight">
+                      <div className="text-center">Food<br/>Provision</div>
+                    </div>
+                    <div className="mb-3">
+                      <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
+                    </div>
+                    <div className="font-bold text-lg text-center">Suppliers</div>
+                    <div className="text-xs text-blue-100 text-center mt-1 mb-3">Food Donors</div>
+                    <div className="space-y-1 text-xs text-blue-100">
+                      <div className="bg-white/10 rounded px-2 py-1">Receive requests</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Fulfill donations</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Track impact</div>
                     </div>
                   </div>
                 </div>
