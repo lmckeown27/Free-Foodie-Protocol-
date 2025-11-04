@@ -51,10 +51,65 @@ const PantryDashboard = () => {
         totalTransactions: dashboardRes.data.data?.total_transactions || 0
       });
       
-      // Audit logs from compliance endpoint
-      if (complianceRes.data.data && complianceRes.data.data.length > 0) {
-        setAuditLogs(complianceRes.data.data.slice(0, 10));
-      }
+      // Mock data for system audit logs
+      setAuditLogs([
+        {
+          event_type: 'pickup_verified',
+          timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
+          user: 'Emily Chen',
+          details: 'Student pickup verified - 2 lbs Organic Apples',
+          status: 'completed'
+        },
+        {
+          event_type: 'allocation_issued',
+          timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+          user: 'Sarah Martinez',
+          details: 'Pickup ticket issued - Whole Wheat Bread',
+          status: 'completed'
+        },
+        {
+          event_type: 'donation_received',
+          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+          user: 'Campus Dining',
+          details: 'Donation received - 50 lbs Fresh Vegetables',
+          status: 'completed'
+        },
+        {
+          event_type: 'volunteer_badge_issued',
+          timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+          user: 'Marcus Johnson',
+          details: 'Service badge issued - Silver Tier (20 hours)',
+          status: 'completed'
+        },
+        {
+          event_type: 'governance_vote',
+          timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
+          user: 'Student Body',
+          details: 'Governance vote cast - Proposal #12 (Add More Vegan Options)',
+          status: 'completed'
+        },
+        {
+          event_type: 'supplier_verified',
+          timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+          user: 'Local Bakery Co.',
+          details: 'Partner certificate issued - New supplier onboarded',
+          status: 'completed'
+        },
+        {
+          event_type: 'allocation_redeemed',
+          timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
+          user: 'Alex Thompson',
+          details: 'Pickup ticket redeemed - Fresh Produce Box',
+          status: 'completed'
+        },
+        {
+          event_type: 'donation_receipt_issued',
+          timestamp: new Date(Date.now() - 10 * 60 * 60 * 1000), // 10 hours ago
+          user: 'Campus Market',
+          details: 'Donation receipt issued - 75 lbs Mixed Items',
+          status: 'completed'
+        }
+      ]);
       
       // Fetch POAS recommendations for the first inventory item
       if (inventoryRes.data.data.length > 0) {
@@ -636,7 +691,7 @@ const PantryDashboard = () => {
         <div className="bg-amber-100 rounded-lg shadow mb-6">
           <div className="px-6 py-4 border-b border-amber-200">
             <h2 className="text-xl font-semibold text-gray-800">System Audit Logs</h2>
-            <p className="text-sm text-gray-600">On-chain transaction history</p>
+            <p className="text-sm text-gray-600">Recent platform activity and events</p>
           </div>
           <div className="p-6">
             {auditLogs.length === 0 ? (
@@ -646,19 +701,34 @@ const PantryDashboard = () => {
                 {auditLogs.map((log, idx) => (
                   <div key={idx} className="p-4 bg-white rounded-lg border border-amber-200">
                     <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <span className="px-2 py-1 bg-amber-200 text-amber-800 rounded text-xs font-medium">
-                          {log.compliance_type}
-                        </span>
-                        <p className="font-semibold text-gray-900 mt-1">Compliance Check</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${
+                            log.event_type === 'pickup_verified' ? 'bg-green-200 text-green-800' :
+                            log.event_type === 'allocation_issued' ? 'bg-blue-200 text-blue-800' :
+                            log.event_type === 'donation_received' ? 'bg-amber-200 text-amber-800' :
+                            log.event_type === 'volunteer_badge_issued' ? 'bg-purple-200 text-purple-800' :
+                            log.event_type === 'governance_vote' ? 'bg-indigo-200 text-indigo-800' :
+                            log.event_type === 'supplier_verified' ? 'bg-cyan-200 text-cyan-800' :
+                            log.event_type === 'allocation_redeemed' ? 'bg-teal-200 text-teal-800' :
+                            log.event_type === 'donation_receipt_issued' ? 'bg-yellow-200 text-yellow-800' :
+                            'bg-gray-200 text-gray-800'
+                          }`}>
+                            {log.event_type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {log.timestamp.toLocaleTimeString()} - {log.timestamp.toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className="font-semibold text-gray-900 text-sm">{log.user}</p>
+                        <p className="text-sm text-gray-600 mt-1">{log.details}</p>
                       </div>
-                      <p className="text-xs text-gray-500">
-                        {new Date(log.checked_at).toLocaleDateString()}
-                      </p>
+                      <div className="ml-4">
+                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+                          {log.status}
+                        </span>
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-600">
-                      Total: {log.total_checks} | Passed: {log.passed_checks} | Failed: {log.failed_checks}
-                    </p>
                   </div>
                 ))}
               </div>
