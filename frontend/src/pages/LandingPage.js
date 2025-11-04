@@ -18,10 +18,10 @@ const LandingPage = () => {
       ctaAction: () => navigate('/login')
     },
     pantry: {
-      color: 'purple',
-      gradient: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-gradient-to-b from-purple-100 to-white',
-      sectionBg: 'bg-purple-100',
+      color: 'amber',
+      gradient: 'from-amber-500 to-amber-600',
+      bgColor: 'bg-gradient-to-b from-amber-100 to-white',
+      sectionBg: 'bg-amber-100',
       title: 'Pantry',
       headline: 'Operate. Govern. Allocate with Intelligence.',
       subheadline: 'Combined operations and governance with AI-driven allocation, supplier verification, and blockchain accountability.',
@@ -176,7 +176,7 @@ const LandingPage = () => {
   // Dynamic button colors for each user type
   const buttonColors = {
     student: 'bg-primary-600 hover:bg-primary-700',
-    pantry: 'bg-purple-600 hover:bg-purple-700',
+    pantry: 'bg-amber-600 hover:bg-amber-700',
     supplier: 'bg-blue-600 hover:bg-blue-700'
   };
 
@@ -189,10 +189,10 @@ const LandingPage = () => {
       arrow: 'bg-primary-300'
     },
     pantry: {
-      activeTab: 'bg-purple-600',
-      inactiveTabBorder: 'border-purple-200',
-      stepCircle: 'bg-purple-600',
-      arrow: 'bg-purple-300'
+      activeTab: 'bg-amber-600',
+      inactiveTabBorder: 'border-amber-200',
+      stepCircle: 'bg-amber-600',
+      arrow: 'bg-amber-300'
     },
     supplier: {
       activeTab: 'bg-blue-600',
@@ -213,12 +213,12 @@ const LandingPage = () => {
       ctaButton: 'bg-primary-600 hover:bg-primary-700'
     },
     pantry: {
-      background: 'bg-purple-100',
-      border: 'border-purple-300',
-      hover: 'hover:bg-purple-200',
-      plusSign: 'text-purple-600',
-      ctaBackground: 'bg-purple-200',
-      ctaButton: 'bg-purple-600 hover:bg-purple-700'
+      background: 'bg-amber-100',
+      border: 'border-amber-300',
+      hover: 'hover:bg-amber-200',
+      plusSign: 'text-amber-600',
+      ctaBackground: 'bg-amber-200',
+      ctaButton: 'bg-amber-600 hover:bg-amber-700'
     },
     supplier: {
       background: 'bg-blue-100',
@@ -394,15 +394,15 @@ const LandingPage = () => {
 
                 {/* Pantry (Proposal Creation) */}
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
                     <div className="mb-3">
                       <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                     <div className="font-bold text-lg text-center">Pantry</div>
-                    <div className="text-xs text-purple-100 text-center mt-1 mb-3">BNI + Operations</div>
-                    <div className="space-y-1 text-xs text-purple-100">
+                    <div className="text-xs text-amber-100 text-center mt-1 mb-3">BNI + Operations</div>
+                    <div className="space-y-1 text-xs text-amber-100">
                       <div className="bg-white/10 rounded px-2 py-1">Create proposals</div>
                       <div className="bg-white/10 rounded px-2 py-1">Execute decisions</div>
                       <div className="bg-white/10 rounded px-2 py-1">Custodial wallet</div>
@@ -447,7 +447,7 @@ const LandingPage = () => {
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-                <div className="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold text-sm">
+                <div className="bg-amber-100 text-amber-700 px-4 py-2 rounded-lg font-semibold text-sm">
                   Pantry Allocates
                 </div>
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

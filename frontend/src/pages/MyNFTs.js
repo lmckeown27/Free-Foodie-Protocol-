@@ -120,20 +120,20 @@ const MyNFTs = () => {
         </div>
 
         {/* Security Info */}
-        <div className="bg-gradient-to-r from-purple-100 to-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
           <div className="flex items-start gap-4">
-            <div className="bg-purple-500 text-white rounded-full p-3">
+            <div className="bg-amber-500 text-white rounded-full p-3">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-purple-900 text-lg">Secure Record Keeping</h3>
-              <p className="text-purple-800 text-sm mt-1">
+              <h3 className="font-bold text-amber-900 text-lg">Secure Record Keeping</h3>
+              <p className="text-amber-800 text-sm mt-1">
                 All your credentials and records are securely managed by the Pantry.
                 You don't need to worry about losing anything—we handle everything for you!
               </p>
-              <div className="mt-3 flex gap-4 text-xs text-purple-700">
+              <div className="mt-3 flex gap-4 text-xs text-amber-700">
                 <div className="flex items-center gap-1">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -165,7 +165,7 @@ const MyNFTs = () => {
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Voting Rights</p>
-            <p className="text-3xl font-bold text-purple-600 mt-2">
+            <p className="text-3xl font-bold text-amber-600 mt-2">
               {nfts.filter(n => n.nft_type === 'governance').length}
             </p>
           </div>
@@ -232,7 +232,7 @@ const MyNFTs = () => {
               <div key={nft.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
                 {/* Credential Header */}
                 <div className={`p-6 ${
-                  nft.nft_type === 'governance' ? 'bg-gradient-to-br from-purple-500 to-purple-600' :
+                  nft.nft_type === 'governance' ? 'bg-gradient-to-br from-amber-500 to-amber-600' :
                   nft.nft_type === 'allocation' ? 'bg-gradient-to-br from-green-500 to-green-600' :
                   nft.nft_type === 'volunteer' ? 'bg-gradient-to-br from-yellow-500 to-yellow-600' :
                   'bg-gradient-to-br from-blue-500 to-blue-600'

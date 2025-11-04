@@ -70,9 +70,9 @@ const UserDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading user details...</p>
         </div>
       </div>
@@ -81,12 +81,12 @@ const UserDetailPage = () => {
 
   if (!userDetails) {
     return (
-      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-xl text-gray-600">User not found</p>
           <button
             onClick={() => navigate('/pantry')}
-            className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            className="mt-4 px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
           >
             Back to Dashboard
           </button>
@@ -99,15 +99,15 @@ const UserDetailPage = () => {
   const isSupplier = userDetails.role === 'supplier';
 
   return (
-    <div className="min-h-screen bg-purple-50">
+    <div className="min-h-screen bg-amber-50">
       {/* Header */}
-      <header className="bg-purple-600 shadow">
+      <header className="bg-amber-600 shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
               <button
                 onClick={() => navigate('/pantry')}
-                className="text-white hover:text-purple-200 mb-2 flex items-center"
+                className="text-white hover:text-amber-200 mb-2 flex items-center"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -115,7 +115,7 @@ const UserDetailPage = () => {
                 Back to Dashboard
               </button>
               <h1 className="text-3xl font-bold text-white">User Details</h1>
-              <p className="text-sm text-purple-200 mt-1">Custodial account managed by Pantry</p>
+              <p className="text-sm text-amber-200 mt-1">Custodial account managed by Pantry</p>
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ const UserDetailPage = () => {
               <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl font-bold ${
                 isStudent ? 'bg-green-500' :
                 isSupplier ? 'bg-blue-500' :
-                'bg-purple-500'
+                'bg-amber-500'
               }`}>
                 {userDetails.first_name.charAt(0)}{userDetails.last_name.charAt(0)}
               </div>
@@ -139,12 +139,12 @@ const UserDetailPage = () => {
                 </h2>
                 <p className="text-gray-600">{userDetails.email}</p>
                 {userDetails.calpoly_id && (
-                  <p className="text-purple-600 font-semibold mt-1">Cal Poly ID: {userDetails.calpoly_id}</p>
+                  <p className="text-amber-600 font-semibold mt-1">Cal Poly ID: {userDetails.calpoly_id}</p>
                 )}
                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mt-2 ${
                   isStudent ? 'bg-green-100 text-green-800' :
                   isSupplier ? 'bg-blue-100 text-blue-800' :
-                  'bg-purple-100 text-purple-800'
+                  'bg-amber-100 text-amber-800'
                 }`}>
                   {userDetails.role.charAt(0).toUpperCase() + userDetails.role.slice(1)}
                 </span>
@@ -157,8 +157,8 @@ const UserDetailPage = () => {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">NFTs Held in Custody</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="bg-purple-100 border-2 border-purple-300 rounded-lg p-4 text-center">
-              <p className="text-3xl font-bold text-purple-600">
+            <div className="bg-amber-100 border-2 border-amber-300 rounded-lg p-4 text-center">
+              <p className="text-3xl font-bold text-amber-600">
                 {nfts.filter(n => n.nft_type === 'governance').length}
               </p>
               <p className="text-xs text-gray-600">Governance NFTs</p>
@@ -188,13 +188,13 @@ const UserDetailPage = () => {
             {nfts.map((nft) => (
               <div 
                 key={nft.mapping_id} 
-                className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 hover:border-purple-300 transition-all cursor-pointer"
+                className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 hover:border-amber-300 transition-all cursor-pointer"
                 onClick={() => navigate(`/nft/${nft.nft_id}`)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center flex-1">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${
-                      nft.nft_type === 'governance' ? 'bg-purple-500' :
+                      nft.nft_type === 'governance' ? 'bg-amber-500' :
                       nft.nft_type === 'allocation' ? 'bg-green-500' :
                       nft.nft_type === 'volunteer' ? 'bg-yellow-500' :
                       'bg-blue-500'
@@ -224,7 +224,7 @@ const UserDetailPage = () => {
                         e.stopPropagation();
                         navigate(`/nft/${nft.nft_id}`);
                       }}
-                      className="text-purple-600 hover:text-purple-900 font-medium text-sm whitespace-nowrap"
+                      className="text-amber-600 hover:text-amber-900 font-medium text-sm whitespace-nowrap"
                     >
                       View Details →
                     </button>
@@ -270,8 +270,8 @@ const UserDetailPage = () => {
         )}
 
         {/* Info Banner */}
-        <div className="bg-purple-100 border-2 border-purple-300 rounded-lg p-4 text-center">
-          <p className="text-sm text-purple-800">
+        <div className="bg-amber-100 border-2 border-amber-300 rounded-lg p-4 text-center">
+          <p className="text-sm text-amber-800">
             All assets displayed are held in the Pantry's multi-sig custodial wallet on behalf of this user.
             The user can view their assets but the Pantry maintains custody for security and compliance.
           </p>

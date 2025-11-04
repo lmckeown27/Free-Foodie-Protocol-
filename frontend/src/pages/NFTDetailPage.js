@@ -41,9 +41,9 @@ const NFTDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading NFT details...</p>
         </div>
       </div>
@@ -52,12 +52,12 @@ const NFTDetailPage = () => {
 
   if (!nftDetails) {
     return (
-      <div className="min-h-screen bg-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-xl text-gray-600">NFT not found</p>
           <button
             onClick={() => navigate('/pantry')}
-            className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            className="mt-4 px-6 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700"
           >
             Back to Dashboard
           </button>
@@ -69,7 +69,7 @@ const NFTDetailPage = () => {
   const getTypeColor = (type) => {
     switch (type) {
       case 'governance':
-        return 'purple';
+        return 'amber';
       case 'allocation':
         return 'green';
       case 'volunteer':
@@ -85,15 +85,15 @@ const NFTDetailPage = () => {
   const metadata = nftDetails.metadata || {};
 
   return (
-    <div className="min-h-screen bg-purple-50">
+    <div className="min-h-screen bg-amber-50">
       {/* Header */}
-      <header className="bg-purple-600 shadow">
+      <header className="bg-amber-600 shadow">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
               <button
                 onClick={() => navigate(`/user/${nftDetails.user_id}`)}
-                className="text-white hover:text-purple-200 mb-2 flex items-center"
+                className="text-white hover:text-amber-200 mb-2 flex items-center"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -101,7 +101,7 @@ const NFTDetailPage = () => {
                 Back to User Profile
               </button>
               <h1 className="text-3xl font-bold text-white">NFT Details</h1>
-              <p className="text-sm text-purple-200 mt-1">Custodial asset managed by Pantry multi-sig wallet</p>
+              <p className="text-sm text-amber-200 mt-1">Custodial asset managed by Pantry multi-sig wallet</p>
             </div>
             <div className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl font-bold bg-${color}-500`}>
               {nftDetails.nft_type.charAt(0).toUpperCase()}
@@ -131,14 +131,14 @@ const NFTDetailPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Owner Information */}
-            <div className="border-l-4 border-purple-500 pl-4">
+            <div className="border-l-4 border-amber-500 pl-4">
               <h3 className="text-sm font-medium text-gray-500 uppercase">Owner</h3>
               <p className="text-lg font-semibold text-gray-900 mt-1">
                 {nftDetails.first_name} {nftDetails.last_name}
               </p>
               <p className="text-sm text-gray-600">{nftDetails.email}</p>
               {nftDetails.calpoly_id && (
-                <p className="text-sm text-purple-600 font-semibold">Cal Poly ID: {nftDetails.calpoly_id}</p>
+                <p className="text-sm text-amber-600 font-semibold">Cal Poly ID: {nftDetails.calpoly_id}</p>
               )}
               <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 mt-2 capitalize">
                 {nftDetails.role}
@@ -192,7 +192,7 @@ const NFTDetailPage = () => {
                 href={`https://explorer.aptoslabs.com/txn/${nftDetails.transaction_hash}?network=devnet`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-sm text-purple-600 hover:text-purple-800 mt-2"
+                className="inline-flex items-center text-sm text-amber-600 hover:text-amber-800 mt-2"
               >
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -202,15 +202,15 @@ const NFTDetailPage = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                 <p className="text-xs text-gray-500">Network</p>
                 <p className="text-sm font-semibold text-gray-900 mt-1">Aptos Devnet</p>
               </div>
-              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                 <p className="text-xs text-gray-500">Contract Standard</p>
                 <p className="text-sm font-semibold text-gray-900 mt-1">Aptos Token</p>
               </div>
-              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+              <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
                 <p className="text-xs text-gray-500">Custodian</p>
                 <p className="text-sm font-semibold text-gray-900 mt-1">Pantry Multi-Sig</p>
               </div>
@@ -244,9 +244,9 @@ const NFTDetailPage = () => {
                   This Governance NFT grants the holder voting rights in FFQ platform governance.
                   Each student receives one Governance NFT upon registration.
                 </p>
-                <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                  <p className="text-sm font-semibold text-purple-900">Voting Power: 1 vote</p>
-                  <p className="text-xs text-purple-700 mt-1">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <p className="text-sm font-semibold text-amber-900">Voting Power: 1 vote</p>
+                  <p className="text-xs text-amber-700 mt-1">
                     Proportional to student body (10% collective voting power)
                   </p>
                 </div>
@@ -303,8 +303,8 @@ const NFTDetailPage = () => {
         </div>
 
         {/* Custodial Info Banner */}
-        <div className="bg-purple-100 border-2 border-purple-300 rounded-lg p-4 text-center">
-          <p className="text-sm text-purple-800">
+        <div className="bg-amber-100 border-2 border-amber-300 rounded-lg p-4 text-center">
+          <p className="text-sm text-amber-800">
             <span className="font-semibold">Custodial Asset:</span> This NFT is held in the Pantry's multi-sig wallet on behalf of{' '}
             {nftDetails.first_name} {nftDetails.last_name}. The Pantry maintains custody for security, compliance, and ease of use.
             The user can view this NFT but all transactions require Pantry multi-sig approval.

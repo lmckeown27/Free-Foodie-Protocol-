@@ -63,7 +63,7 @@ const VolunteerHub = () => {
       bronze: { color: 'from-amber-700 to-amber-500', icon: '🥉', text: 'Bronze' },
       silver: { color: 'from-gray-400 to-gray-200', icon: '🥈', text: 'Silver' },
       gold: { color: 'from-yellow-500 to-yellow-300', icon: '🥇', text: 'Gold' },
-      platinum: { color: 'from-purple-600 to-pink-400', icon: '💎', text: 'Platinum' }
+      platinum: { color: 'from-amber-600 to-pink-400', icon: '💎', text: 'Platinum' }
     };
     return tiers[tier] || { color: 'from-gray-500 to-gray-300', icon: '⭐', text: 'No Tier' };
   };
@@ -151,7 +151,7 @@ const VolunteerHub = () => {
             
             <div className="bg-white rounded-lg shadow p-6">
               <p className="text-sm text-gray-600 font-medium">NFTs Earned</p>
-              <p className="text-3xl font-bold text-purple-600 mt-2">{myHours.nfts.length}</p>
+              <p className="text-3xl font-bold text-amber-600 mt-2">{myHours.nfts.length}</p>
               <div className="flex gap-1 mt-2">
                 {myHours.nfts.map((nft) => (
                   <span key={nft.id} className="text-xl" title={`${nft.tier} NFT`}>

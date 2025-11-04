@@ -92,7 +92,7 @@ const Analytics = () => {
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500">Recent Votes (7d)</h3>
-            <p className="text-3xl font-bold text-purple-600 mt-2">
+            <p className="text-3xl font-bold text-amber-600 mt-2">
               {dashboard?.recent_votes?.total_votes || 0}
             </p>
           </div>
@@ -156,10 +156,10 @@ const Analytics = () => {
               <p className="text-xs text-blue-600 mt-1">In transit / pending</p>
             </div>
             
-            <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-              <p className="text-sm text-purple-600 font-medium">Total Quantity</p>
-              <p className="text-2xl font-bold text-purple-700">{inventoryHealth?.available_quantity || 0}</p>
-              <p className="text-xs text-purple-600 mt-1">Available units</p>
+            <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+              <p className="text-sm text-amber-600 font-medium">Total Quantity</p>
+              <p className="text-2xl font-bold text-amber-700">{inventoryHealth?.available_quantity || 0}</p>
+              <p className="text-xs text-amber-600 mt-1">Available units</p>
             </div>
           </div>
         </div>

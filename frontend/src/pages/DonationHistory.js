@@ -244,9 +244,9 @@ const DonationHistory = () => {
                   lbs
                 </p>
               </div>
-              <div className="bg-purple-50 rounded-lg p-4">
+              <div className="bg-amber-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Categories</p>
-                <p className="text-2xl font-bold text-purple-700">{getUniqueCategories().length}</p>
+                <p className="text-2xl font-bold text-amber-700">{getUniqueCategories().length}</p>
               </div>
             </div>
           </div>

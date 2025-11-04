@@ -122,15 +122,15 @@ const PantryDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-purple-50 font-raleway">
+    <div className="min-h-screen bg-amber-50 font-raleway">
       {/* Header */}
-      <header className="bg-purple-100 shadow">
+      <header className="bg-amber-100 shadow">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-purple-600">Pantry Dashboard</h1>
+            <h1 className="text-3xl font-bold text-amber-600">Pantry Dashboard</h1>
             <p className="text-sm text-gray-600">Operations & Governance - {user.first_name}</p>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-xs font-mono bg-purple-200 text-purple-800 px-2 py-1 rounded">
+              <span className="text-xs font-mono bg-amber-200 text-amber-800 px-2 py-1 rounded">
                 Multi-Sig Petra Vault
               </span>
               <span className="text-xs text-gray-500">Shared control & accountability</span>
@@ -140,13 +140,13 @@ const PantryDashboard = () => {
             <WalletConnect />
             <button
               onClick={() => setShowHowItWorks(true)}
-              className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition"
+              className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition"
             >
               How This Works
             </button>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 bg-purple-700 text-white rounded-lg hover:bg-purple-800 transition"
+              className="px-4 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800 transition"
             >
               Logout
             </button>
@@ -157,41 +157,41 @@ const PantryDashboard = () => {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* System Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Active Students</h3>
-            <p className="text-3xl font-bold text-purple-600 mt-2">
+            <p className="text-3xl font-bold text-amber-600 mt-2">
               {systemMetrics?.totalStudents || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">Registered users</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Verified Suppliers</h3>
-            <p className="text-3xl font-bold text-purple-600 mt-2">
+            <p className="text-3xl font-bold text-amber-600 mt-2">
               {systemMetrics?.totalSuppliers || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">Supplier NFTs</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-200 to-purple-300 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-amber-200 to-amber-300 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Total Donations</h3>
-            <p className="text-3xl font-bold text-purple-700 mt-2">
+            <p className="text-3xl font-bold text-amber-700 mt-2">
               {systemMetrics?.totalDonations || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">Food items donated</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-200 to-purple-300 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-amber-200 to-amber-300 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Total Allocations</h3>
-            <p className="text-3xl font-bold text-purple-700 mt-2">
+            <p className="text-3xl font-bold text-amber-700 mt-2">
               {systemMetrics?.totalAllocations || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">Items allocated</p>
           </div>
           
-          <div className="bg-gradient-to-br from-purple-300 to-purple-400 rounded-lg shadow p-6">
+          <div className="bg-gradient-to-br from-amber-300 to-amber-400 rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-600">Blockchain Txns</h3>
-            <p className="text-3xl font-bold text-purple-800 mt-2">
+            <p className="text-3xl font-bold text-amber-800 mt-2">
               {systemMetrics?.totalTransactions || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">On-chain records</p>
@@ -202,36 +202,36 @@ const PantryDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Link
             to="/inventory"
-            className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-6 hover:from-purple-600 hover:to-purple-700 transition"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg shadow-lg p-6 hover:from-amber-600 hover:to-amber-700 transition"
           >
             <h2 className="text-xl font-bold mb-2">Manage Inventory</h2>
-            <p className="text-purple-100">View and allocate food items</p>
+            <p className="text-amber-100">View and allocate food items</p>
           </Link>
 
           <Link
             to="/analytics"
-            className="bg-gradient-to-r from-purple-400 to-purple-500 text-white rounded-lg shadow-lg p-6 hover:from-purple-500 hover:to-purple-600 transition"
+            className="bg-gradient-to-r from-amber-400 to-amber-500 text-white rounded-lg shadow-lg p-6 hover:from-amber-500 hover:to-amber-600 transition"
           >
             <h2 className="text-xl font-bold mb-2">System Analytics</h2>
-            <p className="text-purple-100">View comprehensive metrics</p>
+            <p className="text-amber-100">View comprehensive metrics</p>
           </Link>
 
           <Link
             to="/nft-management"
-            className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg shadow-lg p-6 hover:from-purple-700 hover:to-purple-800 transition"
+            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg shadow-lg p-6 hover:from-amber-700 hover:to-amber-800 transition"
           >
             <h2 className="text-xl font-bold mb-2">NFT Management</h2>
-            <p className="text-purple-100">Mint and manage NFTs</p>
+            <p className="text-amber-100">Mint and manage NFTs</p>
           </Link>
         </div>
 
         {/* Inventory Health */}
-        <div className="bg-purple-100 rounded-lg shadow p-6 mb-6">
+        <div className="bg-amber-100 rounded-lg shadow p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Inventory Health</h2>
         {inventoryHealth ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
-              <p className="text-2xl font-bold text-purple-600">{inventoryHealth.total_items || 0}</p>
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-amber-200">
+              <p className="text-2xl font-bold text-amber-600">{inventoryHealth.total_items || 0}</p>
               <p className="text-xs text-gray-600">Total Items</p>
             </div>
             <div className="bg-white rounded-lg p-4 text-center border-2 border-green-200">
@@ -242,8 +242,8 @@ const PantryDashboard = () => {
               <p className="text-2xl font-bold text-blue-600">{inventoryHealth.coming_soon_items || 0}</p>
               <p className="text-xs text-gray-600">Coming Soon</p>
             </div>
-            <div className="bg-white rounded-lg p-4 text-center border-2 border-purple-200">
-              <p className="text-2xl font-bold text-purple-600">{inventoryHealth.available_quantity || 0}</p>
+            <div className="bg-white rounded-lg p-4 text-center border-2 border-amber-200">
+              <p className="text-2xl font-bold text-amber-600">{inventoryHealth.available_quantity || 0}</p>
               <p className="text-xs text-gray-600">Available Qty</p>
             </div>
           </div>
@@ -253,12 +253,12 @@ const PantryDashboard = () => {
         </div>
 
         {/* Combined: Custodial NFT Vault & POAS User Management */}
-        <div className="bg-gradient-to-r from-purple-100 to-purple-50 rounded-lg shadow mb-6">
-          <div className="px-6 py-4 border-b border-purple-200 bg-gradient-to-r from-purple-500 to-purple-600">
+        <div className="bg-gradient-to-r from-amber-100 to-amber-50 rounded-lg shadow mb-6">
+          <div className="px-6 py-4 border-b border-amber-200 bg-gradient-to-r from-amber-500 to-amber-600">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Custodial User Management</h2>
-                <p className="text-sm text-purple-100 mt-1">
+                <p className="text-sm text-amber-100 mt-1">
                   NFTs held in custody with POAS allocation recommendations
                 </p>
               </div>
@@ -289,8 +289,8 @@ const PantryDashboard = () => {
               <div className="space-y-4">
                 {/* NFT Type Summary */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-purple-100 border border-purple-200 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-purple-600">
+                  <div className="bg-amber-100 border border-amber-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-amber-600">
                       {custodialNFTs.filter(n => n.nft_type === 'governance').length}
                     </p>
                     <p className="text-xs text-gray-600">Governance NFTs</p>
@@ -318,9 +318,9 @@ const PantryDashboard = () => {
                 {/* NFT Sections - Horizontal Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                   {/* Governance NFTs Section */}
-                  <div className="bg-white rounded-lg shadow-lg border-2 border-purple-200 overflow-hidden">
-                    <div className="bg-purple-100 px-4 py-3 border-b-2 border-purple-200">
-                      <h3 className="text-base font-bold text-purple-700">Governance</h3>
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-amber-200 overflow-hidden">
+                    <div className="bg-amber-100 px-4 py-3 border-b-2 border-amber-200">
+                      <h3 className="text-base font-bold text-amber-700">Governance</h3>
                       <p className="text-xs text-gray-600">Voting Rights</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -330,7 +330,7 @@ const PantryDashboard = () => {
                         return (
                           <div 
                             key={userNFT.user_id} 
-                            className="bg-purple-50 rounded-lg p-3 hover:bg-purple-100 cursor-pointer transition border border-purple-200"
+                            className="bg-amber-50 rounded-lg p-3 hover:bg-amber-100 cursor-pointer transition border border-amber-200"
                             onClick={() => navigate(`/user/${userNFT.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
@@ -338,19 +338,19 @@ const PantryDashboard = () => {
                                 <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
                                 <p className="text-xs text-gray-500">{userNFT.email}</p>
                               </div>
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-600 text-white">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-600 text-white">
                                 {userNFTs.length}
                               </span>
                             </div>
                             {poasRec && (
-                              <p className="text-xs text-purple-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                              <p className="text-xs text-amber-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
                             )}
                           </div>
                         );
                       })}
                       <button 
                         onClick={() => navigate('/nft-management/governance')}
-                        className="w-full text-center text-xs text-purple-600 hover:text-purple-900 font-medium py-2"
+                        className="w-full text-center text-xs text-amber-600 hover:text-amber-900 font-medium py-2"
                       >
                         View All →
                       </button>
@@ -480,15 +480,15 @@ const PantryDashboard = () => {
         </div>
 
         {/* QR Scanner for Student Pickup */}
-        <div className="bg-purple-100 rounded-lg shadow p-6 mb-6">
+        <div className="bg-amber-100 rounded-lg shadow p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Student Pickup Verification</h2>
-          <div className="bg-white rounded-lg p-6 border-2 border-purple-200">
+          <div className="bg-white rounded-lg p-6 border-2 border-amber-200">
             <div className="flex items-center gap-4 mb-4">
               <button
                 onClick={() => setScanMode(!scanMode)}
                 className={`px-6 py-3 rounded-lg font-semibold transition ${
                   scanMode
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-amber-600 text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
@@ -500,12 +500,12 @@ const PantryDashboard = () => {
                   placeholder="Enter or scan student PolyCard ID..."
                   value={scannedId}
                   onChange={(e) => setScannedId(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-4 py-3 border-2 border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                 />
               </div>
               <button
                 onClick={handleVerifyPickup}
-                className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-semibold"
+                className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-semibold"
               >
                 Verify Pickup
               </button>
@@ -519,8 +519,8 @@ const PantryDashboard = () => {
         {/* Two Column Layout: Allocations & Supplier Approvals + Audit Logs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {/* Active Allocations */}
-          <div className="bg-purple-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-purple-200">
+          <div className="bg-amber-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-amber-200">
               <h2 className="text-xl font-semibold text-gray-800">Active Allocations (POAS-Matched)</h2>
               <p className="text-sm text-gray-600">Recent student allocations</p>
             </div>
@@ -530,7 +530,7 @@ const PantryDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {pendingAllocations.slice(0, 5).map((allocation) => (
-                    <div key={allocation.id} className="p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
+                    <div key={allocation.id} className="p-4 bg-amber-50 rounded-lg border-2 border-amber-200">
                       <div className="flex justify-between items-start mb-2">
                         <div>
                           <p className="font-bold text-gray-800">
@@ -540,7 +540,7 @@ const PantryDashboard = () => {
                           <p className="text-xs text-gray-500">Qty: {allocation.quantity}</p>
                         </div>
                         <div className="text-right">
-                          <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded text-xs font-medium block mb-1">
+                          <span className="px-2 py-1 bg-amber-200 text-amber-800 rounded text-xs font-medium block mb-1">
                             POAS: {allocation.poas_score ? Number(allocation.poas_score).toFixed(2) : 'N/A'}
                           </span>
                           <span className="text-xs text-gray-500">
@@ -553,7 +553,7 @@ const PantryDashboard = () => {
                 </div>
               )}
               <div className="mt-4 text-center">
-                <Link to="/allocations" className="text-purple-600 hover:text-purple-700 font-medium text-sm">
+                <Link to="/allocations" className="text-amber-600 hover:text-amber-700 font-medium text-sm">
                   View All Allocations →
                 </Link>
               </div>
@@ -561,8 +561,8 @@ const PantryDashboard = () => {
           </div>
 
           {/* Pending Supplier Approvals */}
-          <div className="bg-purple-100 rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-purple-200">
+          <div className="bg-amber-100 rounded-lg shadow">
+            <div className="px-6 py-4 border-b border-amber-200">
               <h2 className="text-xl font-semibold text-gray-800">Pending Supplier Approvals</h2>
               <p className="text-sm text-gray-600">Review and verify new suppliers</p>
             </div>
@@ -572,7 +572,7 @@ const PantryDashboard = () => {
               ) : (
                 <div className="space-y-3">
                   {pendingSuppliers.map((supplier) => (
-                    <div key={supplier.id} className="p-4 bg-white rounded-lg border-2 border-purple-200">
+                    <div key={supplier.id} className="p-4 bg-white rounded-lg border-2 border-amber-200">
                       <div className="mb-3">
                         <h3 className="font-bold text-gray-800">{supplier.name}</h3>
                         <p className="text-sm text-gray-600">{supplier.business_type}</p>
@@ -584,7 +584,7 @@ const PantryDashboard = () => {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleApproveSupplier(supplier.id)}
-                          className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium"
+                          className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-medium"
                         >
                           Approve & Mint NFT
                         </button>
@@ -604,8 +604,8 @@ const PantryDashboard = () => {
         </div>
 
         {/* Audit Logs */}
-        <div className="bg-purple-100 rounded-lg shadow mb-6">
-          <div className="px-6 py-4 border-b border-purple-200">
+        <div className="bg-amber-100 rounded-lg shadow mb-6">
+          <div className="px-6 py-4 border-b border-amber-200">
             <h2 className="text-xl font-semibold text-gray-800">System Audit Logs</h2>
             <p className="text-sm text-gray-600">On-chain transaction history</p>
           </div>
@@ -615,10 +615,10 @@ const PantryDashboard = () => {
             ) : (
               <div className="space-y-3">
                 {auditLogs.map((log, idx) => (
-                  <div key={idx} className="p-4 bg-white rounded-lg border border-purple-200">
+                  <div key={idx} className="p-4 bg-white rounded-lg border border-amber-200">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <span className="px-2 py-1 bg-purple-200 text-purple-800 rounded text-xs font-medium">
+                        <span className="px-2 py-1 bg-amber-200 text-amber-800 rounded text-xs font-medium">
                           {log.compliance_type}
                         </span>
                         <p className="font-semibold text-gray-900 mt-1">Compliance Check</p>
@@ -638,8 +638,8 @@ const PantryDashboard = () => {
         </div>
 
         {/* Info Banner */}
-        <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-4 text-center">
-          <p className="text-sm text-purple-800">
+        <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-4 text-center">
+          <p className="text-sm text-amber-800">
             The Pantry ensures the integrity and sustainability of the FFQ platform,
             providing transparent governance, operational management, and oversight.
           </p>

@@ -37,7 +37,7 @@ const NFTManagementPage = () => {
       type: 'governance',
       name: 'Governance NFTs',
       description: 'Voting rights for students',
-      color: 'purple',
+      color: 'amber',
       icon: '',
       userType: 'Student',
       purpose: 'Grant voting power in governance proposals'
@@ -78,13 +78,13 @@ const NFTManagementPage = () => {
 
   const getColorClasses = (color) => {
     const colors = {
-      purple: {
-        bg: 'bg-purple-50',
-        border: 'border-purple-200',
-        text: 'text-purple-700',
-        badge: 'bg-purple-600',
-        hover: 'hover:bg-purple-100',
-        button: 'bg-purple-600 hover:bg-purple-700'
+      amber: {
+        bg: 'bg-amber-50',
+        border: 'border-amber-200',
+        text: 'text-amber-700',
+        badge: 'bg-amber-600',
+        hover: 'hover:bg-amber-100',
+        button: 'bg-amber-600 hover:bg-amber-700'
       },
       green: {
         bg: 'bg-green-50',
@@ -160,15 +160,15 @@ const NFTManagementPage = () => {
   const redeemedNFTs = custodialNFTs.filter(n => n.nft_status === 'redeemed').length;
 
   return (
-    <div className="min-h-screen bg-purple-50">
+    <div className="min-h-screen bg-amber-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg">
+      <header className="bg-gradient-to-r from-amber-600 to-amber-700 shadow-lg">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
               <button
                 onClick={() => navigate('/pantry')}
-                className="text-white hover:text-purple-200 mb-2 flex items-center"
+                className="text-white hover:text-amber-200 mb-2 flex items-center"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -181,7 +181,7 @@ const NFTManagementPage = () => {
                   : 'Master NFT Management'
                 }
               </h1>
-              <p className="text-sm text-purple-200 mt-1">
+              <p className="text-sm text-amber-200 mt-1">
                 {type
                   ? `Mint, monitor, and manage ${nftCategories.find(c => c.type === type)?.description || 'NFTs'}`
                   : 'Mint, monitor, and manage all custodial NFTs across 4 categories'
@@ -195,8 +195,8 @@ const NFTManagementPage = () => {
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Overall Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-600">
-            <p className="text-3xl font-bold text-purple-600">{totalNFTs}</p>
+          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-amber-600">
+            <p className="text-3xl font-bold text-amber-600">{totalNFTs}</p>
             <p className="text-sm text-gray-600 mt-1">Total NFTs in Custody</p>
           </div>
           <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-600">
@@ -212,7 +212,7 @@ const NFTManagementPage = () => {
         {/* NFT Category Sections */}
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading NFTs...</p>
           </div>
         ) : (
@@ -391,7 +391,7 @@ const NFTManagementPage = () => {
                   value={mintForm.userEmail}
                   onChange={(e) => setMintForm({ ...mintForm, userEmail: e.target.value })}
                   placeholder={`${selectedCategory.userType} email address`}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">Enter the {selectedCategory.userType.toLowerCase()}'s email to mint their NFT</p>
               </div>

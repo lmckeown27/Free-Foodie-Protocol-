@@ -58,7 +58,7 @@ const GovernanceProposals = () => {
       case 'active': return 'bg-green-100 text-green-800 border-green-200';
       case 'passed': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'rejected': return 'bg-red-100 text-red-800 border-red-200';
-      case 'executed': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'executed': return 'bg-amber-100 text-amber-800 border-amber-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
@@ -126,20 +126,20 @@ const GovernanceProposals = () => {
         </div>
 
         {/* Governance Info */}
-        <div className="bg-gradient-to-r from-purple-100 to-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
           <div className="flex items-start gap-4">
-            <div className="bg-purple-500 text-white rounded-full p-3">
+            <div className="bg-amber-500 text-white rounded-full p-3">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-purple-900 text-lg">Your Voting Power: 10%</h3>
-              <p className="text-purple-800 text-sm mt-1">
+              <h3 className="font-bold text-amber-900 text-lg">Your Voting Power: 10%</h3>
+              <p className="text-amber-800 text-sm mt-1">
                 As a student, you have 10% of the total voting weight on governance proposals. 
                 Each vote you cast earns you a Governance NFT and increases your POAS score by 35%!
               </p>
-              <div className="mt-3 flex gap-6 text-sm text-purple-700">
+              <div className="mt-3 flex gap-6 text-sm text-amber-700">
                 <div>
                   <span className="font-semibold">Pantry:</span> 70% voting weight
                 </div>
@@ -164,7 +164,7 @@ const GovernanceProposals = () => {
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Your Votes</p>
-            <p className="text-3xl font-bold text-purple-600 mt-2">{myVotes.length}</p>
+            <p className="text-3xl font-bold text-amber-600 mt-2">{myVotes.length}</p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Governance NFTs Earned</p>
@@ -191,7 +191,7 @@ const GovernanceProposals = () => {
                 <div className="p-6 border-b border-gray-200">
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="bg-purple-100 text-purple-600 rounded-lg p-3">
+                      <div className="bg-amber-100 text-amber-600 rounded-lg p-3">
                         {getProposalIcon(proposal.proposal_type)}
                       </div>
                       <div className="flex-1">
@@ -259,12 +259,12 @@ const GovernanceProposals = () => {
                       </button>
                     </div>
                   ) : hasVoted(proposal.id) ? (
-                    <div className="bg-purple-100 border border-purple-200 rounded-lg p-4 text-center">
-                      <svg className="w-8 h-8 text-purple-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="bg-amber-100 border border-amber-200 rounded-lg p-4 text-center">
+                      <svg className="w-8 h-8 text-amber-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <p className="font-medium text-purple-900">You've already voted on this proposal</p>
-                      <p className="text-sm text-purple-700 mt-1">Thank you for participating in governance!</p>
+                      <p className="font-medium text-amber-900">You've already voted on this proposal</p>
+                      <p className="text-sm text-amber-700 mt-1">Thank you for participating in governance!</p>
                     </div>
                   ) : (
                     <div className="bg-gray-100 border border-gray-200 rounded-lg p-4 text-center">

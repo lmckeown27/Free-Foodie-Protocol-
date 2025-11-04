@@ -140,7 +140,7 @@ const StudentDashboard = () => {
           {/* Volunteer Stats Card */}
           <Link 
             to="/volunteer"
-            className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition group"
+            className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition group"
           >
             <h3 className="text-sm font-medium text-white opacity-90">Volunteer Hours</h3>
             <p className="text-3xl font-bold text-white mt-2">
@@ -185,10 +185,10 @@ const StudentDashboard = () => {
           
           <Link
             to="/nfts"
-            className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg p-8 hover:from-purple-600 hover:to-purple-700 transition transform hover:scale-105"
+            className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg shadow-lg p-8 hover:from-amber-600 hover:to-amber-700 transition transform hover:scale-105"
           >
             <h2 className="text-2xl font-bold mb-2">My Credentials</h2>
-            <p className="text-purple-100">View your achievements and records</p>
+            <p className="text-amber-100">View your achievements and records</p>
           </Link>
           
           <Link

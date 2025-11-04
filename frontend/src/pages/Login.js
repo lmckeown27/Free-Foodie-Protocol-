@@ -103,7 +103,7 @@ const Login = () => {
             <button
               onClick={() => handleRoleSelect('pantry')}
               disabled={loading}
-              className="group relative p-8 border-2 border-purple-300 rounded-lg hover:border-purple-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative p-8 border-2 border-amber-300 rounded-lg hover:border-amber-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Pantry</h3>
