@@ -320,7 +320,7 @@ const PantryDashboard = () => {
                   {/* Governance NFTs Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-purple-200 overflow-hidden">
                     <div className="bg-purple-100 px-4 py-3 border-b-2 border-purple-200">
-                      <h3 className="text-base font-bold text-purple-700">🗳️ Governance</h3>
+                      <h3 className="text-base font-bold text-purple-700">Governance</h3>
                       <p className="text-xs text-gray-600">Voting Rights</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -349,7 +349,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management')}
+                        onClick={() => navigate('/nft-management/governance')}
                         className="w-full text-center text-xs text-purple-600 hover:text-purple-900 font-medium py-2"
                       >
                         View All →
@@ -360,7 +360,7 @@ const PantryDashboard = () => {
                   {/* Allocation NFTs Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
                     <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
-                      <h3 className="text-base font-bold text-green-700">🎫 Allocation</h3>
+                      <h3 className="text-base font-bold text-green-700">Allocation</h3>
                       <p className="text-xs text-gray-600">Pickup Tickets</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -389,7 +389,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management')}
+                        onClick={() => navigate('/nft-management/allocation')}
                         className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
@@ -400,7 +400,7 @@ const PantryDashboard = () => {
                   {/* Volunteer NFTs Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-yellow-200 overflow-hidden">
                     <div className="bg-yellow-100 px-4 py-3 border-b-2 border-yellow-200">
-                      <h3 className="text-base font-bold text-yellow-700">🏅 Volunteer</h3>
+                      <h3 className="text-base font-bold text-yellow-700">Volunteer</h3>
                       <p className="text-xs text-gray-600">Service Badges</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -429,7 +429,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management')}
+                        onClick={() => navigate('/nft-management/volunteer')}
                         className="w-full text-center text-xs text-yellow-600 hover:text-yellow-900 font-medium py-2"
                       >
                         View All →
@@ -440,7 +440,7 @@ const PantryDashboard = () => {
                   {/* Supplier NFTs Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-blue-200 overflow-hidden">
                     <div className="bg-blue-100 px-4 py-3 border-b-2 border-blue-200">
-                      <h3 className="text-base font-bold text-blue-700">📄 Supplier</h3>
+                      <h3 className="text-base font-bold text-blue-700">Supplier</h3>
                       <p className="text-xs text-gray-600">Donation Receipts</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -466,7 +466,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management')}
+                        onClick={() => navigate('/nft-management/supplier')}
                         className="w-full text-center text-xs text-blue-600 hover:text-blue-900 font-medium py-2"
                       >
                         View All →

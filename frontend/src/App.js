@@ -123,6 +123,15 @@ function App() {
               />
               
               <Route 
+                path="/nft-management/:type" 
+                element={
+                  <ProtectedRoute allowedRoles={['pantry']}>
+                    <NFTManagementPage />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
                 path="/supplier" 
                 element={
                   <ProtectedRoute allowedRoles={['supplier']}>

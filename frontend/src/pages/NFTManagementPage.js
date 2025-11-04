@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { walletAPI } from '../services/api';
 
 const NFTManagementPage = () => {
   const navigate = useNavigate();
+  const { type } = useParams(); // Get NFT type from URL
   const [custodialNFTs, setCustodialNFTs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showMintModal, setShowMintModal] = useState(false);
@@ -37,7 +38,7 @@ const NFTManagementPage = () => {
       name: 'Governance NFTs',
       description: 'Voting rights for students',
       color: 'purple',
-      icon: '🗳️',
+      icon: '',
       userType: 'Student',
       purpose: 'Grant voting power in governance proposals'
     },
@@ -46,7 +47,7 @@ const NFTManagementPage = () => {
       name: 'Allocation NFTs',
       description: 'Food pickup tickets for students',
       color: 'green',
-      icon: '🎫',
+      icon: '',
       userType: 'Student',
       purpose: 'Authorize food pickup and claim rights'
     },
@@ -55,7 +56,7 @@ const NFTManagementPage = () => {
       name: 'Volunteer NFTs',
       description: 'Service badges for students',
       color: 'yellow',
-      icon: '🏅',
+      icon: '',
       userType: 'Student',
       purpose: 'Recognize volunteer contributions and milestones'
     },
@@ -64,11 +65,16 @@ const NFTManagementPage = () => {
       name: 'Supplier NFTs',
       description: 'Donation receipts for suppliers',
       color: 'blue',
-      icon: '📄',
+      icon: '',
       userType: 'Supplier',
       purpose: 'Verify donations and track impact'
     }
   ];
+
+  // Filter categories based on type parameter
+  const filteredCategories = type 
+    ? nftCategories.filter(cat => cat.type === type)
+    : nftCategories;
 
   const getColorClasses = (color) => {
     const colors = {
@@ -169,8 +175,18 @@ const NFTManagementPage = () => {
                 </svg>
                 Back to Dashboard
               </button>
-              <h1 className="text-3xl font-bold text-white">Master NFT Management</h1>
-              <p className="text-sm text-purple-200 mt-1">Mint, monitor, and manage all custodial NFTs across 4 categories</p>
+              <h1 className="text-3xl font-bold text-white">
+                {type 
+                  ? `${nftCategories.find(c => c.type === type)?.name || 'NFT'} Management`
+                  : 'Master NFT Management'
+                }
+              </h1>
+              <p className="text-sm text-purple-200 mt-1">
+                {type
+                  ? `Mint, monitor, and manage ${nftCategories.find(c => c.type === type)?.description || 'NFTs'}`
+                  : 'Mint, monitor, and manage all custodial NFTs across 4 categories'
+                }
+              </p>
             </div>
           </div>
         </div>
@@ -201,7 +217,7 @@ const NFTManagementPage = () => {
           </div>
         ) : (
           <div className="space-y-6">
-            {nftCategories.map((category) => {
+            {filteredCategories.map((category) => {
               const colors = getColorClasses(category.color);
               const nfts = getNFTsByType(category.type);
               const activeCount = nfts.filter(n => n.nft_status === 'active').length;
@@ -212,12 +228,9 @@ const NFTManagementPage = () => {
                   {/* Category Header */}
                   <div className={`${colors.bg} px-6 py-4 border-b-2 ${colors.border}`}>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{category.icon}</span>
-                        <div>
-                          <h2 className={`text-xl font-bold ${colors.text}`}>{category.name}</h2>
-                          <p className="text-sm text-gray-600">{category.description}</p>
-                        </div>
+                      <div>
+                        <h2 className={`text-xl font-bold ${colors.text}`}>{category.name}</h2>
+                        <p className="text-sm text-gray-600">{category.description}</p>
                       </div>
                       <button
                         onClick={() => handleOpenMintModal(category)}
