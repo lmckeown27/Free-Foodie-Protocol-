@@ -86,86 +86,86 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I get food from FFQ?",
-        answer: "Participate in platform governance by voting on proposals and volunteering in your community. When food becomes available, the pantry fairly allocates it based on multiple factors including your participation, need, and pickup reliability. If approved, you'll receive a digital pickup ticket managed by the Pantry. Present this at the pantry to collect your food! The more you engage with the platform, the better your priority access becomes."
+        answer: "Vote on proposals and volunteer to build priority access. The pantry allocates food based on your participation, need, and pickup reliability. When approved, you'll receive a digital pickup ticket to collect your food. More engagement = better priority."
       },
       {
         id: 2,
         question: "What is a pickup ticket and why do I need one?",
-        answer: "A pickup ticket is like a digital receipt that proves your food allocation. When the pantry approves your food request, this ticket is automatically created for you. It contains details like what food you're allocated and when to pick it up. Because it's securely managed by the Pantry, it can't be forged or stolen. When you arrive at the pantry, workers scan your ticket to verify your claim—preventing fraud and ensuring only approved students get food. After pickup, the ticket is marked as 'used' so no one can claim the same food twice."
+        answer: "It's your digital proof of food allocation. The Pantry automatically creates it when you're approved. Workers scan it at pickup to verify your claim, then mark it 'used' to prevent duplicate claims. It's tamper-proof and can't be forged."
       },
       {
         id: 3,
         question: "How does voting work and why does my vote matter?",
-        answer: "Your votes tell the pantry what food you actually want. When you vote, your choice is recorded as a permanent, tamper-proof record. You also build voting power—the more you participate, the more influence you have in future decisions. Your participation helps the pantry predict demand and optimize food allocation. This ensures the pantry stocks what students actually need, not just what's easy to source. Your voice truly shapes the food available!"
+        answer: "Your votes tell the pantry what food you want and are permanently recorded. More participation = more influence in future decisions. This helps the pantry predict demand and stock what students actually need. Your voice shapes the food available!"
       },
       {
         id: 4,
         question: "Do I need cryptocurrency or money to use FFQ?",
-        answer: "Absolutely not! FFQ is 100% free. You don't need to buy crypto, pay any fees, or connect a wallet. The Pantry manages everything on your behalf—you just sign up with your Cal Poly ID and use the platform. All fees are covered by FFQ. The secure technology runs in the background; from your perspective, it's just a regular app. No technical knowledge required!"
+        answer: "No! FFQ is 100% free. Just sign up with your Cal Poly ID—no crypto, no fees, no technical setup. The Pantry manages everything. It's just a regular app."
       },
       {
         id: 5,
         question: "Why is FFQ better than traditional food pantries?",
-        answer: "Traditional pantries often operate on 'first come, first served' (favoring those who can line up early), lack transparency (students can't see how decisions are made), and rely on manual processes (prone to errors and bias). FFQ provides fair allocation (prioritizing need, participation, and reliability), complete transparency (see the entire food supply chain), student voice (vote on what food comes in), and fraud prevention (tamper-proof records). FFQ transforms food pantries from charity handouts into an equitable, student-driven system where everyone has a voice and a fair shot at the food they need."
+        answer: "Traditional pantries use first-come-first-served (favors those who can skip class), lack transparency, and rely on manual processes prone to bias. FFQ provides fair AI-powered allocation, complete supply chain visibility, student voting power, and fraud prevention. It's an equitable, student-driven system—not just charity."
       }
     ],
     pantry: [
       {
         id: 1,
         question: "What are the Pantry's responsibilities in FFQ?",
-        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, maintain secure student accounts, issue digital credentials), and monitor system health (track analytics, ensure compliance, audit all transactions). The Pantry maintains a secure team account that manages verification on behalf of all students, so they don't need to manage any accounts themselves. The Pantry uses multi-party approval to ensure no single person controls critical functions."
+        answer: "You handle daily operations (donations, allocations, pickups), governance tasks (verify suppliers, issue credentials), and monitoring (analytics, compliance, audits). The Pantry manages a secure team account on behalf of all students using multi-party approval—no single person controls critical functions."
       },
       {
         id: 2,
         question: "How does POAS help us allocate food fairly?",
-        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on: governance participation (35% - students who vote on proposals), volunteer hours (20% - community contributors), need factor (20% - fewer past allocations), pickup reliability (10% - redemption rate), and recent activity (10%). Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. This rewards engaged, responsible students while ensuring those in need get priority. All allocation data is permanently recorded in the secure system for complete transparency and accountability."
+        answer: "POAS is an AI algorithm that scores students based on governance participation (35%), volunteering (20%), need (20%), pickup reliability (10%), and recency (10%). It provides allocation recommendations you review and approve—rewarding engaged students while prioritizing those in need. All data is permanently recorded for transparency."
       },
       {
         id: 3,
         question: "How do we verify and approve new suppliers?",
-        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you issue a verified Partner Certificate through the Pantry's secure team account. This certificate acts as their verified credential to donate food through the platform. Suppliers don't need any technical setup—the Pantry's system handles all verification on their behalf. The entire verification process is permanently recorded for transparency, ensuring only legitimate, compliant suppliers can participate."
+        answer: "Review their application and credentials (EIN, licenses, certifications). If approved, issue a verified Partner Certificate through your secure account. The system handles all technical setup and permanently records the verification—ensuring only legitimate suppliers can participate."
       },
       {
         id: 4,
         question: "What is multi-party approval and why is it critical?",
-        answer: "Multi-party approval (team verification) requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses secure team verification for 2-of-3 or 3-of-5 approval setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for institutional trust and accountability."
+        answer: "Multiple people must approve important actions (allocations, donations)—like a safety deposit box needing two keys. FFQ uses 2-of-3 or 3-of-5 approval setups. This prevents unauthorized changes, protects against fraud, and creates an audit trail for compliance and accountability."
       },
       {
         id: 5,
         question: "How does the secure account system work for students?",
-        answer: "The Pantry maintains a secure team account (requiring multiple staff approvals) that manages all digital verification on behalf of students. Students don't need to download any apps, manage account credentials, or pay any fees—the Pantry's secure system handles all technical verification automatically. This provides a seamless app-like user experience while maintaining key benefits: transparency, fraud prevention, and fair allocation. When students vote or claim food, the Pantry's system automatically verifies and issues digital credentials. Students interact with FFQ like a regular app, while secure verification runs in the background."
+        answer: "The Pantry maintains a secure team account that manages all verification for students—no apps, credentials, or fees required. When students vote or claim food, the system automatically verifies and issues credentials. They just see a regular app; security runs in the background."
       },
       {
         id: 6,
         question: "What happens when we scan a student's pickup ticket?",
-        answer: "When you scan a student's pickup ticket at the pantry, the system verifies: (1) The ticket is authentic and issued by your pantry, (2) The student's account owns this ticket, (3) The ticket hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' in the system. The ticket status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
+        answer: "The system verifies the ticket is authentic, owned by the student, not yet redeemed, and within the valid timeframe. You mark it 'redeemed,' permanently updating the status to prevent duplicate claims. Creates tamper-proof records and real-time inventory tracking."
       }
     ],
     supplier: [
       {
         id: 1,
         question: "How do I donate food through FFQ?",
-        answer: "After the Pantry approves your application, simply log in to your supplier portal and list your available surplus food with details like weight, type, and location. The Pantry manages all verification automatically—you don't need any technical setup. Once logged, a permanent, verified donation receipt is created on your behalf. The system tracks exactly where your food goes and how many students it helps. Everything is automated, compliant, and transparent—you just focus on donating food!"
+        answer: "After approval, log in and list your surplus food (weight, type, location). The Pantry manages all verification—no technical setup needed. You get a permanent donation receipt, and the system tracks where your food goes and how many students it helps. Just focus on donating!"
       },
       {
         id: 2,
         question: "What is a donation receipt and how does it help my business?",
-        answer: "Your donation receipt is a permanent, verifiable record of your food donation. It serves as: (1) IRS-compliant proof for tax deductions, (2) Public record of your community contribution (builds reputation), (3) Impact metrics showing exactly how many students you helped. Unlike paper receipts that can be lost or forged, digital records are permanent and instantly verifiable. This makes donating easier, safer, and more rewarding. You can show stakeholders real, auditable proof of your social impact."
+        answer: "It's permanent, verifiable proof of your donation for: (1) IRS-compliant tax deductions, (2) Public reputation building, (3) Impact metrics (students helped). Unlike paper receipts, digital records can't be lost or forged. Show stakeholders real, auditable proof of your social impact."
       },
       {
         id: 3,
         question: "How does FFQ protect us from liability when donating food?",
-        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through automated verification systems. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, handling procedures, and donation timestamps—all permanently recorded in the secure system. Automated verification creates an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have tamper-proof digital proof that all safety and legal requirements were met at the time of donation."
+        answer: "FFQ enforces Good Samaritan Act and SB 1383 compliance automatically. The system verifies donations meet VLCP food safety standards (temperature logs, handling, timestamps). Everything is permanently recorded, creating an immutable compliance trail. You have tamper-proof proof that all requirements were met."
       },
       {
         id: 4,
         question: "Can I track where my donated food goes?",
-        answer: "Yes! FFQ provides complete supply chain visibility. After donating, you can see: which pantry received your food, when it was received and distributed, which students benefited (anonymous data), and impact metrics (lbs rescued, meals provided, waste prevented). Your supplier dashboard shows donation history, cumulative impact, and community recognition. This transparency helps you report to stakeholders, qualify for grants, and demonstrate corporate social responsibility."
+        answer: "Yes! See which pantry received it, when it was distributed, which students benefited (anonymous), and impact metrics (lbs rescued, meals provided, CO₂ saved). Your dashboard shows donation history and cumulative impact—perfect for stakeholder reports and grant applications."
       },
       {
         id: 5,
         question: "Do I need any technical setup to participate?",
-        answer: "No! FFQ is completely free and requires no technical setup. The Pantry manages all the verification and record-keeping on your behalf. Any fees are covered by FFQ—you'll never be charged. Just log in to your supplier portal and start donating food. The secure technology handles all the compliance, receipts, and tracking automatically in the background. From your perspective, it's a simple donation platform that provides permanent verified proof and impact tracking. No technical knowledge required!"
+        answer: "No! FFQ is completely free—no setup, no fees. The Pantry manages all verification and record-keeping. Just log in and start donating. The technology handles compliance, receipts, and tracking in the background. It's a simple platform with permanent verified proof."
       }
     ]
   };
