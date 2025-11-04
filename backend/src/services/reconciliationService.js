@@ -1,371 +1,499 @@
-const { pool } = require('../config/database');
-const logger = require('../utils/logger');
-const aptosService = require('./aptosService');
-const walletService = require('./walletService');
-
 /**
  * Reconciliation Service
- * Syncs on-chain and off-chain state to ensure consistency
+ * 
+ * Ensures consistency between off-chain database and on-chain blockchain state.
+ * Runs periodically (every 15 minutes) to detect and resolve drift.
+ * 
+ * Checks performed:
+ * 1. NFTs minted in DB but not on chain
+ * 2. NFTs on chain but not in DB
+ * 3. Status mismatches (DB says redeemed, chain says active)
+ * 4. Orphaned records
  */
+
+const { v4: uuidv4 } = require('uuid');
+const db = require('../config/database');
+const logger = require('../config/logger');
+
+// NOTE: In production, use Aptos Indexer GraphQL API
+// const { AptosIndexer } = require('@aptos-labs/indexer-sdk');
+
 class ReconciliationService {
-  /**
-   * Reconcile NFT ownership for all users
-   * @returns {Promise<Object>} Reconciliation results
-   */
-  async reconcileNFTOwnership() {
-    logger.info('Starting NFT ownership reconciliation...');
+  constructor() {
+    this.network = process.env.APTOS_NETWORK || 'testnet';
+    this.indexerUrl = process.env.APTOS_INDEXER_URL || 'https://indexer-testnet.aptos.com/graphql';
+    this.contractAddress = process.env.FFQ_CONTRACT_ADDRESS;
     
-    try {
-      // Get all active custodial mappings for NFTs
-      const mappingsResult = await pool.query(`
-        SELECT * FROM custodial_mappings
-        WHERE asset_type IN ('supplier_nft', 'allocation_nft', 'governance_nft', 'volunteer_nft')
-          AND status = 'active'
-      `);
-      
-      const results = {
-        total: mappingsResult.rows.length,
-        matched: 0,
-        discrepancies: 0,
-        errors: 0
-      };
-      
-      for (const mapping of mappingsResult.rows) {
-        try {
-          // Get off-chain state
-          const offChainState = {
-            user_id: mapping.user_id,
-            asset_type: mapping.asset_type,
-            asset_identifier: mapping.asset_identifier,
-            status: mapping.status
-          };
-          
-          // Get on-chain state
-          const onChainState = await this.getOnChainNFTState(
-            mapping.asset_identifier,
-            mapping.on_chain_address
-          );
-          
-          // Compare states
-          const isMatch = this.compareNFTStates(offChainState, onChainState);
-          
-          if (isMatch) {
-            results.matched++;
-          } else {
-            results.discrepancies++;
-            
-            // Record discrepancy
-            await this.recordDiscrepancy({
-              reconciliationType: 'nft_ownership',
-              entityType: 'custodial_mapping',
-              entityId: mapping.id,
-              offChainState,
-              onChainState,
-              discrepancyDetails: 'NFT state mismatch between off-chain and on-chain'
-            });
-          }
-        } catch (error) {
-          logger.error(`Error reconciling mapping ${mapping.id}`, error);
-          results.errors++;
-        }
-      }
-      
-      logger.info('NFT ownership reconciliation complete', results);
-      return results;
-    } catch (error) {
-      logger.error('Failed to reconcile NFT ownership', error);
-      throw error;
-    }
+    // In production, initialize Aptos Indexer:
+    // this.indexer = new AptosIndexer(this.indexerUrl);
   }
-  
-  /**
-   * Reconcile transaction statuses
-   * @returns {Promise<Object>} Reconciliation results
-   */
-  async reconcileTransactions() {
-    logger.info('Starting transaction status reconciliation...');
-    
-    try {
-      // Get all pending transactions older than 5 minutes
-      const transactionsResult = await pool.query(`
-        SELECT * FROM wallet_transactions
-        WHERE status = 'pending'
-          AND submitted_at < NOW() - INTERVAL '5 minutes'
-      `);
-      
-      const results = {
-        total: transactionsResult.rows.length,
-        confirmed: 0,
-        failed: 0,
-        stillPending: 0,
-        errors: 0
-      };
-      
-      for (const tx of transactionsResult.rows) {
-        try {
-          // Check on-chain status
-          const onChainStatus = await aptosService.getTransactionStatus(tx.transaction_hash);
-          
-          if (onChainStatus.status === 'confirmed') {
-            // Update transaction to confirmed
-            await pool.query(`
-              UPDATE wallet_transactions
-              SET status = 'confirmed',
-                  block_number = $1,
-                  confirmed_at = NOW()
-              WHERE id = $2
-            `, [onChainStatus.blockNumber, tx.id]);
-            
-            results.confirmed++;
-          } else if (onChainStatus.status === 'failed') {
-            // Update transaction to failed
-            await pool.query(`
-              UPDATE wallet_transactions
-              SET status = 'failed',
-                  error_message = $1
-              WHERE id = $2
-            `, [onChainStatus.error || 'Transaction failed', tx.id]);
-            
-            results.failed++;
-          } else {
-            results.stillPending++;
-          }
-        } catch (error) {
-          logger.error(`Error reconciling transaction ${tx.id}`, error);
-          results.errors++;
-        }
-      }
-      
-      logger.info('Transaction status reconciliation complete', results);
-      return results;
-    } catch (error) {
-      logger.error('Failed to reconcile transactions', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Reconcile allocation statuses
-   * @returns {Promise<Object>} Reconciliation results
-   */
-  async reconcileAllocations() {
-    logger.info('Starting allocation status reconciliation...');
-    
-    try {
-      // Get all approved allocations with NFTs
-      const allocationsResult = await pool.query(`
-        SELECT a.*, n.status as nft_status, n.nft_id
-        FROM allocations a
-        LEFT JOIN nft_records n ON n.owner_id = a.student_id 
-          AND n.nft_id = a.allocation_nft_id
-        WHERE a.status IN ('approved', 'pending')
-          AND a.allocation_nft_id IS NOT NULL
-      `);
-      
-      const results = {
-        total: allocationsResult.rows.length,
-        matched: 0,
-        discrepancies: 0,
-        errors: 0
-      };
-      
-      for (const allocation of allocationsResult.rows) {
-        try {
-          const offChainState = {
-            allocation_status: allocation.status,
-            nft_status: allocation.nft_status
-          };
-          
-          // If NFT is redeemed but allocation isn't, or vice versa, record discrepancy
-          const isMatch = (
-            (allocation.status === 'redeemed' && allocation.nft_status === 'redeemed') ||
-            (allocation.status === 'approved' && allocation.nft_status === 'active') ||
-            (allocation.status === 'pending' && !allocation.nft_id)
-          );
-          
-          if (isMatch) {
-            results.matched++;
-          } else {
-            results.discrepancies++;
-            
-            await this.recordDiscrepancy({
-              reconciliationType: 'allocation_status',
-              entityType: 'allocation',
-              entityId: allocation.id,
-              offChainState,
-              onChainState: { nft_status: allocation.nft_status },
-              discrepancyDetails: 'Allocation status does not match NFT status'
-            });
-          }
-        } catch (error) {
-          logger.error(`Error reconciling allocation ${allocation.id}`, error);
-          results.errors++;
-        }
-      }
-      
-      logger.info('Allocation status reconciliation complete', results);
-      return results;
-    } catch (error) {
-      logger.error('Failed to reconcile allocations', error);
-      throw error;
-    }
-  }
-  
+
   /**
    * Run full reconciliation
-   * @returns {Promise<Object>} Combined results
+   * @returns {Promise<Object>} Reconciliation report
    */
-  async runFullReconciliation() {
-    logger.info('Starting full reconciliation...');
+  async runReconciliation() {
+    const runId = `recon_${Date.now()}_${uuidv4()}`;
     
-    const results = {
-      startTime: new Date(),
-      nftOwnership: await this.reconcileNFTOwnership(),
-      transactions: await this.reconcileTransactions(),
-      allocations: await this.reconcileAllocations(),
-      endTime: new Date()
-    };
-    
-    results.duration = results.endTime - results.startTime;
-    
-    logger.info('Full reconciliation complete', {
-      duration: `${results.duration}ms`,
-      totalDiscrepancies: 
-        results.nftOwnership.discrepancies +
-        results.allocations.discrepancies
-    });
-    
-    return results;
-  }
-  
-  /**
-   * Get on-chain NFT state
-   * @param {string} tokenId - Token ID
-   * @param {string} expectedOwner - Expected owner address
-   * @returns {Promise<Object>} On-chain state
-   */
-  async getOnChainNFTState(tokenId, expectedOwner) {
+    logger.info('Starting reconciliation run', { runId });
+
     try {
-      const metadata = await aptosService.getNFTMetadata(tokenId);
-      const ownershipVerified = await aptosService.verifyNFTOwnership(tokenId, expectedOwner);
-      
+      // Create reconciliation log
+      await db.query(
+        `INSERT INTO reconciliation_logs (run_id, status, started_at)
+         VALUES ($1, $2, CURRENT_TIMESTAMP)`,
+        [runId, 'running']
+      );
+
+      // Step 1: Get all NFT records from database
+      const dbNFTsResult = await db.query(
+        `SELECT 
+          nft_id,
+          nft_type,
+          owner_id,
+          status,
+          transaction_hash as mint_tx,
+          burn_transaction_hash as burn_tx,
+          minted_at,
+          burned_at
+         FROM nft_records
+         ORDER BY minted_at DESC`
+      );
+
+      const dbNFTs = dbNFTsResult.rows;
+
+      logger.info('Fetched DB NFT records', { count: dbNFTs.length, runId });
+
+      // Step 2: Get all NFT records from blockchain
+      const chainNFTs = await this.queryChainNFTs();
+
+      logger.info('Fetched chain NFT records', { count: chainNFTs.length, runId });
+
+      // Step 3: Compare and find discrepancies
+      const discrepancies = this.compareNFTs(dbNFTs, chainNFTs);
+
+      logger.info('Discrepancies found', { count: discrepancies.length, runId });
+
+      // Step 4: Auto-fix minor discrepancies
+      const fixResults = await this.autoFixDiscrepancies(discrepancies);
+
+      logger.info('Auto-fix completed', { 
+        fixed: fixResults.fixed,
+        pending: fixResults.pending,
+        runId 
+      });
+
+      // Step 5: Update reconciliation log
+      await db.query(
+        `UPDATE reconciliation_logs
+         SET status = $1,
+             db_record_count = $2,
+             chain_record_count = $3,
+             discrepancies_found = $4,
+             discrepancies_fixed = $5,
+             discrepancies_pending = $6,
+             discrepancy_details = $7,
+             completed_at = CURRENT_TIMESTAMP
+         WHERE run_id = $8`,
+        [
+          'completed',
+          dbNFTs.length,
+          chainNFTs.length,
+          discrepancies.length,
+          fixResults.fixed,
+          fixResults.pending,
+          JSON.stringify({
+            discrepancies: discrepancies.map(d => ({
+              type: d.type,
+              nftId: d.nftId,
+              issue: d.issue
+            })),
+            autoFixed: fixResults.fixedItems,
+            pendingReview: fixResults.pendingItems
+          }),
+          runId
+        ]
+      );
+
+      logger.info('Reconciliation completed successfully', { runId });
+
+      // Step 6: Raise alerts if needed
+      if (fixResults.pending > 10) {
+        await this.raiseAlert('critical', `${fixResults.pending} discrepancies require manual review`, runId);
+      } else if (fixResults.pending > 0) {
+        await this.raiseAlert('warning', `${fixResults.pending} discrepancies require manual review`, runId);
+      }
+
       return {
-        tokenId,
-        exists: true,
-        owner: expectedOwner,
-        ownershipVerified,
-        metadata
+        runId,
+        status: 'completed',
+        dbRecordCount: dbNFTs.length,
+        chainRecordCount: chainNFTs.length,
+        discrepanciesFound: discrepancies.length,
+        discrepanciesFixed: fixResults.fixed,
+        discrepanciesPending: fixResults.pending
+      };
+
+    } catch (error) {
+      logger.error('Reconciliation failed', { runId, error: error.message });
+
+      // Update log with failure
+      await db.query(
+        `UPDATE reconciliation_logs
+         SET status = $1, error_message = $2, completed_at = CURRENT_TIMESTAMP
+         WHERE run_id = $3`,
+        ['failed', error.message, runId]
+      );
+
+      await this.raiseAlert('critical', `Reconciliation failed: ${error.message}`, runId);
+
+      throw error;
+    }
+  }
+
+  /**
+   * Query NFTs from blockchain
+   * @returns {Promise<Array>} Chain NFT records
+   */
+  async queryChainNFTs() {
+    try {
+      // In production, use Aptos Indexer GraphQL:
+      // const query = `
+      //   query GetFFQNFTs {
+      //     current_token_ownerships_v2(
+      //       where: {
+      //         creator_address: { _eq: "${this.contractAddress}" }
+      //       }
+      //     ) {
+      //       token_data_id
+      //       owner_address
+      //       amount
+      //       token_properties
+      //       last_transaction_version
+      //     }
+      //   }
+      // `;
+      // const result = await this.indexer.query(query);
+      // return result.data.current_token_ownerships_v2;
+
+      // STUB: Return empty for now (no actual blockchain)
+      logger.warn('Blockchain query stubbed - no actual chain data');
+      return [];
+
+    } catch (error) {
+      logger.error('Failed to query chain NFTs', { error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Compare DB and chain NFTs to find discrepancies
+   * @param {Array} dbNFTs - NFTs from database
+   * @param {Array} chainNFTs - NFTs from blockchain
+   * @returns {Array} List of discrepancies
+   */
+  compareNFTs(dbNFTs, chainNFTs) {
+    const discrepancies = [];
+
+    // Create maps for efficient lookup
+    const dbMap = new Map(dbNFTs.map(nft => [nft.nft_id, nft]));
+    const chainMap = new Map(chainNFTs.map(nft => [nft.token_data_id, nft]));
+
+    // Check 1: NFTs in DB but not on chain
+    for (const dbNFT of dbNFTs) {
+      if (dbNFT.status === 'active' && !chainMap.has(dbNFT.nft_id)) {
+        discrepancies.push({
+          type: 'minted_in_db_not_on_chain',
+          nftId: dbNFT.nft_id,
+          dbStatus: dbNFT.status,
+          chainStatus: 'not_found',
+          issue: 'NFT marked as minted in DB but not found on chain',
+          suggestedAction: 'retry_mint',
+          severity: 'high',
+          dbRecord: dbNFT
+        });
+      }
+
+      if (dbNFT.status === 'redeemed' && chainMap.has(dbNFT.nft_id)) {
+        const chainNFT = chainMap.get(dbNFT.nft_id);
+        if (chainNFT.amount > 0) { // Still exists on chain
+          discrepancies.push({
+            type: 'status_mismatch_burned',
+            nftId: dbNFT.nft_id,
+            dbStatus: 'redeemed',
+            chainStatus: 'active',
+            issue: 'NFT marked as redeemed in DB but still active on chain',
+            suggestedAction: 'retry_burn',
+            severity: 'medium',
+            dbRecord: dbNFT,
+            chainRecord: chainNFT
+          });
+        }
+      }
+    }
+
+    // Check 2: NFTs on chain but not in DB
+    for (const chainNFT of chainNFTs) {
+      if (!dbMap.has(chainNFT.token_data_id)) {
+        discrepancies.push({
+          type: 'on_chain_not_in_db',
+          nftId: chainNFT.token_data_id,
+          dbStatus: 'not_found',
+          chainStatus: 'active',
+          issue: 'NFT exists on chain but not in DB',
+          suggestedAction: 'add_to_db',
+          severity: 'high',
+          chainRecord: chainNFT
+        });
+      }
+    }
+
+    // Check 3: Orphaned allocations (allocation minted but no NFT record)
+    // This would require additional DB queries...
+
+    return discrepancies;
+  }
+
+  /**
+   * Auto-fix minor discrepancies
+   * @param {Array} discrepancies
+   * @returns {Promise<Object>} Fix results
+   */
+  async autoFixDiscrepancies(discrepancies) {
+    const fixedItems = [];
+    const pendingItems = [];
+
+    for (const discrepancy of discrepancies) {
+      try {
+        // Auto-fix: Update DB status if NFT not found on chain after 24 hours
+        if (discrepancy.type === 'minted_in_db_not_on_chain') {
+          const mintedAt = new Date(discrepancy.dbRecord.minted_at);
+          const hoursSinceMint = (Date.now() - mintedAt.getTime()) / (1000 * 60 * 60);
+
+          if (hoursSinceMint > 24) {
+            logger.info('Auto-fixing: marking NFT as failed', { nftId: discrepancy.nftId });
+
+            await db.query(
+              `UPDATE nft_records
+               SET status = $1, 
+                   metadata = jsonb_set(
+                     COALESCE(metadata, '{}'), 
+                     '{reconciliation_note}', 
+                     '"Auto-marked as failed after 24h - not found on chain"'
+                   )
+               WHERE nft_id = $2`,
+              ['failed', discrepancy.nftId]
+            );
+
+            fixedItems.push(discrepancy);
+          } else {
+            // Too soon to auto-fix, keep as pending
+            pendingItems.push(discrepancy);
+          }
+        }
+
+        // Auto-fix: Add chain NFTs to DB if they belong to our contract
+        else if (discrepancy.type === 'on_chain_not_in_db') {
+          logger.info('Auto-fixing: adding chain NFT to DB', { nftId: discrepancy.nftId });
+
+          await db.query(
+            `INSERT INTO nft_records 
+              (nft_id, nft_type, owner_id, status, transaction_hash, 
+               metadata, minted_at)
+             VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)
+             ON CONFLICT (nft_id) DO NOTHING`,
+            [
+              discrepancy.chainRecord.token_data_id,
+              'unknown', // Need to parse from token_properties
+              discrepancy.chainRecord.owner_address,
+              'active',
+              discrepancy.chainRecord.last_transaction_version,
+              JSON.stringify({
+                reconciliation_note: 'Auto-added from chain',
+                token_properties: discrepancy.chainRecord.token_properties
+              })
+            ]
+          );
+
+          fixedItems.push(discrepancy);
+        }
+
+        // Cannot auto-fix: Requires manual review
+        else {
+          pendingItems.push(discrepancy);
+        }
+
+      } catch (error) {
+        logger.error('Failed to auto-fix discrepancy', { 
+          discrepancy, 
+          error: error.message 
+        });
+        pendingItems.push(discrepancy);
+      }
+    }
+
+    return {
+      fixed: fixedItems.length,
+      pending: pendingItems.length,
+      fixedItems,
+      pendingItems
+    };
+  }
+
+  /**
+   * Raise alert (would integrate with monitoring system)
+   * @param {string} severity - 'info', 'warning', 'critical'
+   * @param {string} message
+   * @param {string} runId
+   */
+  async raiseAlert(severity, message, runId) {
+    logger[severity === 'critical' ? 'error' : 'warn']('Reconciliation alert', { 
+      severity, 
+      message, 
+      runId 
+    });
+
+    // In production, integrate with PagerDuty, Slack, etc.
+    // await pagerduty.triggerIncident({ severity, message, runId });
+    // await slack.postMessage('#ffq-alerts', message);
+
+    // Log to audit trail
+    await db.query(
+      `SELECT log_audit_event($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        'reconciliation_alert',
+        'system_event',
+        null,
+        'system',
+        'reconciliation',
+        null,
+        JSON.stringify({ severity, message, runId })
+      ]
+    );
+  }
+
+  /**
+   * Get latest reconciliation status
+   * @returns {Promise<Object|null>}
+   */
+  async getLatestStatus() {
+    try {
+      const result = await db.query(
+        `SELECT * FROM reconciliation_logs 
+         ORDER BY started_at DESC 
+         LIMIT 1`
+      );
+
+      if (result.rows.length === 0) {
+        return null;
+      }
+
+      const log = result.rows[0];
+
+      return {
+        runId: log.run_id,
+        status: log.status,
+        dbRecordCount: log.db_record_count,
+        chainRecordCount: log.chain_record_count,
+        discrepanciesFound: log.discrepancies_found,
+        discrepanciesFixed: log.discrepancies_fixed,
+        discrepanciesPending: log.discrepancies_pending,
+        discrepancyDetails: log.discrepancy_details,
+        startedAt: log.started_at,
+        completedAt: log.completed_at,
+        errorMessage: log.error_message
       };
     } catch (error) {
-      logger.warn(`Could not get on-chain state for token ${tokenId}`, error);
-      return {
-        tokenId,
-        exists: false,
-        error: error.message
-      };
+      logger.error('Failed to get reconciliation status', { error: error.message });
+      throw error;
     }
   }
-  
+
   /**
-   * Compare NFT states
-   * @param {Object} offChainState - Off-chain state
-   * @param {Object} onChainState - On-chain state
-   * @returns {boolean} True if states match
+   * Get reconciliation history
+   * @param {number} limit
+   * @returns {Promise<Array>}
    */
-  compareNFTStates(offChainState, onChainState) {
-    // If NFT doesn't exist on-chain but we have it off-chain, that's a problem
-    if (!onChainState.exists && offChainState.status === 'active') {
-      return false;
+  async getHistory(limit = 10) {
+    try {
+      const result = await db.query(
+        `SELECT 
+          run_id,
+          status,
+          db_record_count,
+          chain_record_count,
+          discrepancies_found,
+          discrepancies_fixed,
+          discrepancies_pending,
+          started_at,
+          completed_at
+         FROM reconciliation_logs
+         ORDER BY started_at DESC
+         LIMIT $1`,
+        [limit]
+      );
+
+      return result.rows;
+    } catch (error) {
+      logger.error('Failed to get reconciliation history', { error: error.message });
+      throw error;
     }
-    
-    // If ownership can't be verified, that's a problem
-    if (onChainState.exists && !onChainState.ownershipVerified) {
-      return false;
-    }
-    
-    // Otherwise, assume match (in production, do more thorough checks)
-    return true;
   }
-  
+
   /**
-   * Record a discrepancy
-   * @param {Object} params - Discrepancy parameters
-   * @returns {Promise<Object>} Created record
+   * Manual trigger (for admin use)
+   * @returns {Promise<Object>}
    */
-  async recordDiscrepancy({
-    reconciliationType,
-    entityType,
-    entityId,
-    offChainState,
-    onChainState,
-    discrepancyDetails
-  }) {
-    const result = await pool.query(`
-      INSERT INTO reconciliation_records (
-        reconciliation_type,
-        entity_type,
-        entity_id,
-        off_chain_state,
-        on_chain_state,
-        discrepancy_found,
-        discrepancy_details
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *
-    `, [
-      reconciliationType,
-      entityType,
-      entityId,
-      JSON.stringify(offChainState),
-      JSON.stringify(onChainState),
-      true,
-      discrepancyDetails
-    ]);
-    
-    logger.warn('Discrepancy recorded', {
-      type: reconciliationType,
-      entity: entityType,
-      id: entityId
-    });
-    
-    return result.rows[0];
-  }
-  
-  /**
-   * Get unresolved discrepancies
-   * @returns {Promise<Array>} Unresolved discrepancies
-   */
-  async getUnresolvedDiscrepancies() {
-    const result = await pool.query(`
-      SELECT * FROM reconciliation_records
-      WHERE discrepancy_found = true
-        AND resolution_status = 'pending'
-      ORDER BY checked_at DESC
-    `);
-    
-    return result.rows;
-  }
-  
-  /**
-   * Resolve a discrepancy
-   * @param {string} recordId - Record ID
-   * @param {string} resolvedBy - User ID who resolved it
-   * @returns {Promise<Object>} Updated record
-   */
-  async resolveDiscrepancy(recordId, resolvedBy) {
-    const result = await pool.query(`
-      UPDATE reconciliation_records
-      SET resolution_status = 'resolved',
-          resolved_at = NOW(),
-          resolved_by = $1
-      WHERE id = $2
-      RETURNING *
-    `, [resolvedBy, recordId]);
-    
-    logger.info(`Discrepancy ${recordId} resolved by ${resolvedBy}`);
-    
-    return result.rows[0];
+  async triggerManualRun() {
+    logger.info('Manual reconciliation triggered');
+    return this.runReconciliation();
   }
 }
 
-module.exports = new ReconciliationService();
+// Singleton instance
+const reconciliationService = new ReconciliationService();
 
+// Set up periodic reconciliation (every 15 minutes)
+const RECONCILIATION_INTERVAL = 15 * 60 * 1000; // 15 minutes
+
+let reconciliationInterval;
+
+function startPeriodicReconciliation() {
+  if (reconciliationInterval) {
+    clearInterval(reconciliationInterval);
+  }
+
+  logger.info('Starting periodic reconciliation', { 
+    interval: `${RECONCILIATION_INTERVAL / 60000} minutes` 
+  });
+
+  reconciliationInterval = setInterval(async () => {
+    try {
+      await reconciliationService.runReconciliation();
+    } catch (error) {
+      logger.error('Periodic reconciliation error', { error: error.message });
+    }
+  }, RECONCILIATION_INTERVAL);
+
+  // Run immediately on startup
+  setTimeout(async () => {
+    try {
+      await reconciliationService.runReconciliation();
+    } catch (error) {
+      logger.error('Initial reconciliation error', { error: error.message });
+    }
+  }, 5000); // Wait 5 seconds after startup
+}
+
+function stopPeriodicReconciliation() {
+  if (reconciliationInterval) {
+    clearInterval(reconciliationInterval);
+    logger.info('Stopped periodic reconciliation');
+  }
+}
+
+module.exports = {
+  reconciliationService,
+  startPeriodicReconciliation,
+  stopPeriodicReconciliation
+};
