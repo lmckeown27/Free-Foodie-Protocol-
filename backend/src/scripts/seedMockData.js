@@ -523,33 +523,129 @@ const seedMockData = async () => {
     // 5. CREATE VOLUNTEER HOURS & NFTs
     // ============================================
     
-    // Give some students volunteer hours
-    for (let i = 0; i < 10; i++) {
-      const hours = Math.floor(Math.random() * 30) + 5;
-      const tier = hours >= 50 ? 'platinum' : hours >= 30 ? 'gold' : hours >= 15 ? 'silver' : 'bronze';
+    const volunteerActivityTypes = [
+      'Pantry Assistance',
+      'Food Sorting',
+      'Distribution Support',
+      'Community Outreach',
+      'Event Setup',
+      'Inventory Management',
+      'Student Mentoring',
+      'Fundraising Events'
+    ];
+    
+    const volunteerDescriptions = {
+      'Pantry Assistance': 'Helped organize food donations and assist with distribution',
+      'Food Sorting': 'Sorted and categorized incoming food donations by type and expiration',
+      'Distribution Support': 'Assisted students during food pickup hours',
+      'Community Outreach': 'Promoted FFQ services at campus events and student organizations',
+      'Event Setup': 'Set up tables, chairs, and signage for food distribution events',
+      'Inventory Management': 'Updated inventory records and organized storage areas',
+      'Student Mentoring': 'Trained new student volunteers on pantry procedures',
+      'Fundraising Events': 'Participated in fundraising events for pantry supplies'
+    };
+    
+    // Create comprehensive volunteer data for 15 students
+    // Pattern: Some students have lots of hours (platinum/gold), others have fewer (silver/bronze)
+    const studentVolunteerProfiles = [
+      { studentIdx: 0, totalHours: 32, activities: 6 },  // Test user - Gold tier
+      { studentIdx: 1, totalHours: 55, activities: 8 },  // Platinum tier
+      { studentIdx: 2, totalHours: 42, activities: 7 },  // Gold tier
+      { studentIdx: 3, totalHours: 28, activities: 5 },  // Silver tier (close to gold)
+      { studentIdx: 4, totalHours: 18, activities: 4 },  // Silver tier
+      { studentIdx: 5, totalHours: 12, activities: 3 },  // Bronze tier
+      { studentIdx: 6, totalHours: 8, activities: 2 },   // Bronze tier
+      { studentIdx: 7, totalHours: 35, activities: 6 },  // Gold tier
+      { studentIdx: 8, totalHours: 22, activities: 5 },  // Silver tier
+      { studentIdx: 9, totalHours: 6, activities: 2 },   // Bronze tier
+      { studentIdx: 10, totalHours: 45, activities: 7 }, // Gold tier
+      { studentIdx: 11, totalHours: 16, activities: 4 }, // Silver tier
+      { studentIdx: 12, totalHours: 9, activities: 3 },  // Bronze tier
+      { studentIdx: 13, totalHours: 60, activities: 9 }, // Platinum tier
+      { studentIdx: 14, totalHours: 14, activities: 3 }  // Bronze tier
+    ];
+    
+    for (const profile of studentVolunteerProfiles) {
+      const studentId = studentIds[profile.studentIdx];
+      const totalHours = profile.totalHours;
+      const numActivities = profile.activities;
       
-      // Log volunteer hours
-      await client.query(`
-        INSERT INTO volunteer_hours (
-          student_id,
-          activity_type,
-          hours,
-          description,
-          date,
-          status,
-          verified_by,
-          verified_at
-        ) VALUES ($1, $2, $3, $4, CURRENT_DATE - ${Math.floor(Math.random() * 30)}, 'verified', $5, NOW())
-      `, [
-        studentIds[i],
-        'Pantry Assistance',
-        hours,
-        'Helped organize food donations and assist with distribution',
-        pantryIds[0]
-      ]);
+      // Distribute hours across multiple volunteer sessions
+      let remainingHours = totalHours;
+      const sessions = [];
       
-      // Mint volunteer NFT if threshold reached
-      if (hours >= 5) {
+      for (let j = 0; j < numActivities; j++) {
+        const isLastSession = j === numActivities - 1;
+        const sessionHours = isLastSession 
+          ? remainingHours 
+          : Math.min(
+              Math.floor(Math.random() * 8) + 2, // 2-10 hours per session
+              remainingHours - (numActivities - j - 1) * 2 // Ensure enough left for remaining sessions
+            );
+        
+        const activityType = volunteerActivityTypes[Math.floor(Math.random() * volunteerActivityTypes.length)];
+        const daysAgo = Math.floor(Math.random() * 60) + (numActivities - j) * 5; // Older sessions first
+        
+        sessions.push({
+          hours: sessionHours,
+          activityType,
+          daysAgo,
+          status: 'verified' // All historical sessions are verified
+        });
+        
+        remainingHours -= sessionHours;
+      }
+      
+      // Insert all volunteer hour records
+      for (const session of sessions) {
+        await client.query(`
+          INSERT INTO volunteer_hours (
+            student_id,
+            activity_type,
+            hours,
+            description,
+            date,
+            status,
+            verified_by,
+            verified_at
+          ) VALUES ($1, $2, $3, $4, CURRENT_DATE - INTERVAL '${session.daysAgo} days', $5, $6, NOW() - INTERVAL '${session.daysAgo - 1} days')
+        `, [
+          studentId,
+          session.activityType,
+          session.hours,
+          volunteerDescriptions[session.activityType],
+          session.status,
+          pantryIds[Math.floor(Math.random() * pantryIds.length)]
+        ]);
+      }
+      
+      // Calculate tier based on total hours
+      let currentTier = null;
+      let nftsMinted = [];
+      
+      if (totalHours >= 50) {
+        currentTier = 'platinum';
+        nftsMinted = ['bronze', 'silver', 'gold', 'platinum'];
+      } else if (totalHours >= 30) {
+        currentTier = 'gold';
+        nftsMinted = ['bronze', 'silver', 'gold'];
+      } else if (totalHours >= 15) {
+        currentTier = 'silver';
+        nftsMinted = ['bronze', 'silver'];
+      } else if (totalHours >= 5) {
+        currentTier = 'bronze';
+        nftsMinted = ['bronze'];
+      }
+      
+      // Mint all milestone NFTs earned
+      for (let k = 0; k < nftsMinted.length; k++) {
+        const tier = nftsMinted[k];
+        const tierHours = tier === 'platinum' ? 50 : tier === 'gold' ? 30 : tier === 'silver' ? 15 : 5;
+        const tierRequired = tier === 'platinum' ? 50 : tier === 'gold' ? 30 : tier === 'silver' ? 15 : 5;
+        
+        // Estimate when this tier was reached (spread out over time)
+        const daysAgoMinted = Math.floor((nftsMinted.length - k) * 20 + Math.random() * 10);
+        
         await client.query(`
           INSERT INTO volunteer_nfts (
             student_id,
@@ -558,21 +654,78 @@ const seedMockData = async () => {
             hours_required,
             hours_at_mint,
             transaction_hash,
-            metadata
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+            metadata,
+            minted_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, NOW() - INTERVAL '${daysAgoMinted} days')
         `, [
-          studentIds[i],
-          `VOLUNTEER_NFT_${tier}_${studentIds[i]}`,
+          studentId,
+          `VOLUNTEER_NFT_${tier.toUpperCase()}_${studentId}_${k}`,
           tier,
-          tier === 'platinum' ? 50 : tier === 'gold' ? 30 : tier === 'silver' ? 15 : 5,
-          hours,
-          `0xtx_volunteer_${Date.now()}`,
-          JSON.stringify({ tier, hours, student_id: studentIds[i] })
+          tierRequired,
+          tierHours, // Hours at time of minting this tier
+          `0xtx_volunteer_${tier}_${Date.now()}_${k}`,
+          JSON.stringify({
+            tier,
+            hours_at_mint: tierHours,
+            current_total_hours: totalHours,
+            student_id: studentId,
+            milestone: `${tierRequired} Hours`,
+            activity_count: numActivities
+          })
+        ]);
+        
+        // Also create NFT record in nft_records table
+        await client.query(`
+          INSERT INTO nft_records (
+            nft_type,
+            nft_id,
+            owner_id,
+            metadata,
+            status,
+            transaction_hash,
+            minted_at
+          ) VALUES ('volunteer', $1, $2, $3, 'active', $4, NOW() - INTERVAL '${daysAgoMinted} days')
+        `, [
+          `VOLUNTEER_NFT_${tier.toUpperCase()}_${studentId}_${k}`,
+          studentId,
+          JSON.stringify({
+            tier,
+            hours_at_mint: tierHours,
+            milestone: `${tierRequired} Hours`,
+            activity_type: 'volunteer_badge',
+            nft_name: `${tier.charAt(0).toUpperCase() + tier.slice(1)} Service Badge`
+          }),
+          `0xtx_volunteer_${tier}_${Date.now()}_${k}`
         ]);
       }
+      
+      logger.info(`Created ${sessions.length} volunteer sessions and ${nftsMinted.length} NFTs for student ${profile.studentIdx} (${totalHours} hours, ${currentTier} tier)`);
     }
     
-    logger.info('Created volunteer hours and NFTs');
+    // Add a few pending volunteer hours (not yet verified)
+    for (let i = 0; i < 3; i++) {
+      const studentId = studentIds[15 + i];
+      const activityType = volunteerActivityTypes[Math.floor(Math.random() * volunteerActivityTypes.length)];
+      const hours = Math.floor(Math.random() * 4) + 2; // 2-6 hours
+      
+      await client.query(`
+        INSERT INTO volunteer_hours (
+          student_id,
+          activity_type,
+          hours,
+          description,
+          date,
+          status
+        ) VALUES ($1, $2, $3, $4, CURRENT_DATE - INTERVAL '${Math.floor(Math.random() * 7)} days', 'pending')
+      `, [
+        studentId,
+        activityType,
+        hours,
+        volunteerDescriptions[activityType]
+      ]);
+    }
+    
+    logger.info('Created comprehensive volunteer hours and NFTs for 15 students with milestone progression');
     
     // ============================================
     // 6. CREATE ALLOCATIONS
