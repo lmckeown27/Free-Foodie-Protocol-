@@ -203,7 +203,7 @@ const UserDetailPage = () => {
                     </div>
                     <div className="ml-4 flex-1">
                       <p className="font-semibold text-gray-900 capitalize">{nft.nft_type} NFT</p>
-                      <p className="text-xs text-gray-500 font-mono">{nft.nft_id.substring(0, 40)}...</p>
+                      <p className="text-xs text-gray-500 font-mono break-all">{nft.nft_id}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
