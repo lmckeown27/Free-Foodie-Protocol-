@@ -11,28 +11,28 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           steps: [
             {
               number: 1,
-              title: 'Connect Multi-Sig Petra Wallet',
-              description: 'Set up a Petra Vault multi-sig wallet with co-signers. Define approval threshold (e.g., 2-of-3) for secure operations and governance.'
+              title: 'Connect Your Secure Account',
+              description: 'Set up your Pantry account with team verification. Multiple team members can approve important decisions together (like adding new suppliers).'
             },
             {
               number: 2,
-              title: 'Verify & Approve Supplier',
-              description: 'Review supplier applications and business credentials. Mint Supplier NFTs on Aptos blockchain to grant verified access to the platform.'
+              title: 'Review & Approve Suppliers',
+              description: 'Check supplier applications and business info. Click "Approve" to give them verified access to donate food. We handle all the technical verification automatically.'
             },
             {
               number: 3,
-              title: 'Custodial Wallet & NFT Operations',
-              description: 'Hold a custodial wallet that executes blockchain transactions on behalf of students. Issue Governance NFTs (voting), Allocation NFTs (claims), and handle all on-chain operations for simplified student UX.'
+              title: 'Manage Student Records',
+              description: 'Your account manages all student records securely. When students vote or volunteer, we automatically track their participation. No technical work needed from students or you.'
             },
             {
               number: 4,
-              title: 'Allocate Food with POAS',
-              description: 'Use POAS (Predicted Optimal Allocation Score) reports to guide fair food distribution. Accept donations, manage inventory, and allocate items to students.'
+              title: 'Allocate Food Fairly',
+              description: 'Our system recommends which students should get food based on need, participation, and volunteering. Review the recommendations and click "Allocate" to assign food.'
             },
             {
               number: 5,
-              title: 'Verify Pickups & Monitor Compliance',
-              description: 'Scan student Allocation NFTs at pickup to confirm food distribution. Track analytics, audit logs, and ensure VLCP compliance with auditable on-chain records.'
+              title: 'Verify Pickups & Track Everything',
+              description: 'Scan student pickup tickets when they collect food. View real-time reports on donations, distributions, and impact. Everything is automatically tracked and saved.'
             }
           ]
         };
@@ -44,22 +44,22 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             {
               number: 1,
               title: 'Apply & Get Approved',
-              description: 'Submit application with business credentials. Pantry verifies and mints your Supplier NFT on Aptos via their custodial wallet. No wallet connection needed!'
+              description: 'Fill out a simple application with your business info. The Pantry team reviews and approves you—usually within 24 hours. Once approved, you can start donating!'
             },
             {
               number: 2,
-              title: 'Log Donations',
-              description: 'Log available food donations with weight, type, and location through the web portal. All blockchain transactions (NFT minting, on-chain receipts) are handled automatically by the Pantry\'s custodial wallet.'
+              title: 'Log Your Donations',
+              description: 'Enter what food you want to donate: item name, weight, and how many. Click "Submit" and you\'re done! We handle all the record-keeping automatically.'
             },
             {
               number: 3,
-              title: 'Blockchain Verification',
-              description: 'Pantry\'s custodial wallet records your donation on Aptos blockchain. You receive a blockchain-verified donation receipt (Supplier NFT transaction) for tax purposes and compliance, without needing to manage crypto.'
+              title: 'Get Your Receipt',
+              description: 'Every donation gets a verified digital receipt instantly. Use these receipts for tax write-offs and compliance reports. Everything is tracked and secure.'
             },
             {
               number: 4,
-              title: 'Track Impact & Governance',
-              description: 'View real-time metrics (pounds donated, meals saved, CO₂ reduced) on your dashboard. Participate in governance votes (20% voting weight) on logistics and distribution policies—all off-chain with Pantry executing multi-sig decisions.'
+              title: 'See Your Impact',
+              description: 'Watch your dashboard to see total pounds donated, students helped, and environmental impact. Track where your food goes and when it\'s picked up.'
             }
           ]
         };
@@ -70,28 +70,28 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           steps: [
             {
               number: 1,
-              title: 'Sign Up with Student ID',
-              description: 'Students log in using Cal Poly ID. Receive Governance Tokens by voting on demand and volunteering.'
+              title: 'Sign Up with Your Student ID',
+              description: 'Log in with your school ID. That\'s it! You\'re automatically registered and can start using the food pantry right away.'
             },
             {
               number: 2,
-              title: 'Check Inventory & Vote',
-              description: 'Access real-time pantry inventory. Vote on desired items to generate tokens that regulate allocation.'
+              title: 'Vote on Proposals',
+              description: 'The Pantry asks students to vote on changes (like "Should we add more vegan options?"). Vote on what matters to you. Each vote boosts your food priority by 35%!'
             },
             {
               number: 3,
-              title: 'Bid on Food Allocation',
-              description: 'Use earned Governance Tokens to bid on available items. POAS ensures equitable distribution.'
+              title: 'Volunteer to Increase Priority',
+              description: 'Help out at the pantry and log your hours. Volunteering gives you even higher priority for food allocation. More help = more priority!'
             },
             {
               number: 4,
-              title: 'Pickup & Confirmation',
-              description: 'Students receive pickup notification with confirmation number. Go to pantry, pick up allocation, and Pantry Worker closes contract on-chain.'
+              title: 'Get Your Pickup Notification',
+              description: 'When food is available for you, we\'ll notify you with a pickup ticket. Bring your student ID to the pantry during operating hours.'
             },
             {
               number: 5,
-              title: 'Track Your Tokens',
-              description: 'Governance Tokens are redeemable for future allocations. Students can see voting history, allocation success, and system participation metrics.'
+              title: 'Pick Up Your Food',
+              description: 'Show your pickup ticket at the pantry. The team will scan it and give you your food. That\'s it! Your pickup is recorded automatically.'
             }
           ]
         };
@@ -121,13 +121,13 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
         };
       case 'pantry':
         return {
-          bg: 'bg-purple-100',
-          bgDark: 'bg-purple-50',
-          border: 'border-purple-200',
-          circle: 'bg-purple-600',
-          circleHover: 'hover:bg-purple-700',
-          text: 'text-purple-900',
-          textLight: 'text-purple-800'
+          bg: 'bg-amber-100',
+          bgDark: 'bg-amber-50',
+          border: 'border-amber-200',
+          circle: 'bg-amber-600',
+          circleHover: 'hover:bg-amber-700',
+          text: 'text-amber-900',
+          textLight: 'text-amber-800'
         };
       case 'supplier':
         return {
@@ -194,11 +194,11 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           <div className={`mt-8 p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
             <h4 className={`font-semibold ${colors.text} mb-2`}>Key Features</h4>
             <ul className={`space-y-1 text-sm ${colors.textLight}`}>
-              <li>• Blockchain-based transparency and accountability</li>
-              <li>• Real-time inventory tracking and analytics</li>
-              <li>• VLCP compliance and automated reporting</li>
-              <li>• Equitable allocation through POAS algorithm</li>
-              <li>• Liability protection under Good Samaritan Act</li>
+              <li>• Secure, tamper-proof record keeping</li>
+              <li>• Real-time food tracking and reports</li>
+              <li>• Food safety compliance built-in</li>
+              <li>• Fair distribution based on need and participation</li>
+              <li>• Legal protection for donors (Good Samaritan Act)</li>
             </ul>
           </div>
         </div>
