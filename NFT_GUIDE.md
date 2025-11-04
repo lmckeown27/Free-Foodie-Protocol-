@@ -170,7 +170,7 @@ Supplier NFTs serve as **verification badges** for approved food donors. They tr
 - **Request Fulfillment:** Receive food requests from Pantry based on student needs
 
 **Supplier Responsibilities:**
-Suppliers respond to food requests from Pantry workers:
+Supplier respond to food requests from Pantry workers:
 - Monitor dashboard for Pantry food requests
 - Fulfill requests based on availability and capacity
 - Maintain food safety and quality standards
@@ -223,7 +223,7 @@ Local Restaurant X applies to become an FFQ supplier. After Pantry verifies thei
 - All blockchain transactions handled by Pantry multi-sig
 - NFTs are mapped to student account in custodial system
 
-**For Suppliers:**
+**For Supplier:**
 - No crypto wallet needed
 - Log in with email/password
 - View Supplier NFT in dashboard
@@ -307,13 +307,13 @@ Local Restaurant X applies to become an FFQ supplier. After Pantry verifies thei
 |--------|-------------|------|
 | **Students** | 100% | Vote on all governance proposals |
 | **Pantry** | 0% (Proposal Creation) | Create and execute approved proposals |
-| **Suppliers** | 0% (Food Provision) | Fulfill Pantry food requests |
+| **Supplier** | 0% (Food Provision) | Fulfill Pantry food requests |
 
 **Decision Process:**
 1. **Proposal Creation:** Pantry workers identify needs and create governance proposals
 2. **Student Voting:** All students with Governance NFTs vote (100% weight)
 3. **Execution:** Pantry executes approved proposals via multi-sig wallet
-4. **Supplier Fulfillment:** Suppliers provide food based on Pantry requests (driven by student votes)
+4. **Supplier Fulfillment:** Supplier provide food based on Pantry requests (driven by student votes)
 
 **Proposal Types:**
 - **Food Requests:** Students vote on what foods should be requested from suppliers

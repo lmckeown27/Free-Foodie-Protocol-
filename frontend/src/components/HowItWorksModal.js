@@ -16,7 +16,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
             },
             {
               number: 2,
-              title: 'Verify & Approve Suppliers',
+              title: 'Verify & Approve Supplier',
               description: 'Review supplier applications and business credentials. Mint Supplier NFTs on Aptos blockchain to grant verified access to the platform.'
             },
             {
@@ -39,7 +39,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
 
       case 'supplier':
         return {
-          title: 'How This Works: Suppliers',
+          title: 'How This Works: Supplier',
           steps: [
             {
               number: 1,

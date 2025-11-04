@@ -14,7 +14,7 @@ Free Foodie Quest is a decentralized food pantry platform built on Aptos blockch
 - Claim allocated food
 - Receive Governance NFTs (voting rights) and Allocation NFTs (claim rights)
 
-### 2. **Suppliers** (Grey-Blue Theme)
+### 2. **Supplier** (Grey-Blue Theme)
 - Local businesses, restaurants, and food distributors
 - Donate surplus food to the pantry
 - Receive Supplier NFTs as blockchain receipts
@@ -260,7 +260,7 @@ All pickup events recorded on Aptos:
 ```
 BNI Dashboard displays real-time metrics:
 - Active Students (served via custodial wallet)
-- Verified Suppliers (Supplier NFTs issued)
+- Verified Supplier (Supplier NFTs issued)
 - Active Pantries (multi-sig vaults configured)
 - Total Donations (all food items donated)
 - Total Allocations (items allocated to students)
@@ -322,7 +322,7 @@ BNI monitors:
 ### Web2 Layer (Traditional Backend)
 ```
 PostgreSQL Database
-├── users (Students, Suppliers, Pantry Workers, BNI staff)
+├── users (Students, Supplier, Pantry Workers, BNI staff)
 ├── inventory (Donated food items)
 ├── votes (Student preferences)
 ├── allocations (Food assigned to students)
@@ -388,7 +388,7 @@ Python/Node.js Service
 ### 5. Gamification (NFT Incentives)
 - Students earn Governance NFTs by voting
 - Higher voting activity = more allocation priority
-- Suppliers earn impact metrics and recognition
+- Supplier earn impact metrics and recognition
 - Pantry Workers see efficiency metrics
 
 ---
@@ -533,7 +533,7 @@ BNI Dashboard updates:
 For questions about system flows, integration, or partnerships:
 - BNI Staff: Contact your institutional Basic Needs office
 - Developers: See README.md for technical setup
-- Suppliers: Apply through landing page at `/`
+- Supplier: Apply through landing page at `/`
 - Students: Register with Cal Poly ID at `/register`
 
 ---
@@ -545,7 +545,7 @@ For questions about system flows, integration, or partnerships:
 **Student**: Register → Vote → Receive Allocation → Show QR Code → Pick Up Food  
 **Supplier**: Apply → Get Approved → Donate Food → Track Impact  
 **Pantry Worker**: Accept Donations → View POAS → Allocate Food → Verify Pickups  
-**BNI**: Approve Suppliers → Mint NFTs → Monitor System → Generate Reports  
+**BNI**: Approve Supplier → Mint NFTs → Monitor System → Generate Reports  
 
 ### Core Principles
 

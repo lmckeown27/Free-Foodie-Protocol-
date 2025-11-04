@@ -78,7 +78,7 @@ Implements all four NFT types using Aptos Token Standard.
 
 #### Supplier NFTs
 ```move
-const SUPPLIER_COLLECTION: vector<u8> = b"FFQ_Suppliers";
+const SUPPLIER_COLLECTION: vector<u8> = b"FFQ_Supplier";
 ```
 
 #### Allocation NFTs
@@ -419,7 +419,7 @@ The backend services integrate with these contracts through:
 ```javascript
 // Mint Supplier NFT
 const mintResult = await aptosService.mintNFT({
-  collectionName: 'FFQ_Suppliers',
+  collectionName: 'FFQ_Supplier',
   tokenName: `Supplier_${userId}`,
   description: `Verified Supplier: ${businessName}`,
   uri: `https://ffq.app/nft/supplier/${userId}`,

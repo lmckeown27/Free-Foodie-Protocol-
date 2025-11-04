@@ -5,7 +5,7 @@
 
 ## Overview
 
-FFQ operates as a **Web2.5 application**: Students and Suppliers interact with a traditional web application (no wallet required), while the Pantry manages a custodial multi-sig wallet that handles all on-chain operations. This provides blockchain benefits (immutability, auditability, NFT ownership) without crypto complexity for end users.
+FFQ operates as a **Web2.5 application**: Students and Supplier interact with a traditional web application (no wallet required), while the Pantry manages a custodial multi-sig wallet that handles all on-chain operations. This provides blockchain benefits (immutability, auditability, NFT ownership) without crypto complexity for end users.
 
 ---
 
@@ -13,7 +13,7 @@ FFQ operates as a **Web2.5 application**: Students and Suppliers interact with a
 
 ### 1. User Experience Layer (Web2)
 - **Students**: Request allocations, vote on governance, log volunteer hours
-- **Suppliers**: Create donation listings, view impact metrics
+- **Supplier**: Create donation listings, view impact metrics
 - **Pantry Workers**: Approve allocations, manage inventory, sign blockchain transactions
 
 ### 2. Application Layer (Hybrid)
@@ -338,7 +338,7 @@ POST   /api/v1/suppliers/donate           Now returns jobId for mint operation
 ### 3. Access Control
 - Only Pantry role can create proposals
 - Only registered signers can approve
-- Students/Suppliers cannot view proposal details
+- Students/Supplier cannot view proposal details
 - Audit trail records all actions
 
 ### 4. Data Integrity
@@ -428,7 +428,7 @@ POST   /api/v1/suppliers/donate           Now returns jobId for mint operation
 - ✅ Students never see "blockchain" or "NFT" terminology
 - ✅ Allocations appear instant (optimistic updates)
 - ✅ QR code redemption works reliably
-- ✅ Suppliers receive verifiable tax receipts
+- ✅ Supplier receive verifiable tax receipts
 - ✅ Pantry workers can sign proposals in < 2 minutes
 
 ---

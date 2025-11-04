@@ -29,7 +29,7 @@ FFQ combines familiar web/mobile interfaces with blockchain-based governance, au
 - Manage pantry operations
 - Access operational analytics
 
-### Suppliers
+### Supplier
 - List surplus inventory
 - Track donations
 - Receive Supplier NFTs (audit record)
@@ -174,7 +174,7 @@ npx expo start
 
 1. ✅ Students can vote, view inventory, bid, and redeem allocations
 2. ✅ Pantry Workers can execute allocations and confirm redemptions
-3. ✅ Suppliers can list surplus donations with Supplier NFTs
+3. ✅ Supplier can list surplus donations with Supplier NFTs
 4. ✅ BNI custodial wallet ensures safe, compliant blockchain interactions
 5. ✅ Real-time analytics support governance and operational efficiency
 6. ✅ Full audit trail for inventory, voting, allocations, and compliance

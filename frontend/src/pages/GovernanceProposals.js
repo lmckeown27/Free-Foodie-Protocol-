@@ -144,7 +144,7 @@ const GovernanceProposals = () => {
                   <span className="font-semibold">Pantry:</span> 70% voting weight
                 </div>
                 <div>
-                  <span className="font-semibold">Suppliers:</span> 20% voting weight
+                  <span className="font-semibold">Supplier:</span> Fulfills food requests
                 </div>
                 <div>
                   <span className="font-semibold">Students:</span> 10% voting weight

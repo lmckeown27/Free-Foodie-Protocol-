@@ -77,7 +77,7 @@ const Analytics = () => {
           </div>
           
           <div className="bg-primary-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Total Suppliers</h3>
+            <h3 className="text-sm font-medium text-gray-500">Verified Supplier</h3>
             <p className="text-3xl font-bold text-blue-600 mt-2">
               {dashboard?.users?.find(u => u.role === 'supplier')?.count || 0}
             </p>

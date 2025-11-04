@@ -12,7 +12,7 @@ const PantryDashboard = () => {
   const [poasRecommendations, setPoasRecommendations] = useState([]);
   const [systemMetrics, setSystemMetrics] = useState(null);
   const [auditLogs, setAuditLogs] = useState([]);
-  const [pendingSuppliers, setPendingSuppliers] = useState([]);
+  const [pendingSupplier, setPendingSupplier] = useState([]);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
   const [volunteerStats, setVolunteerStats] = useState(null);
   const [custodialNFTs, setCustodialNFTs] = useState([]);
@@ -45,7 +45,7 @@ const PantryDashboard = () => {
       // System metrics from dashboard data
       setSystemMetrics({
         totalStudents: dashboardRes.data.data?.users?.find(u => u.role === 'student')?.count || 0,
-        totalSuppliers: dashboardRes.data.data?.users?.find(u => u.role === 'supplier')?.count || 0,
+        totalSupplier: dashboardRes.data.data?.users?.find(u => u.role === 'supplier')?.count || 0,
         totalDonations: dashboardRes.data.data?.total_donations || 0,
         totalAllocations: dashboardRes.data.data?.total_allocations || 0,
         totalTransactions: dashboardRes.data.data?.total_transactions || 0
@@ -166,9 +166,9 @@ const PantryDashboard = () => {
           </div>
           
           <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Verified Suppliers</h3>
+            <h3 className="text-sm font-medium text-gray-600">Verified Supplier</h3>
             <p className="text-3xl font-bold text-amber-600 mt-2">
-              {systemMetrics?.totalSuppliers || 0}
+              {systemMetrics?.totalSupplier || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">Supplier NFTs</p>
           </div>
@@ -567,11 +567,11 @@ const PantryDashboard = () => {
               <p className="text-sm text-gray-600">Review and verify new suppliers</p>
             </div>
             <div className="p-6">
-              {pendingSuppliers.length === 0 ? (
+              {pendingSupplier.length === 0 ? (
                 <p className="text-gray-500">No pending approvals</p>
               ) : (
                 <div className="space-y-3">
-                  {pendingSuppliers.map((supplier) => (
+                  {pendingSupplier.map((supplier) => (
                     <div key={supplier.id} className="p-4 bg-white rounded-lg border-2 border-amber-200">
                       <div className="mb-3">
                         <h3 className="font-bold text-gray-800">{supplier.name}</h3>

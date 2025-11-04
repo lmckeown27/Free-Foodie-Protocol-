@@ -33,7 +33,7 @@ const LandingPage = () => {
       gradient: 'from-blue-500 to-blue-600',
       bgColor: 'bg-gradient-to-b from-blue-100 to-white',
       sectionBg: 'bg-blue-100',
-      title: 'Suppliers',
+      title: 'Supplier',
       headline: 'Donate Surplus. Track Impact. Stay Compliant.',
       subheadline: 'Automated compliance, liability protection, and transparent donation tracking.',
       cta: 'Get Started',
@@ -410,7 +410,7 @@ const LandingPage = () => {
                   </div>
                 </div>
 
-                {/* Suppliers (Food Provision) */}
+                {/* Supplier (Food Provision) */}
                 <div className="relative">
                   <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow">
                     <div className="mb-3">
@@ -418,7 +418,7 @@ const LandingPage = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                     </div>
-                    <div className="font-bold text-lg text-center">Suppliers</div>
+                    <div className="font-bold text-lg text-center">Supplier</div>
                     <div className="text-xs text-blue-100 text-center mt-1 mb-3">Food Donors</div>
                     <div className="space-y-1 text-xs text-blue-100">
                       <div className="bg-white/10 rounded px-2 py-1">Receive requests</div>
@@ -442,7 +442,7 @@ const LandingPage = () => {
               {/* Food Flow: Supplier → Pantry → Student */}
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold text-sm">
-                  Suppliers Donate
+                  Supplier Donate
                 </div>
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

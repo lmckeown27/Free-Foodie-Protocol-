@@ -505,7 +505,7 @@ const SupplierDashboard = () => {
               </svg>
             </div>
             <div>
-              <h3 className="font-bold text-blue-900 mb-2">How FFQ Benefits Suppliers</h3>
+              <h3 className="font-bold text-blue-900 mb-2">How FFQ Benefits the Supplier</h3>
               <p className="text-sm text-blue-800 mb-2">
                 Every donation you make is <strong>automatically verified and recorded</strong> with a tamper-proof digital receipt. This serves as your immutable donation record for tax deductions and compliance reporting.
               </p>
