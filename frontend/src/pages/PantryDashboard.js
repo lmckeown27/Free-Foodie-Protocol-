@@ -283,12 +283,30 @@ const PantryDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <Link
+            to="/create-proposal"
+            className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6 hover:from-green-600 hover:to-green-700 transition"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              <h2 className="text-xl font-bold">Create Proposal</h2>
+            </div>
+            <p className="text-green-100">Let students vote on changes</p>
+          </Link>
+
           <Link
             to="/inventory"
             className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg shadow-lg p-6 hover:from-amber-600 hover:to-amber-700 transition"
           >
-            <h2 className="text-xl font-bold mb-2">Manage Inventory</h2>
+            <div className="flex items-center gap-3 mb-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <h2 className="text-xl font-bold">Manage Inventory</h2>
+            </div>
             <p className="text-amber-100">View and allocate food items</p>
           </Link>
 
@@ -296,7 +314,12 @@ const PantryDashboard = () => {
             to="/analytics"
             className="bg-gradient-to-r from-amber-400 to-amber-500 text-white rounded-lg shadow-lg p-6 hover:from-amber-500 hover:to-amber-600 transition"
           >
-            <h2 className="text-xl font-bold mb-2">System Analytics</h2>
+            <div className="flex items-center gap-3 mb-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              <h2 className="text-xl font-bold">System Analytics</h2>
+            </div>
             <p className="text-amber-100">View comprehensive metrics</p>
           </Link>
 
@@ -304,7 +327,12 @@ const PantryDashboard = () => {
             to="/nft-management"
             className="bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg shadow-lg p-6 hover:from-amber-700 hover:to-amber-800 transition"
           >
-            <h2 className="text-xl font-bold mb-2">NFT Management</h2>
+            <div className="flex items-center gap-3 mb-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              <h2 className="text-xl font-bold">NFT Management</h2>
+            </div>
             <p className="text-amber-100">Mint and manage NFTs</p>
           </Link>
         </div>

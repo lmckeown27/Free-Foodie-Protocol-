@@ -119,35 +119,37 @@ const GovernanceProposals = () => {
           <Link to="/student" className="text-primary-600 hover:text-primary-700 mb-4 inline-block">
             ← Back to Dashboard
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Governance Proposals</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Vote on Proposals</h1>
           <p className="text-gray-600 mt-2">
-            Vote on platform proposals to earn Governance NFTs and increase your POAS score
+            Shape the future of FFQ! Each vote boosts your food priority by 35%.
           </p>
         </div>
 
         {/* Governance Info */}
-        <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+        <div className="bg-gradient-to-r from-green-100 to-green-50 border border-green-200 rounded-lg p-6 mb-8">
           <div className="flex items-start gap-4">
-            <div className="bg-amber-500 text-white rounded-full p-3">
+            <div className="bg-green-600 text-white rounded-full p-3">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="flex-1">
-              <h3 className="font-bold text-amber-900 text-lg">Your Voting Power: 10%</h3>
-              <p className="text-amber-800 text-sm mt-1">
-                As a student, you have 10% of the total voting weight on governance proposals. 
-                Each vote you cast earns you a Governance NFT and increases your POAS score by 35%!
+              <h3 className="font-bold text-green-900 text-lg">Your Voice Matters!</h3>
+              <p className="text-green-800 text-sm mt-1">
+                Students have 100% of the voting power. Your vote directly decides what happens on this platform!
               </p>
-              <div className="mt-3 flex gap-6 text-sm text-amber-700">
-                <div>
-                  <span className="font-semibold">Pantry:</span> 70% voting weight
+              <div className="mt-3 grid grid-cols-3 gap-4 text-sm">
+                <div className="bg-white/50 rounded-lg p-3">
+                  <div className="font-bold text-green-900 text-lg">100%</div>
+                  <div className="text-green-700">Voting Power</div>
                 </div>
-                <div>
-                  <span className="font-semibold">Supplier:</span> Fulfills food requests
+                <div className="bg-white/50 rounded-lg p-3">
+                  <div className="font-bold text-green-900 text-lg">+35%</div>
+                  <div className="text-green-700">Priority Boost</div>
                 </div>
-                <div>
-                  <span className="font-semibold">Students:</span> 10% voting weight
+                <div className="bg-white/50 rounded-lg p-3">
+                  <div className="font-bold text-green-900 text-lg">Simple</div>
+                  <div className="text-green-700">Yes / No / Skip</div>
                 </div>
               </div>
             </div>
@@ -281,34 +283,44 @@ const GovernanceProposals = () => {
         )}
 
         {/* Info Box */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-bold text-blue-900 mb-2">How Governance Works</h3>
-          <ul className="space-y-2 text-sm text-blue-800">
-            <li className="flex items-start gap-2">
-              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Each vote earns you a Governance NFT stored in the Pantry's custodial wallet</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Voting increases your POAS score by 35% (highest weight!)</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Students have 10% collective voting weight on all proposals</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span>Proposals require Pantry multi-sig approval (70% weight) to execute</span>
-            </li>
-          </ul>
+        <div className="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
+          <h3 className="font-bold text-green-900 mb-3 text-lg">How Voting Works</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3">
+              <div className="bg-green-600 text-white rounded-full p-2 flex-shrink-0">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
+                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-bold text-green-900">Read the Proposal</div>
+                <div className="text-sm text-green-700 mt-1">Review the title, description, and what it does</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-green-600 text-white rounded-full p-2 flex-shrink-0">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-bold text-green-900">Click Yes or No</div>
+                <div className="text-sm text-green-700 mt-1">Vote what you think is best for students</div>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="bg-green-600 text-white rounded-full p-2 flex-shrink-0">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-bold text-green-900">Get Rewarded</div>
+                <div className="text-sm text-green-700 mt-1">Your vote boosts your food priority by 35%</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

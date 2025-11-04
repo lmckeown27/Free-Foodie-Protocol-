@@ -21,6 +21,7 @@ import Reports from './pages/Reports';
 import VolunteerHub from './pages/VolunteerHub';
 import MyNFTs from './pages/MyNFTs';
 import GovernanceProposals from './pages/GovernanceProposals';
+import CreateProposal from './pages/CreateProposal';
 import './styles/App.css';
 
 // Protected route component
@@ -91,6 +92,15 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['pantry']}>
                     <PantryDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/create-proposal" 
+                element={
+                  <ProtectedRoute allowedRoles={['pantry']}>
+                    <CreateProposal />
                   </ProtectedRoute>
                 } 
               />
