@@ -673,30 +673,6 @@ const seedMockData = async () => {
             activity_count: numActivities
           })
         ]);
-        
-        // Also create NFT record in nft_records table
-        await client.query(`
-          INSERT INTO nft_records (
-            nft_type,
-            nft_id,
-            owner_id,
-            metadata,
-            status,
-            transaction_hash,
-            minted_at
-          ) VALUES ('volunteer', $1, $2, $3, 'active', $4, NOW() - INTERVAL '${daysAgoMinted} days')
-        `, [
-          `VOLUNTEER_NFT_${tier.toUpperCase()}_${studentId}_${k}`,
-          studentId,
-          JSON.stringify({
-            tier,
-            hours_at_mint: tierHours,
-            milestone: `${tierRequired} Hours`,
-            activity_type: 'volunteer_badge',
-            nft_name: `${tier.charAt(0).toUpperCase() + tier.slice(1)} Service Badge`
-          }),
-          `0xtx_volunteer_${tier}_${Date.now()}_${k}`
-        ]);
       }
       
       logger.info(`Created ${sessions.length} volunteer sessions and ${nftsMinted.length} NFTs for student ${profile.studentIdx} (${totalHours} hours, ${currentTier} tier)`);
