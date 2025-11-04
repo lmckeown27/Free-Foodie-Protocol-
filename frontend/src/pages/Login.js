@@ -92,10 +92,7 @@ const Login = () => {
               className="group relative p-8 border-2 border-primary-300 rounded-lg hover:border-primary-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Student</h3>
-                <p className="text-sm text-gray-600">
-                  Vote on items, earn Governance NFTs, view allocations
-                </p>
+                <h3 className="text-xl font-bold text-gray-900">Student</h3>
               </div>
             </button>
             
@@ -106,10 +103,7 @@ const Login = () => {
               className="group relative p-8 border-2 border-amber-300 rounded-lg hover:border-amber-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Pantry</h3>
-                <p className="text-sm text-gray-600">
-                  Operations & governance, manage allocations, approve suppliers, view analytics
-                </p>
+                <h3 className="text-xl font-bold text-gray-900">Pantry</h3>
               </div>
             </button>
             
@@ -120,10 +114,7 @@ const Login = () => {
               className="group relative p-8 border-2 border-blue-300 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Supplier</h3>
-                <p className="text-sm text-gray-600">
-                  Add donations, track impact, earn Supplier NFTs
-                </p>
+                <h3 className="text-xl font-bold text-gray-900">Supplier</h3>
               </div>
             </button>
           </div>
