@@ -113,32 +113,32 @@ const LandingPage = () => {
       {
         id: 1,
         question: "What are the Pantry's responsibilities in FFQ?",
-        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, hold custodial wallet for students, mint NFTs), and monitor system health (track analytics, ensure compliance, audit blockchain transactions). The Pantry holds a single custodial wallet that executes blockchain transactions on behalf of all students, so they don't need to manage wallets themselves. The Pantry uses multi-sig security to ensure no single person controls critical functions."
+        answer: "The Pantry role combines operational management and governance oversight. You manage daily operations (accept donations, allocate food, verify pickups), handle governance tasks (verify suppliers, maintain secure student accounts, issue digital credentials), and monitor system health (track analytics, ensure compliance, audit all transactions). The Pantry maintains a secure team account that manages verification on behalf of all students, so they don't need to manage any accounts themselves. The Pantry uses multi-party approval to ensure no single person controls critical functions."
       },
       {
         id: 2,
         question: "How does POAS help us allocate food fairly?",
-        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on: governance participation (35% - students who vote on proposals), volunteer hours (20% - community contributors), need factor (20% - fewer past allocations), pickup reliability (10% - redemption rate), and recent activity (10%). Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. This rewards engaged, responsible students while ensuring those in need get priority. All allocation data is recorded on the blockchain for complete transparency and accountability."
+        answer: "POAS (Predicted Optimal Allocation Score) is an AI-powered algorithm that calculates fair food distribution based on: governance participation (35% - students who vote on proposals), volunteer hours (20% - community contributors), need factor (20% - fewer past allocations), pickup reliability (10% - redemption rate), and recent activity (10%). Instead of manual decisions or first-come-first-served, POAS provides allocation recommendations you review and approve. This rewards engaged, responsible students while ensuring those in need get priority. All allocation data is permanently recorded in the secure system for complete transparency and accountability."
       },
       {
         id: 3,
         question: "How do we verify and approve new suppliers?",
-        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you mint a Supplier NFT on the Aptos blockchain via the Pantry's multi-sig custodial wallet. This NFT acts as their verified credential to donate food through the platform. Suppliers don't need their own wallets—the Pantry's custodial wallet handles all blockchain transactions on their behalf. The entire verification process is recorded on-chain for transparency, ensuring only legitimate, compliant suppliers can participate."
+        answer: "When suppliers apply to donate through FFQ, the Pantry reviews their application and business credentials (EIN, licenses, food safety certifications). If approved, you issue a verified Partner Certificate through the Pantry's secure team account. This certificate acts as their verified credential to donate food through the platform. Suppliers don't need any technical setup—the Pantry's system handles all verification on their behalf. The entire verification process is permanently recorded for transparency, ensuring only legitimate, compliant suppliers can participate."
       },
       {
         id: 4,
-        question: "What is multi-sig security and why is it critical?",
-        answer: "Multi-signature (multi-sig) security requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses Petra Vault for 2-of-3 or 3-of-5 multi-sig setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for institutional trust and accountability."
+        question: "What is multi-party approval and why is it critical?",
+        answer: "Multi-party approval (team verification) requires multiple people to approve important actions, like releasing food allocations or accepting donations. Think of it like a safety deposit box that needs two keys to open. FFQ uses secure team verification for 2-of-3 or 3-of-5 approval setups. This prevents any single person from making unauthorized changes, protects against fraud or mistakes, and creates an audit trail for compliance. It's essential for institutional trust and accountability."
       },
       {
         id: 5,
-        question: "How does the custodial wallet work for students?",
-        answer: "The Pantry holds a single custodial wallet (multi-sig Petra Vault) that executes blockchain transactions on behalf of all students. Students don't need to download wallet apps, manage private keys, or pay gas fees—the Pantry's custodial wallet handles all technical blockchain interactions. This provides a seamless Web2-style user experience while maintaining Web3 benefits (transparency, fraud prevention, fair allocation). When students vote or claim food, the Pantry's wallet automatically executes transactions and mints/transfers NFTs. Students interact with FFQ like a regular app, while blockchain runs in the background."
+        question: "How does the secure account system work for students?",
+        answer: "The Pantry maintains a secure team account (requiring multiple staff approvals) that manages all digital verification on behalf of students. Students don't need to download any apps, manage account credentials, or pay any fees—the Pantry's secure system handles all technical verification automatically. This provides a seamless app-like user experience while maintaining key benefits: transparency, fraud prevention, and fair allocation. When students vote or claim food, the Pantry's system automatically verifies and issues digital credentials. Students interact with FFQ like a regular app, while secure verification runs in the background."
       },
       {
         id: 6,
-        question: "What happens when we scan a student's Allocation NFT?",
-        answer: "When you scan a student's Allocation NFT at pickup, the system verifies: (1) The NFT is authentic and issued by your pantry, (2) The student's wallet owns this NFT, (3) The NFT hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' on the blockchain. The NFT status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
+        question: "What happens when we scan a student's pickup ticket?",
+        answer: "When you scan a student's pickup ticket at the pantry, the system verifies: (1) The ticket is authentic and issued by your pantry, (2) The student's account owns this ticket, (3) The ticket hasn't been redeemed yet, (4) The pickup is within the valid timeframe. Once verified, you mark it as 'redeemed' in the system. The ticket status updates permanently, preventing the same student from claiming twice. This creates a tamper-proof pickup record and real-time inventory tracking."
       }
     ],
     supplier: [
@@ -155,7 +155,7 @@ const LandingPage = () => {
       {
         id: 3,
         question: "How does FFQ protect us from liability when donating food?",
-        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through smart contracts. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, handling procedures, and donation timestamps—all recorded on-chain. Smart contracts create an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have blockchain-verified proof that all safety and legal requirements were met at the time of donation."
+        answer: "FFQ enforces the Good Samaritan Act and SB 1383 compliance through automated verification systems. The system automatically verifies that donations meet VLCP (Verifiable Logistics Checklist Protocol) standards for food safety. This includes temperature logs, handling procedures, and donation timestamps—all permanently recorded in the secure system. Automated verification creates an immutable compliance trail, protecting you from liability claims. If anyone questions a donation, you have tamper-proof digital proof that all safety and legal requirements were met at the time of donation."
       },
       {
         id: 4,
@@ -333,7 +333,7 @@ const LandingPage = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Free Foodie Quest?</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A Web3-powered platform that brings transparency, fairness, and efficiency to campus food pantries.
+              A secure digital platform that brings transparency, fairness, and efficiency to campus food pantries.
             </p>
           </div>
 
