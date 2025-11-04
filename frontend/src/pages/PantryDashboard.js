@@ -289,8 +289,8 @@ const PantryDashboard = () => {
               <div className="space-y-4">
                 {/* NFT Type Summary */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="bg-amber-100 border border-amber-200 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-amber-600">
+                  <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-green-600">
                       {custodialNFTs.filter(n => n.nft_type === 'governance').length}
                     </p>
                     <p className="text-xs text-gray-600">Governance NFTs</p>
@@ -301,8 +301,8 @@ const PantryDashboard = () => {
                     </p>
                     <p className="text-xs text-gray-600">Allocation NFTs</p>
                   </div>
-                  <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4 text-center">
-                    <p className="text-2xl font-bold text-yellow-600">
+                  <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
+                    <p className="text-2xl font-bold text-green-600">
                       {custodialNFTs.filter(n => n.nft_type === 'volunteer').length}
                     </p>
                     <p className="text-xs text-gray-600">Volunteer NFTs</p>
@@ -318,9 +318,9 @@ const PantryDashboard = () => {
                 {/* NFT Sections - Horizontal Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
                   {/* Governance NFTs Section */}
-                  <div className="bg-white rounded-lg shadow-lg border-2 border-amber-200 overflow-hidden">
-                    <div className="bg-amber-100 px-4 py-3 border-b-2 border-amber-200">
-                      <h3 className="text-base font-bold text-amber-700">Governance</h3>
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
+                    <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
+                      <h3 className="text-base font-bold text-green-700">Governance</h3>
                       <p className="text-xs text-gray-600">Voting Rights</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -330,7 +330,7 @@ const PantryDashboard = () => {
                         return (
                           <div 
                             key={userNFT.user_id} 
-                            className="bg-amber-50 rounded-lg p-3 hover:bg-amber-100 cursor-pointer transition border border-amber-200"
+                            className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
                             onClick={() => navigate(`/user/${userNFT.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
@@ -338,19 +338,19 @@ const PantryDashboard = () => {
                                 <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
                                 <p className="text-xs text-gray-500">{userNFT.email}</p>
                               </div>
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-600 text-white">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
                                 {userNFTs.length}
                               </span>
                             </div>
                             {poasRec && (
-                              <p className="text-xs text-amber-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                              <p className="text-xs text-green-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
                             )}
                           </div>
                         );
                       })}
                       <button 
                         onClick={() => navigate('/nft-management/governance')}
-                        className="w-full text-center text-xs text-amber-600 hover:text-amber-900 font-medium py-2"
+                        className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
                       </button>
@@ -398,9 +398,9 @@ const PantryDashboard = () => {
                   </div>
 
                   {/* Volunteer NFTs Section */}
-                  <div className="bg-white rounded-lg shadow-lg border-2 border-yellow-200 overflow-hidden">
-                    <div className="bg-yellow-100 px-4 py-3 border-b-2 border-yellow-200">
-                      <h3 className="text-base font-bold text-yellow-700">Volunteer</h3>
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
+                    <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
+                      <h3 className="text-base font-bold text-green-700">Volunteer</h3>
                       <p className="text-xs text-gray-600">Service Badges</p>
                     </div>
                     <div className="p-4 space-y-3">
@@ -410,7 +410,7 @@ const PantryDashboard = () => {
                         return (
                           <div 
                             key={userNFT.user_id} 
-                            className="bg-yellow-50 rounded-lg p-3 hover:bg-yellow-100 cursor-pointer transition border border-yellow-200"
+                            className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
                             onClick={() => navigate(`/user/${userNFT.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
@@ -418,19 +418,19 @@ const PantryDashboard = () => {
                                 <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
                                 <p className="text-xs text-gray-500">{userNFT.email}</p>
                               </div>
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-600 text-white">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
                                 {userNFTs.length}
                               </span>
                             </div>
                             {poasRec && (
-                              <p className="text-xs text-yellow-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                              <p className="text-xs text-green-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
                             )}
                           </div>
                         );
                       })}
                       <button 
                         onClick={() => navigate('/nft-management/volunteer')}
-                        className="w-full text-center text-xs text-yellow-600 hover:text-yellow-900 font-medium py-2"
+                        className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
                       </button>
