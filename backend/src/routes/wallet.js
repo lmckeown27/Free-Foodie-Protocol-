@@ -333,7 +333,8 @@ router.get('/custodial-nfts', authenticate, authorize('pantry'), async (req, res
   try {
     const { query } = require('../config/database');
     
-    // Get all NFTs with custodial mappings and user details
+    // Get all NFTs from both nft_records and volunteer_nfts tables
+    // Using UNION to combine results from both tables
     const result = await query(`
       SELECT 
         cm.id as mapping_id,
@@ -357,7 +358,31 @@ router.get('/custodial-nfts', authenticate, authorize('pantry'), async (req, res
       JOIN nft_records nft ON cm.asset_identifier = nft.nft_id
       JOIN users u ON cm.user_id = u.id
       WHERE cm.status = 'active'
-      ORDER BY cm.created_at DESC
+      
+      UNION
+      
+      SELECT 
+        NULL as mapping_id,
+        'volunteer_nft' as asset_type,
+        vnft.nft_id as asset_identifier,
+        'active' as mapping_status,
+        vnft.created_at as mapped_at,
+        vnft.nft_id,
+        'volunteer' as nft_type,
+        vnft.metadata,
+        'active' as nft_status,
+        vnft.minted_at,
+        vnft.transaction_hash,
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        u.calpoly_id,
+        u.role
+      FROM volunteer_nfts vnft
+      JOIN users u ON vnft.student_id = u.id
+      
+      ORDER BY mapped_at DESC
     `);
     
     res.json({
