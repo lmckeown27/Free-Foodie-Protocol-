@@ -625,9 +625,9 @@ const LandingPage = () => {
             <div>
               <h4 className="text-white font-semibold mb-4">Compliance</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-white transition">SB 1383</a></li>
-                <li><a href="#" className="hover:text-white transition">Good Samaritan Act</a></li>
-                <li><a href="#" className="hover:text-white transition">VLCP Standards</a></li>
+                <li><a href="https://www.calrecycle.ca.gov/organics/slcp" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">SB 1383</a></li>
+                <li><a href="https://www.usda.gov/media/blog/2020/08/13/good-samaritan-act-provides-liability-protection-food-donations" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">Good Samaritan Act</a></li>
+                <li><a href="https://www.fda.gov/food/guidance-regulation-food-and-dietary-supplements/retail-food-protection" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">VLCP Standards</a></li>
               </ul>
             </div>
             <div>
