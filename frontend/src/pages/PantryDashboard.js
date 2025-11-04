@@ -66,6 +66,31 @@ const PantryDashboard = () => {
           setPoasRecommendations([]);
         }
       }
+      
+      // Mock data for pending supplier approvals
+      setPendingSupplier([
+        {
+          id: 'pending-1',
+          name: 'Campus Market Co.',
+          business_type: 'Grocery Store',
+          email: 'partnerships@campusmarket.com',
+          submitted: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2 days ago
+        },
+        {
+          id: 'pending-2',
+          name: 'Green Valley Produce',
+          business_type: 'Produce Distributor',
+          email: 'info@greenvalley.com',
+          submitted: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000) // 5 days ago
+        },
+        {
+          id: 'pending-3',
+          name: 'Downtown Bakery',
+          business_type: 'Bakery',
+          email: 'manager@downtownbakery.com',
+          submitted: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) // 1 day ago
+        }
+      ]);
     } catch (error) {
       console.error('Failed to fetch dashboard data', error);
     } finally {
@@ -91,7 +116,9 @@ const PantryDashboard = () => {
   
   const handleApproveSupplier = async (supplierId) => {
     try {
-      alert(`Supplier approved!\n\nSupplier NFT minted on Aptos via Pantry's custodial wallet\nVerification email sent\n\nThe supplier can now log in and begin donating food (all blockchain transactions handled by Pantry).`);
+      // Remove the approved supplier from the pending list
+      setPendingSupplier(prev => prev.filter(s => s.id !== supplierId));
+      alert(`Supplier approved!\n\nPartner Certificate issued via Pantry's secure account\nVerification email sent\n\nThe supplier can now log in and begin donating food (all verification handled by Pantry).`);
       fetchDashboardData();
     } catch (error) {
       alert('Failed to approve supplier: ' + error.message);
@@ -100,6 +127,8 @@ const PantryDashboard = () => {
   
   const handleRejectSupplier = async (supplierId) => {
     try {
+      // Remove the rejected supplier from the pending list
+      setPendingSupplier(prev => prev.filter(s => s.id !== supplierId));
       alert('Supplier application rejected. Notification sent.');
       fetchDashboardData();
     } catch (error) {
