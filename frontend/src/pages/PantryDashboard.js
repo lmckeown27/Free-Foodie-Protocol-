@@ -315,218 +315,163 @@ const PantryDashboard = () => {
                   </div>
                 </div>
 
-                {/* Governance NFTs Section */}
-                <div className="mb-8">
-                  <div className="bg-purple-100 px-4 py-3 rounded-t-lg border-2 border-purple-200">
-                    <h3 className="text-lg font-bold text-purple-700">🗳️ Governance NFTs (Voting Rights)</h3>
-                    <p className="text-xs text-gray-600">Students with voting power in governance proposals</p>
+                {/* NFT Sections - Horizontal Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                  {/* Governance NFTs Section */}
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-purple-200 overflow-hidden">
+                    <div className="bg-purple-100 px-4 py-3 border-b-2 border-purple-200">
+                      <h3 className="text-base font-bold text-purple-700">🗳️ Governance</h3>
+                      <p className="text-xs text-gray-600">Voting Rights</p>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'governance').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
+                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'governance');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                        return (
+                          <div 
+                            key={userNFT.user_id} 
+                            className="bg-purple-50 rounded-lg p-3 hover:bg-purple-100 cursor-pointer transition border border-purple-200"
+                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
+                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                              </div>
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-600 text-white">
+                                {userNFTs.length}
+                              </span>
+                            </div>
+                            {poasRec && (
+                              <p className="text-xs text-purple-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                      <button 
+                        onClick={() => navigate('/nft-management')}
+                        className="w-full text-center text-xs text-purple-600 hover:text-purple-900 font-medium py-2"
+                      >
+                        View All →
+                      </button>
+                    </div>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-purple-200">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">NFT Count</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">POAS Score</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {[...new Map(custodialNFTs.filter(n => n.nft_type === 'governance').map(nft => [nft.user_id, nft])).values()].slice(0, 5).map((userNFT) => {
-                          const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'governance');
-                          const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
-                          return (
-                            <tr key={userNFT.user_id} className="hover:bg-purple-50 cursor-pointer" onClick={() => navigate(`/user/${userNFT.user_id}`)}>
-                              <td className="px-6 py-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                  <p className="text-xs text-gray-500">{userNFT.email}</p>
-                                  {userNFT.calpoly_id && <p className="text-xs text-purple-600 font-semibold">ID: {userNFT.calpoly_id}</p>}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                                  {userNFTs.length} NFT{userNFTs.length !== 1 ? 's' : ''}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {poasRec ? (
-                                  <div>
-                                    <span className="text-lg font-bold text-purple-600">{Number(poasRec.poas_score).toFixed(1)}</span>
-                                    <span className="block text-xs text-gray-500">High Priority</span>
-                                  </div>
-                                ) : <span className="text-sm text-gray-400">Not calculated</span>}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                <button onClick={(e) => { e.stopPropagation(); navigate(`/user/${userNFT.user_id}`); }} className="text-purple-600 hover:text-purple-900 font-medium">
-                                  View Details →
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
 
-                {/* Allocation NFTs Section */}
-                <div className="mb-8">
-                  <div className="bg-green-100 px-4 py-3 rounded-t-lg border-2 border-green-200">
-                    <h3 className="text-lg font-bold text-green-700">🎫 Allocation NFTs (Pickup Tickets)</h3>
-                    <p className="text-xs text-gray-600">Students authorized for food pickup</p>
+                  {/* Allocation NFTs Section */}
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
+                    <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
+                      <h3 className="text-base font-bold text-green-700">🎫 Allocation</h3>
+                      <p className="text-xs text-gray-600">Pickup Tickets</p>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'allocation').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
+                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'allocation');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                        return (
+                          <div 
+                            key={userNFT.user_id} 
+                            className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
+                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
+                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                              </div>
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
+                                {userNFTs.length}
+                              </span>
+                            </div>
+                            {poasRec && (
+                              <p className="text-xs text-green-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                      <button 
+                        onClick={() => navigate('/nft-management')}
+                        className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
+                      >
+                        View All →
+                      </button>
+                    </div>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-green-200">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">NFT Count</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">POAS Score</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {[...new Map(custodialNFTs.filter(n => n.nft_type === 'allocation').map(nft => [nft.user_id, nft])).values()].slice(0, 5).map((userNFT) => {
-                          const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'allocation');
-                          const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
-                          return (
-                            <tr key={userNFT.user_id} className="hover:bg-green-50 cursor-pointer" onClick={() => navigate(`/user/${userNFT.user_id}`)}>
-                              <td className="px-6 py-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                  <p className="text-xs text-gray-500">{userNFT.email}</p>
-                                  {userNFT.calpoly_id && <p className="text-xs text-green-600 font-semibold">ID: {userNFT.calpoly_id}</p>}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                  {userNFTs.length} NFT{userNFTs.length !== 1 ? 's' : ''}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {poasRec ? (
-                                  <div>
-                                    <span className="text-lg font-bold text-green-600">{Number(poasRec.poas_score).toFixed(1)}</span>
-                                    <span className="block text-xs text-gray-500">High Priority</span>
-                                  </div>
-                                ) : <span className="text-sm text-gray-400">Not calculated</span>}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                <button onClick={(e) => { e.stopPropagation(); navigate(`/user/${userNFT.user_id}`); }} className="text-green-600 hover:text-green-900 font-medium">
-                                  View Details →
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
 
-                {/* Volunteer NFTs Section */}
-                <div className="mb-8">
-                  <div className="bg-yellow-100 px-4 py-3 rounded-t-lg border-2 border-yellow-200">
-                    <h3 className="text-lg font-bold text-yellow-700">🏅 Volunteer NFTs (Service Badges)</h3>
-                    <p className="text-xs text-gray-600">Students recognized for volunteer contributions</p>
+                  {/* Volunteer NFTs Section */}
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-yellow-200 overflow-hidden">
+                    <div className="bg-yellow-100 px-4 py-3 border-b-2 border-yellow-200">
+                      <h3 className="text-base font-bold text-yellow-700">🏅 Volunteer</h3>
+                      <p className="text-xs text-gray-600">Service Badges</p>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'volunteer').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
+                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'volunteer');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                        return (
+                          <div 
+                            key={userNFT.user_id} 
+                            className="bg-yellow-50 rounded-lg p-3 hover:bg-yellow-100 cursor-pointer transition border border-yellow-200"
+                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
+                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                              </div>
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-600 text-white">
+                                {userNFTs.length}
+                              </span>
+                            </div>
+                            {poasRec && (
+                              <p className="text-xs text-yellow-700 font-semibold">POAS: {Number(poasRec.poas_score).toFixed(1)}</p>
+                            )}
+                          </div>
+                        );
+                      })}
+                      <button 
+                        onClick={() => navigate('/nft-management')}
+                        className="w-full text-center text-xs text-yellow-600 hover:text-yellow-900 font-medium py-2"
+                      >
+                        View All →
+                      </button>
+                    </div>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-yellow-200">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Student</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">NFT Count</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">POAS Score</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {[...new Map(custodialNFTs.filter(n => n.nft_type === 'volunteer').map(nft => [nft.user_id, nft])).values()].slice(0, 5).map((userNFT) => {
-                          const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'volunteer');
-                          const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
-                          return (
-                            <tr key={userNFT.user_id} className="hover:bg-yellow-50 cursor-pointer" onClick={() => navigate(`/user/${userNFT.user_id}`)}>
-                              <td className="px-6 py-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                  <p className="text-xs text-gray-500">{userNFT.email}</p>
-                                  {userNFT.calpoly_id && <p className="text-xs text-yellow-600 font-semibold">ID: {userNFT.calpoly_id}</p>}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                                  {userNFTs.length} NFT{userNFTs.length !== 1 ? 's' : ''}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                {poasRec ? (
-                                  <div>
-                                    <span className="text-lg font-bold text-yellow-600">{Number(poasRec.poas_score).toFixed(1)}</span>
-                                    <span className="block text-xs text-gray-500">High Priority</span>
-                                  </div>
-                                ) : <span className="text-sm text-gray-400">Not calculated</span>}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                <button onClick={(e) => { e.stopPropagation(); navigate(`/user/${userNFT.user_id}`); }} className="text-yellow-600 hover:text-yellow-900 font-medium">
-                                  View Details →
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
 
-                {/* Supplier NFTs Section */}
-                <div className="mb-8">
-                  <div className="bg-blue-100 px-4 py-3 rounded-t-lg border-2 border-blue-200">
-                    <h3 className="text-lg font-bold text-blue-700">📄 Supplier NFTs (Donation Receipts)</h3>
-                    <p className="text-xs text-gray-600">Suppliers with verified donation records</p>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-blue-200">
-                        <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Supplier</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">NFT Count</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Status</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
-                        {[...new Map(custodialNFTs.filter(n => n.nft_type === 'supplier').map(nft => [nft.user_id, nft])).values()].slice(0, 5).map((userNFT) => {
-                          const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'supplier');
-                          return (
-                            <tr key={userNFT.user_id} className="hover:bg-blue-50 cursor-pointer" onClick={() => navigate(`/user/${userNFT.user_id}`)}>
-                              <td className="px-6 py-4">
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                  <p className="text-xs text-gray-500">{userNFT.email}</p>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                                  {userNFTs.length} NFT{userNFTs.length !== 1 ? 's' : ''}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                  Active Supplier
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                <button onClick={(e) => { e.stopPropagation(); navigate(`/user/${userNFT.user_id}`); }} className="text-blue-600 hover:text-blue-900 font-medium">
-                                  View Details →
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
+                  {/* Supplier NFTs Section */}
+                  <div className="bg-white rounded-lg shadow-lg border-2 border-blue-200 overflow-hidden">
+                    <div className="bg-blue-100 px-4 py-3 border-b-2 border-blue-200">
+                      <h3 className="text-base font-bold text-blue-700">📄 Supplier</h3>
+                      <p className="text-xs text-gray-600">Donation Receipts</p>
+                    </div>
+                    <div className="p-4 space-y-3">
+                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'supplier').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
+                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'supplier');
+                        return (
+                          <div 
+                            key={userNFT.user_id} 
+                            className="bg-blue-50 rounded-lg p-3 hover:bg-blue-100 cursor-pointer transition border border-blue-200"
+                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex-1">
+                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
+                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                              </div>
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-600 text-white">
+                                {userNFTs.length}
+                              </span>
+                            </div>
+                            <p className="text-xs text-blue-700 font-semibold">Active Supplier</p>
+                          </div>
+                        );
+                      })}
+                      <button 
+                        onClick={() => navigate('/nft-management')}
+                        className="w-full text-center text-xs text-blue-600 hover:text-blue-900 font-medium py-2"
+                      >
+                        View All →
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
