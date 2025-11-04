@@ -297,7 +297,7 @@ const NFTManagementPage = () => {
                                   {nft.first_name} {nft.last_name}
                                 </p>
                                 <p className="text-xs text-gray-600">{nft.email}</p>
-                                <p className="text-xs text-gray-500 font-mono mt-1">ID: {nft.nft_id.substring(0, 24)}...</p>
+                                <p className="text-xs text-gray-500 font-mono mt-1 break-all">ID: {nft.nft_id}</p>
                               </div>
                               <div className="text-center">
                                 <p className="text-xs text-gray-500">Minted</p>
