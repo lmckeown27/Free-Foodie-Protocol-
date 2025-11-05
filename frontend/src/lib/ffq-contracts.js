@@ -82,7 +82,7 @@ export const mintSupplierNFT = async (itemName, quantity, donationType, complian
   const petra = getPetraWallet();
   const account = await petra.account();
   
-  console.log("📦 Minting Supplier NFT for donation...");
+  console.log("Minting Supplier NFT for donation...");
   console.log("Item:", itemName, "Quantity:", quantity);
   
   // Check balance first
@@ -217,7 +217,7 @@ export const redeemAllocationNFT = async (tokenId, studentAddress) => {
   const petra = getPetraWallet();
   const account = await petra.account();
   
-  console.log("🔥 Redeeming Allocation NFT...");
+  console.log("Redeeming Allocation NFT...");
   console.log("Token ID:", tokenId, "Student:", studentAddress);
   
   // Check balance first

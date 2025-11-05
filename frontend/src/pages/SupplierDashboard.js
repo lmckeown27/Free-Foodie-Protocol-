@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { supplierAPI, inventoryAPI, nftAPI } from '../services/api';
-import HowItWorksModal from '../components/HowItWorksModal';
+import { Link, useNavigate } from 'react-router-dom';
+import { supplierAPI, nftAPI } from '../services/api';
+import SupplierSidebar from '../components/SupplierSidebar';
 
 const SupplierDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -9,16 +9,6 @@ const SupplierDashboard = () => {
   const [impactMetrics, setImpactMetrics] = useState(null);
   const [donationTimeline, setDonationTimeline] = useState([]);
   const [nfts, setNfts] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [showHowItWorks, setShowHowItWorks] = useState(false);
-  const [formData, setFormData] = useState({
-    item_name: '',
-    item_type: '',
-    quantity: '',
-    unit: '',
-    location: '',
-    handling_notes: ''
-  });
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   
@@ -81,36 +71,6 @@ const SupplierDashboard = () => {
     }
   };
   
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await inventoryAPI.addInventory(formData);
-      alert(`Donation logged successfully!\n\nReceipt created for your records\nItem: ${formData.item_name}\nQuantity: ${formData.quantity} ${formData.unit}\n\nYour donation has been verified and recorded for compliance and impact tracking.`);
-      setShowAddForm(false);
-      setFormData({
-        item_name: '',
-        item_type: '',
-        quantity: '',
-        unit: '',
-        location: '',
-        handling_notes: ''
-      });
-      fetchSupplierData();
-    } catch (error) {
-      alert('Failed to add donation: ' + (error.response?.data?.error || error.message));
-    }
-  };
-  
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
-  
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -120,73 +80,13 @@ const SupplierDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-blue-50">
-      {/* Header */}
-      <header className="bg-blue-100 shadow">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-blue-600">Supplier Dashboard</h1>
-            <p className="text-sm text-gray-600">Welcome, {user.first_name}!</p>
-            <div className="mt-1 flex items-center gap-2">
-              <span className="text-xs font-mono bg-blue-200 text-blue-800 px-2 py-1 rounded">
-                Verified Supplier
-              </span>
-              <span className="text-xs text-gray-500">Approved for donations</span>
-            </div>
-          </div>
-          <div className="flex gap-3 items-center">
-            <button
-              onClick={() => setShowHowItWorks(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-            >
-              How This Works
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-blue-50 flex">
+      <SupplierSidebar 
+        user={user}
+      />
       
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Impact Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Pounds Donated</h3>
-            <p className="text-3xl font-bold text-blue-600 mt-2">
-              {impactMetrics?.totalPounds || 0} lbs
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Lifetime surplus rescued</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Meals Saved</h3>
-            <p className="text-3xl font-bold text-blue-700 mt-2">
-              {impactMetrics?.mealsSaved || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Approx. meal equivalents</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">CO₂ Saved</h3>
-            <p className="text-3xl font-bold text-cyan-600 mt-2">
-              {impactMetrics?.co2Saved || 0} kg
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Carbon footprint reduced</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-blue-200 to-blue-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Donation Receipts</h3>
-            <p className="text-3xl font-bold text-blue-700 mt-2">
-              {impactMetrics?.nftCount || stats?.supplier_nft_count || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Verified donations</p>
-          </div>
-        </div>
-        
+      {/* Main Content */}
+      <main className="flex-1 ml-64 p-6">
         {/* Compliance Badge */}
         <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 mb-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -204,110 +104,6 @@ const SupplierDashboard = () => {
             Verified
           </span>
         </div>
-        
-        {/* Add Donation Button */}
-        <div className="mb-6">
-          <button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
-          >
-            {showAddForm ? 'Cancel' : '+ Add New Donation'}
-          </button>
-        </div>
-        
-        {/* Add Donation Form */}
-        {showAddForm && (
-          <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Add New Donation</h2>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Item Name *</label>
-                <input
-                  name="item_name"
-                  type="text"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.item_name}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Item Type</label>
-                <select
-                  name="item_type"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.item_type}
-                  onChange={handleChange}
-                >
-                  <option value="">Select type</option>
-                  <option value="produce">Produce</option>
-                  <option value="dairy">Dairy</option>
-                  <option value="meat">Meat</option>
-                  <option value="grains">Grains</option>
-                  <option value="canned">Canned Goods</option>
-                  <option value="beverages">Beverages</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
-                <input
-                  name="quantity"
-                  type="number"
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.quantity}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                <input
-                  name="unit"
-                  type="text"
-                  placeholder="e.g., lbs, count, gallons"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.unit}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                <input
-                  name="location"
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.location}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Handling Notes</label>
-                <textarea
-                  name="handling_notes"
-                  rows="3"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  value={formData.handling_notes}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <button
-                  type="submit"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
-                >
-                  Submit Donation
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
         
         {/* Donation Lifecycle Tracker & Receipt Records */}
         <div className="bg-blue-100 rounded-lg shadow p-6 mb-6">
@@ -519,13 +315,6 @@ const SupplierDashboard = () => {
           </div>
         </div>
       </main>
-
-      {/* How It Works Modal */}
-      <HowItWorksModal 
-        isOpen={showHowItWorks} 
-        onClose={() => setShowHowItWorks(false)} 
-        userRole="supplier" 
-      />
     </div>
   );
 };

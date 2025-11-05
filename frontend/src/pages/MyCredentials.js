@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { nftAPI } from '../services/api';
+import RoleSidebar from '../components/RoleSidebar';
 
-const MyNFTs = () => {
-  const [nfts, setNFTs] = useState([]);
+const MyCredentials = () => {
+  const [credentials, setCredentials] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   useEffect(() => {
-    fetchNFTs();
+    fetchCredentials();
   }, []);
 
-  const fetchNFTs = async () => {
+  const fetchCredentials = async () => {
     try {
       setLoading(true);
-      const nftsRes = await nftAPI.getMyNFTs();
+      const credentialsRes = await nftAPI.getMyNFTs();
       
       // Backend returns { success: true, data: [...] }, axios wraps in .data
-      const nftsData = nftsRes.data?.data || [];
+      const credentialsData = credentialsRes.data?.data || [];
       
-      setNFTs(Array.isArray(nftsData) ? nftsData : []);
+      setCredentials(Array.isArray(credentialsData) ? credentialsData : []);
     } catch (error) {
-      console.error('Error fetching NFTs:', error);
-      setNFTs([]);
+      console.error('Error fetching credentials:', error);
+      setCredentials([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const getNFTsByType = (type) => {
-    if (type === 'all') return nfts;
-    return nfts.filter(nft => nft.nft_type === type);
+  const getCredentialsByType = (type) => {
+    if (type === 'all') return credentials;
+    return credentials.filter(credential => credential.nft_type === type);
   };
 
   const getStatusColor = (status) => {
@@ -43,8 +44,8 @@ const MyNFTs = () => {
     }
   };
 
-  const getNFTIcon = (type) => {
-    // Supplier NFTs don't show icons
+  const getCredentialIcon = (type) => {
+    // Supplier receipts don't show icons
     if (type === 'supplier') {
       return null;
     }
@@ -77,10 +78,10 @@ const MyNFTs = () => {
     }
   };
 
-  const getCredentialDisplayName = (nft) => {
+  const getCredentialDisplayName = (credential) => {
     // For supplier credentials, use the unique name from metadata
-    if (nft.nft_type === 'supplier' && nft.metadata?.nft_name) {
-      return nft.metadata.nft_name;
+    if (credential.nft_type === 'supplier' && credential.metadata?.nft_name) {
+      return credential.metadata.nft_name;
     }
     // For other types, use user-friendly labels
     const labelMap = {
@@ -89,10 +90,10 @@ const MyNFTs = () => {
       'volunteer': 'Service Badge',
       'supplier': 'Donation Receipt'
     };
-    return labelMap[nft.nft_type] || nft.nft_type.charAt(0).toUpperCase() + nft.nft_type.slice(1);
+    return labelMap[credential.nft_type] || credential.nft_type.charAt(0).toUpperCase() + credential.nft_type.slice(1);
   };
 
-  const filteredNFTs = getNFTsByType(activeTab);
+  const filteredCredentials = getCredentialsByType(activeTab);
 
   if (loading) {
     return (
@@ -106,18 +107,18 @@ const MyNFTs = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to={user.role === 'student' ? '/student' : '/supplier'} className="text-primary-600 hover:text-primary-700 mb-4 inline-block">
-            ← Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900">My Credentials & Records</h1>
-          <p className="text-gray-600 mt-2">
-            View all your verified credentials and achievements managed by the Pantry
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50 flex">
+      <RoleSidebar />
+      
+      <main className="flex-1 ml-64 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">My Credentials & Records</h1>
+            <p className="text-gray-600 mt-2">
+              View all your verified credentials and achievements managed by the Pantry
+            </p>
+          </div>
 
         {/* Security Info */}
         <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
@@ -161,24 +162,24 @@ const MyNFTs = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Total Records</p>
-            <p className="text-3xl font-bold text-gray-900 mt-2">{nfts.length}</p>
+            <p className="text-3xl font-bold text-gray-900 mt-2">{credentials.length}</p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Voting Rights</p>
             <p className="text-3xl font-bold text-amber-600 mt-2">
-              {nfts.filter(n => n.nft_type === 'governance').length}
+              {credentials.filter(c => c.nft_type === 'governance').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Pickup Tickets</p>
             <p className="text-3xl font-bold text-green-600 mt-2">
-              {nfts.filter(n => n.nft_type === 'allocation').length}
+              {credentials.filter(c => c.nft_type === 'allocation').length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <p className="text-sm text-gray-600">Service Badges</p>
             <p className="text-3xl font-bold text-yellow-600 mt-2">
-              {nfts.filter(n => n.nft_type === 'volunteer').length}
+              {credentials.filter(c => c.nft_type === 'volunteer').length}
             </p>
           </div>
         </div>
@@ -205,7 +206,7 @@ const MyNFTs = () => {
                 >
                   {tab.label}
                   <span className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full">
-                    {tab.key === 'all' ? nfts.length : getNFTsByType(tab.key).length}
+                    {tab.key === 'all' ? credentials.length : getCredentialsByType(tab.key).length}
                   </span>
                 </button>
               ))}
@@ -214,7 +215,7 @@ const MyNFTs = () => {
         </div>
 
         {/* Credentials Grid */}
-        {filteredNFTs.length === 0 ? (
+        {filteredCredentials.length === 0 ? (
           <div className="bg-white rounded-lg shadow p-12 text-center">
             <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -228,24 +229,24 @@ const MyNFTs = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredNFTs.map((nft) => (
-              <div key={nft.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
+            {filteredCredentials.map((credential) => (
+              <div key={credential.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
                 {/* Credential Header */}
                 <div className={`p-6 ${
-                  nft.nft_type === 'governance' ? 'bg-gradient-to-br from-amber-500 to-amber-600' :
-                  nft.nft_type === 'allocation' ? 'bg-gradient-to-br from-green-500 to-green-600' :
-                  nft.nft_type === 'volunteer' ? 'bg-gradient-to-br from-yellow-500 to-yellow-600' :
+                  credential.nft_type === 'governance' ? 'bg-gradient-to-br from-amber-500 to-amber-600' :
+                  credential.nft_type === 'allocation' ? 'bg-gradient-to-br from-green-500 to-green-600' :
+                  credential.nft_type === 'volunteer' ? 'bg-gradient-to-br from-yellow-500 to-yellow-600' :
                   'bg-gradient-to-br from-blue-500 to-blue-600'
                 } text-white`}>
                   <div className="flex justify-between items-start mb-4">
-                    {getNFTIcon(nft.nft_type)}
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(nft.status)}`}>
-                      {nft.status}
+                    {getCredentialIcon(credential.nft_type)}
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(credential.status)}`}>
+                      {credential.status}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold">{getCredentialDisplayName(nft)}</h3>
+                  <h3 className="text-xl font-bold">{getCredentialDisplayName(credential)}</h3>
                   <p className="text-sm opacity-90 mt-1">
-                    Issued {new Date(nft.minted_at).toLocaleDateString()}
+                    Issued {new Date(credential.minted_at).toLocaleDateString()}
                   </p>
                 </div>
 
@@ -254,43 +255,43 @@ const MyNFTs = () => {
                   <div className="space-y-3">
                     <div>
                       <p className="text-xs text-gray-500 uppercase">Record ID</p>
-                      <p className="text-sm font-mono text-gray-900 truncate">{nft.nft_id}</p>
+                      <p className="text-sm font-mono text-gray-900 truncate">{credential.nft_id}</p>
                     </div>
                     
-                    {nft.metadata && typeof nft.metadata === 'object' && (
+                    {credential.metadata && typeof credential.metadata === 'object' && (
                       <>
-                        {nft.metadata.tier && (
+                        {credential.metadata.tier && (
                           <div>
                             <p className="text-xs text-gray-500 uppercase">Tier</p>
-                            <p className="text-sm font-bold text-gray-900 capitalize">{nft.metadata.tier}</p>
+                            <p className="text-sm font-bold text-gray-900 capitalize">{credential.metadata.tier}</p>
                           </div>
                         )}
-                        {nft.metadata.hours && (
+                        {credential.metadata.hours && (
                           <div>
                             <p className="text-xs text-gray-500 uppercase">Hours Earned</p>
-                            <p className="text-sm font-bold text-gray-900">{nft.metadata.hours} hours</p>
+                            <p className="text-sm font-bold text-gray-900">{credential.metadata.hours} hours</p>
                           </div>
                         )}
-                        {nft.metadata.quantity && (
+                        {credential.metadata.quantity && (
                           <div>
                             <p className="text-xs text-gray-500 uppercase">Quantity</p>
-                            <p className="text-sm font-bold text-gray-900">{nft.metadata.quantity}</p>
+                            <p className="text-sm font-bold text-gray-900">{credential.metadata.quantity}</p>
                           </div>
                         )}
                       </>
                     )}
 
-                    {nft.transaction_hash && (
+                    {credential.transaction_hash && (
                       <div>
                         <p className="text-xs text-gray-500 uppercase">Transaction</p>
-                        <p className="text-sm font-mono text-gray-900 truncate">{nft.transaction_hash}</p>
+                        <p className="text-sm font-mono text-gray-900 truncate">{credential.transaction_hash}</p>
                       </div>
                     )}
 
-                    {nft.burned_at && (
+                    {credential.burned_at && (
                       <div>
                         <p className="text-xs text-gray-500 uppercase">Redeemed/Burned</p>
-                        <p className="text-sm text-gray-900">{new Date(nft.burned_at).toLocaleDateString()}</p>
+                        <p className="text-sm text-gray-900">{new Date(credential.burned_at).toLocaleDateString()}</p>
                       </div>
                     )}
                   </div>
@@ -304,10 +305,11 @@ const MyNFTs = () => {
             ))}
           </div>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };
 
-export default MyNFTs;
+export default MyCredentials;
 

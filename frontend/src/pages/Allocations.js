@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { allocationAPI } from '../services/api';
+import PantrySidebar from '../components/PantrySidebar';
 
 const Allocations = () => {
   const [allocations, setAllocations] = useState([]);
@@ -43,19 +44,16 @@ const Allocations = () => {
   };
   
   return (
-    <div className="min-h-screen bg-primary-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Allocations</h1>
-          <button
-            onClick={() => window.history.back()}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-          >
-            ← Back
-          </button>
-        </div>
-        
-        {/* Filter Tabs */}
+    <div className="min-h-screen bg-primary-50 flex">
+      <PantrySidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-gray-900">Allocations</h1>
+          </div>
+          
+          {/* Filter Tabs */}
         <div className="bg-primary-100 rounded-lg shadow mb-6">
           <div className="flex border-b border-primary-200">
             {['pending', 'approved', 'redeemed'].map((status) => (
@@ -147,7 +145,8 @@ const Allocations = () => {
             </table>
           </div>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

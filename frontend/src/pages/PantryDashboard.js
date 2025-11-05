@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { analyticsAPI, allocationAPI, inventoryAPI, poasAPI, volunteerAPI, walletAPI } from '../services/api';
-import HowItWorksModal from '../components/HowItWorksModal';
 import WalletConnect from '../components/WalletConnect';
+import PantrySidebar from '../components/PantrySidebar';
 
 const PantryDashboard = () => {
   const navigate = useNavigate();
@@ -15,11 +15,10 @@ const PantryDashboard = () => {
   const [pendingSupplier, setPendingSupplier] = useState([]);
   const [pendingVolunteers, setPendingVolunteers] = useState([]);
   const [volunteerStats, setVolunteerStats] = useState(null);
-  const [custodialNFTs, setCustodialNFTs] = useState([]);
+  const [custodialCredentials, setCustodialCredentials] = useState([]);
   const [scanMode, setScanMode] = useState(false);
   const [scannedId, setScannedId] = useState('');
   const [loading, setLoading] = useState(true);
-  const [showHowItWorks, setShowHowItWorks] = useState(false);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   
   useEffect(() => {
@@ -28,7 +27,7 @@ const PantryDashboard = () => {
   
   const fetchDashboardData = async () => {
     try {
-      const [dashboardRes, allocationsRes, healthRes, inventoryRes, complianceRes, nftsRes] = await Promise.all([
+      const [dashboardRes, allocationsRes, healthRes, inventoryRes, complianceRes, credentialsRes] = await Promise.all([
         analyticsAPI.getDashboard(),
         allocationAPI.getAllocations({ status: 'approved', limit: 10 }),
         analyticsAPI.getInventoryHealth(),
@@ -40,7 +39,7 @@ const PantryDashboard = () => {
       setDashboard(dashboardRes.data.data);
       setPendingAllocations(allocationsRes.data.data);
       setInventoryHealth(healthRes.data.data);
-      setCustodialNFTs(nftsRes.data?.data || []);
+      setCustodialCredentials(credentialsRes.data?.data || []);
       
       // System metrics from dashboard data
       setSystemMetrics({
@@ -61,7 +60,7 @@ const PantryDashboard = () => {
           status: 'completed'
         },
         {
-          event_type: 'allocation_issued',
+          event_type: 'pickup_ticket_issued',
           timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
           user: 'Sarah Martinez',
           details: 'Pickup ticket issued - Whole Wheat Bread',
@@ -75,7 +74,7 @@ const PantryDashboard = () => {
           status: 'completed'
         },
         {
-          event_type: 'volunteer_badge_issued',
+          event_type: 'service_badge_issued',
           timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
           user: 'Marcus Johnson',
           details: 'Service badge issued - Silver Tier (20 hours)',
@@ -89,14 +88,14 @@ const PantryDashboard = () => {
           status: 'completed'
         },
         {
-          event_type: 'supplier_verified',
+          event_type: 'partner_verified',
           timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
           user: 'Local Bakery Co.',
           details: 'Partner certificate issued - New supplier onboarded',
           status: 'completed'
         },
         {
-          event_type: 'allocation_redeemed',
+          event_type: 'pickup_completed',
           timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000), // 8 hours ago
           user: 'Alex Thompson',
           details: 'Pickup ticket redeemed - Fresh Produce Box',
@@ -191,12 +190,6 @@ const PantryDashboard = () => {
     }
   };
   
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
-  
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -206,137 +199,11 @@ const PantryDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-amber-50 font-raleway">
-      {/* Header */}
-      <header className="bg-amber-100 shadow">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-amber-600">Pantry Dashboard</h1>
-            <p className="text-sm text-gray-600">Operations & Governance - {user.first_name}</p>
-            <div className="mt-1 flex items-center gap-2">
-              <span className="text-xs font-mono bg-amber-200 text-amber-800 px-2 py-1 rounded">
-                Multi-Sig Petra Vault
-              </span>
-              <span className="text-xs text-gray-500">Shared control & accountability</span>
-            </div>
-          </div>
-          <div className="flex gap-3 items-center">
-            <WalletConnect />
-            <button
-              onClick={() => setShowHowItWorks(true)}
-              className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition"
-            >
-              How This Works
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-amber-50 font-raleway flex">
+      <PantrySidebar user={user} />
       
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* System Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
-          <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Active Students</h3>
-            <p className="text-3xl font-bold text-amber-600 mt-2">
-              {systemMetrics?.totalStudents || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Registered users</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Verified Supplier</h3>
-            <p className="text-3xl font-bold text-amber-600 mt-2">
-              {systemMetrics?.totalSupplier || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Supplier NFTs</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-amber-200 to-amber-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Total Donations</h3>
-            <p className="text-3xl font-bold text-amber-700 mt-2">
-              {systemMetrics?.totalDonations || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Food items donated</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-amber-200 to-amber-300 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Total Allocations</h3>
-            <p className="text-3xl font-bold text-amber-700 mt-2">
-              {systemMetrics?.totalAllocations || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">Items allocated</p>
-          </div>
-          
-          <div className="bg-gradient-to-br from-amber-300 to-amber-400 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-600">Blockchain Txns</h3>
-            <p className="text-3xl font-bold text-amber-800 mt-2">
-              {systemMetrics?.totalTransactions || 0}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">On-chain records</p>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-          <Link
-            to="/create-proposal"
-            className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg p-6 hover:from-green-600 hover:to-green-700 transition"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              <h2 className="text-xl font-bold">Create Proposal</h2>
-            </div>
-            <p className="text-green-100">Let students vote on changes</p>
-          </Link>
-
-          <Link
-            to="/inventory"
-            className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg shadow-lg p-6 hover:from-amber-600 hover:to-amber-700 transition"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-              <h2 className="text-xl font-bold">Manage Inventory</h2>
-            </div>
-            <p className="text-amber-100">View and allocate food items</p>
-          </Link>
-
-          <Link
-            to="/analytics"
-            className="bg-gradient-to-r from-amber-400 to-amber-500 text-white rounded-lg shadow-lg p-6 hover:from-amber-500 hover:to-amber-600 transition"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <h2 className="text-xl font-bold">System Analytics</h2>
-            </div>
-            <p className="text-amber-100">View comprehensive metrics</p>
-          </Link>
-
-          <Link
-            to="/nft-management"
-            className="bg-gradient-to-r from-amber-600 to-amber-700 text-white rounded-lg shadow-lg p-6 hover:from-amber-700 hover:to-amber-800 transition"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
-              <h2 className="text-xl font-bold">NFT Management</h2>
-            </div>
-            <p className="text-amber-100">Mint and manage NFTs</p>
-          </Link>
-        </div>
-
+      {/* Main Content */}
+      <main className="flex-1 ml-64 p-6">
         {/* Inventory Health */}
         <div className="bg-amber-100 rounded-lg shadow p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">Inventory Health</h2>
@@ -364,24 +231,24 @@ const PantryDashboard = () => {
         )}
         </div>
 
-        {/* Combined: Custodial NFT Vault & POAS User Management */}
+        {/* Combined: Custodial Credential Vault & POAS User Management */}
         <div className="bg-gradient-to-r from-amber-100 to-amber-50 rounded-lg shadow mb-6">
           <div className="px-6 py-4 border-b border-amber-200 bg-gradient-to-r from-amber-500 to-amber-600">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Custodial User Management</h2>
                 <p className="text-sm text-amber-100 mt-1">
-                  NFTs held in custody with POAS allocation recommendations
+                  Student credentials held in custody with POAS allocation recommendations
                 </p>
               </div>
               <div className="flex gap-4">
                 <div className="bg-white/20 backdrop-blur text-white rounded-lg px-4 py-2 text-center">
-                  <span className="text-xl font-bold">{custodialNFTs.length}</span>
-                  <span className="text-xs block">Total NFTs</span>
+                  <span className="text-xl font-bold">{custodialCredentials.length}</span>
+                  <span className="text-xs block">Total Credentials</span>
                 </div>
                 <div className="bg-white/20 backdrop-blur text-white rounded-lg px-4 py-2 text-center">
                   <span className="text-xl font-bold">
-                    {[...new Set(custodialNFTs.map(n => n.user_id))].length}
+                    {[...new Set(custodialCredentials.map(n => n.user_id))].length}
                   </span>
                   <span className="text-xs block">Total Users</span>
                 </div>
@@ -390,68 +257,68 @@ const PantryDashboard = () => {
           </div>
           
           <div className="p-6">
-            {custodialNFTs.length === 0 ? (
+            {custodialCredentials.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
                 <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
-                <p>No NFTs in custody yet</p>
+                <p>No credentials in custody yet</p>
               </div>
             ) : (
               <div className="space-y-4">
-                {/* NFT Type Summary */}
+                {/* Credential Type Summary */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
                     <p className="text-2xl font-bold text-green-600">
-                      {custodialNFTs.filter(n => n.nft_type === 'governance').length}
+                      {custodialCredentials.filter(n => n.nft_type === 'governance').length}
                     </p>
-                    <p className="text-xs text-gray-600">Governance NFTs</p>
+                    <p className="text-xs text-gray-600">Voting Rights</p>
                   </div>
                   <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
                     <p className="text-2xl font-bold text-green-600">
-                      {custodialNFTs.filter(n => n.nft_type === 'allocation').length}
+                      {custodialCredentials.filter(n => n.nft_type === 'allocation').length}
                     </p>
-                    <p className="text-xs text-gray-600">Allocation NFTs</p>
+                    <p className="text-xs text-gray-600">Pickup Tickets</p>
                   </div>
                   <div className="bg-green-100 border border-green-200 rounded-lg p-4 text-center">
                     <p className="text-2xl font-bold text-green-600">
-                      {custodialNFTs.filter(n => n.nft_type === 'volunteer').length}
+                      {custodialCredentials.filter(n => n.nft_type === 'volunteer').length}
                     </p>
-                    <p className="text-xs text-gray-600">Volunteer NFTs</p>
+                    <p className="text-xs text-gray-600">Service Badges</p>
                   </div>
                   <div className="bg-blue-100 border border-blue-200 rounded-lg p-4 text-center">
                     <p className="text-2xl font-bold text-blue-600">
-                      {custodialNFTs.filter(n => n.nft_type === 'supplier').length}
+                      {custodialCredentials.filter(n => n.nft_type === 'supplier').length}
                     </p>
-                    <p className="text-xs text-gray-600">Supplier NFTs</p>
+                    <p className="text-xs text-gray-600">Donation Receipts</p>
                   </div>
                 </div>
 
-                {/* NFT Sections - Horizontal Layout */}
+                {/* Credential Sections - Horizontal Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
-                  {/* Governance NFTs Section */}
+                  {/* Governance Credentials Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
                     <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
                       <h3 className="text-base font-bold text-green-700">Governance</h3>
                       <p className="text-xs text-gray-600">Voting Rights</p>
                     </div>
                     <div className="p-4 space-y-3">
-                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'governance').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
-                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'governance');
-                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                      {[...new Map(custodialCredentials.filter(n => n.nft_type === 'governance').map(cred => [cred.user_id, cred])).values()].slice(0, 3).map((userCred) => {
+                        const userCreds = custodialCredentials.filter(n => n.user_id === userCred.user_id && n.nft_type === 'governance');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userCred.user_id);
                         return (
                           <div 
-                            key={userNFT.user_id} 
+                            key={userCred.user_id} 
                             className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
-                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                            onClick={() => navigate(`/user/${userCred.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                                <p className="text-sm font-semibold text-gray-900">{userCred.first_name} {userCred.last_name}</p>
+                                <p className="text-xs text-gray-500">{userCred.email}</p>
                               </div>
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
-                                {userNFTs.length}
+                                {userCreds.length}
                               </span>
                             </div>
                             {poasRec && (
@@ -461,7 +328,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management/governance')}
+                        onClick={() => navigate('/credential-management/governance')}
                         className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
@@ -469,29 +336,29 @@ const PantryDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Allocation NFTs Section */}
+                  {/* Allocation Credentials Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
                     <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
                       <h3 className="text-base font-bold text-green-700">Allocation</h3>
                       <p className="text-xs text-gray-600">Pickup Tickets</p>
                     </div>
                     <div className="p-4 space-y-3">
-                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'allocation').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
-                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'allocation');
-                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                      {[...new Map(custodialCredentials.filter(n => n.nft_type === 'allocation').map(cred => [cred.user_id, cred])).values()].slice(0, 3).map((userCred) => {
+                        const userCreds = custodialCredentials.filter(n => n.user_id === userCred.user_id && n.nft_type === 'allocation');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userCred.user_id);
                         return (
                           <div 
-                            key={userNFT.user_id} 
+                            key={userCred.user_id} 
                             className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
-                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                            onClick={() => navigate(`/user/${userCred.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                                <p className="text-sm font-semibold text-gray-900">{userCred.first_name} {userCred.last_name}</p>
+                                <p className="text-xs text-gray-500">{userCred.email}</p>
                               </div>
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
-                                {userNFTs.length}
+                                {userCreds.length}
                               </span>
                             </div>
                             {poasRec && (
@@ -501,7 +368,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management/allocation')}
+                        onClick={() => navigate('/credential-management/allocation')}
                         className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
@@ -509,29 +376,29 @@ const PantryDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Volunteer NFTs Section */}
+                  {/* Volunteer Credentials Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-green-200 overflow-hidden">
                     <div className="bg-green-100 px-4 py-3 border-b-2 border-green-200">
                       <h3 className="text-base font-bold text-green-700">Volunteer</h3>
                       <p className="text-xs text-gray-600">Service Badges</p>
                     </div>
                     <div className="p-4 space-y-3">
-                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'volunteer').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
-                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'volunteer');
-                        const poasRec = poasRecommendations.find(p => p.student_id === userNFT.user_id);
+                      {[...new Map(custodialCredentials.filter(n => n.nft_type === 'volunteer').map(cred => [cred.user_id, cred])).values()].slice(0, 3).map((userCred) => {
+                        const userCreds = custodialCredentials.filter(n => n.user_id === userCred.user_id && n.nft_type === 'volunteer');
+                        const poasRec = poasRecommendations.find(p => p.student_id === userCred.user_id);
                         return (
                           <div 
-                            key={userNFT.user_id} 
+                            key={userCred.user_id} 
                             className="bg-green-50 rounded-lg p-3 hover:bg-green-100 cursor-pointer transition border border-green-200"
-                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                            onClick={() => navigate(`/user/${userCred.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                                <p className="text-sm font-semibold text-gray-900">{userCred.first_name} {userCred.last_name}</p>
+                                <p className="text-xs text-gray-500">{userCred.email}</p>
                               </div>
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-600 text-white">
-                                {userNFTs.length}
+                                {userCreds.length}
                               </span>
                             </div>
                             {poasRec && (
@@ -541,7 +408,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management/volunteer')}
+                        onClick={() => navigate('/credential-management/volunteer')}
                         className="w-full text-center text-xs text-green-600 hover:text-green-900 font-medium py-2"
                       >
                         View All →
@@ -549,28 +416,28 @@ const PantryDashboard = () => {
                     </div>
                   </div>
 
-                  {/* Supplier NFTs Section */}
+                  {/* Supplier Credentials Section */}
                   <div className="bg-white rounded-lg shadow-lg border-2 border-blue-200 overflow-hidden">
                     <div className="bg-blue-100 px-4 py-3 border-b-2 border-blue-200">
                       <h3 className="text-base font-bold text-blue-700">Supplier</h3>
                       <p className="text-xs text-gray-600">Donation Receipts</p>
                     </div>
                     <div className="p-4 space-y-3">
-                      {[...new Map(custodialNFTs.filter(n => n.nft_type === 'supplier').map(nft => [nft.user_id, nft])).values()].slice(0, 3).map((userNFT) => {
-                        const userNFTs = custodialNFTs.filter(n => n.user_id === userNFT.user_id && n.nft_type === 'supplier');
+                      {[...new Map(custodialCredentials.filter(n => n.nft_type === 'supplier').map(cred => [cred.user_id, cred])).values()].slice(0, 3).map((userCred) => {
+                        const userCreds = custodialCredentials.filter(n => n.user_id === userCred.user_id && n.nft_type === 'supplier');
                         return (
                           <div 
-                            key={userNFT.user_id} 
+                            key={userCred.user_id} 
                             className="bg-blue-50 rounded-lg p-3 hover:bg-blue-100 cursor-pointer transition border border-blue-200"
-                            onClick={() => navigate(`/user/${userNFT.user_id}`)}
+                            onClick={() => navigate(`/user/${userCred.user_id}`)}
                           >
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">{userNFT.first_name} {userNFT.last_name}</p>
-                                <p className="text-xs text-gray-500">{userNFT.email}</p>
+                                <p className="text-sm font-semibold text-gray-900">{userCred.first_name} {userCred.last_name}</p>
+                                <p className="text-xs text-gray-500">{userCred.email}</p>
                               </div>
                               <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-600 text-white">
-                                {userNFTs.length}
+                                {userCreds.length}
                               </span>
                             </div>
                             <p className="text-xs text-blue-700 font-semibold">Active Supplier</p>
@@ -578,7 +445,7 @@ const PantryDashboard = () => {
                         );
                       })}
                       <button 
-                        onClick={() => navigate('/nft-management/supplier')}
+                        onClick={() => navigate('/credential-management/supplier')}
                         className="w-full text-center text-xs text-blue-600 hover:text-blue-900 font-medium py-2"
                       >
                         View All →
@@ -623,7 +490,7 @@ const PantryDashboard = () => {
               </button>
             </div>
             <p className="text-sm text-gray-600">
-              Scan student's PolyCard or Allocation NFT QR code to verify pickup and close the contract on-chain.
+              Scan student's PolyCard or Pickup Ticket QR code to verify pickup and close the contract on-chain.
             </p>
           </div>
         </div>
@@ -698,7 +565,7 @@ const PantryDashboard = () => {
                           onClick={() => handleApproveSupplier(supplier.id)}
                           className="flex-1 px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition font-medium"
                         >
-                          Approve & Mint NFT
+                          Approve & Issue Certificate
                         </button>
                         <button
                           onClick={() => handleRejectSupplier(supplier.id)}
@@ -733,12 +600,12 @@ const PantryDashboard = () => {
                         <div className="flex items-center gap-2 mb-1">
                           <span className={`px-2 py-1 rounded text-xs font-medium ${
                             log.event_type === 'pickup_verified' ? 'bg-green-200 text-green-800' :
-                            log.event_type === 'allocation_issued' ? 'bg-blue-200 text-blue-800' :
+                            log.event_type === 'pickup_ticket_issued' ? 'bg-blue-200 text-blue-800' :
                             log.event_type === 'donation_received' ? 'bg-amber-200 text-amber-800' :
-                            log.event_type === 'volunteer_badge_issued' ? 'bg-purple-200 text-purple-800' :
+                            log.event_type === 'service_badge_issued' ? 'bg-purple-200 text-purple-800' :
                             log.event_type === 'governance_vote' ? 'bg-indigo-200 text-indigo-800' :
-                            log.event_type === 'supplier_verified' ? 'bg-cyan-200 text-cyan-800' :
-                            log.event_type === 'allocation_redeemed' ? 'bg-teal-200 text-teal-800' :
+                            log.event_type === 'partner_verified' ? 'bg-cyan-200 text-cyan-800' :
+                            log.event_type === 'pickup_completed' ? 'bg-teal-200 text-teal-800' :
                             log.event_type === 'donation_receipt_issued' ? 'bg-yellow-200 text-yellow-800' :
                             'bg-gray-200 text-gray-800'
                           }`}>
@@ -772,12 +639,6 @@ const PantryDashboard = () => {
           </p>
         </div>
       </main>
-
-      <HowItWorksModal
-        isOpen={showHowItWorks}
-        onClose={() => setShowHowItWorks(false)}
-        userRole="pantry"
-      />
     </div>
   );
 };

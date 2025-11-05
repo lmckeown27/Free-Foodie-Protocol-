@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { inventoryAPI } from '../services/api';
+import RoleSidebar from '../components/RoleSidebar';
 
 const Inventory = () => {
   const navigate = useNavigate();
@@ -12,14 +13,6 @@ const Inventory = () => {
   const [sortBy, setSortBy] = useState('name');
   const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
-  // Restrict access to Pantry workers only
-  useEffect(() => {
-    if (user.role !== 'pantry') {
-      alert('Access Denied: This page is only accessible to Pantry workers.');
-      navigate('/dashboard');
-    }
-  }, [user.role, navigate]);
   
   useEffect(() => {
     fetchInventory();
@@ -77,24 +70,21 @@ const Inventory = () => {
   const categories = ['all', ...new Set(inventory.map(item => item.item_type).filter(Boolean))];
   
   return (
-    <div className="min-h-screen bg-primary-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {filteredInventory.length} items • {filter} status
-            </p>
+    <div className="min-h-screen bg-primary-50 flex">
+      <RoleSidebar />
+      
+      <main className="flex-1 ml-64 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Inventory Management</h1>
+              <p className="text-sm text-gray-600 mt-1">
+                {filteredInventory.length} items • {filter} status
+              </p>
+            </div>
           </div>
-          <button
-            onClick={() => window.history.back()}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-          >
-            ← Back
-          </button>
-        </div>
-        
-        {/* Filter Tabs */}
+          
+          {/* Filter Tabs */}
         <div className="bg-primary-100 rounded-lg shadow mb-6">
           <div className="flex border-b border-primary-200">
             {['available', 'allocated', 'redeemed'].map((status) => (
@@ -228,7 +218,8 @@ const Inventory = () => {
             })}
           </div>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

@@ -1,13 +1,15 @@
 import React from 'react';
+import RoleSidebar from '../components/RoleSidebar';
 
-const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
-  if (!isOpen) return null;
+const HowItWorks = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const getContent = () => {
-    switch (userRole) {
+    switch (user.role) {
       case 'pantry':
         return {
           title: 'How This Works: Pantry',
+          color: 'amber',
           purpose: 'You manage all food operations, verify suppliers, create proposals for students to vote on, and ensure fair distribution using our data-driven recommendations. You also hold secure accounts for all students, so they never have to worry about technical details.',
           features: [
             {
@@ -44,6 +46,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
       case 'supplier':
         return {
           title: 'How This Works: Supplier',
+          color: 'blue',
           purpose: 'You donate surplus food to help students while reducing waste. Get instant verified receipts for every donation (great for taxes!), track your impact in real-time, and see exactly how your food helps the community.',
           features: [
             {
@@ -72,6 +75,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
       case 'student':
         return {
           title: 'How This Works: Students',
+          color: 'primary',
           purpose: 'Get free food from the pantry! Your voice matters here—vote on what food should be available, volunteer to help out, and you\'ll get priority access. The more you participate, the higher your priority for food allocation.',
           features: [
             {
@@ -104,6 +108,7 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
       default:
         return {
           title: 'How This Works',
+          color: 'gray',
           purpose: '',
           features: []
         };
@@ -111,37 +116,32 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
   };
 
   const content = getContent();
-
-  // Color mapping based on user role
   const getColorClasses = () => {
-    switch (userRole) {
-      case 'student':
+    switch (content.color) {
+      case 'primary':
         return {
           bg: 'bg-primary-100',
           bgDark: 'bg-primary-50',
           border: 'border-primary-200',
           circle: 'bg-primary-600',
-          circleHover: 'hover:bg-primary-700',
           text: 'text-primary-900',
           textLight: 'text-primary-800'
         };
-      case 'pantry':
+      case 'amber':
         return {
           bg: 'bg-amber-100',
           bgDark: 'bg-amber-50',
           border: 'border-amber-200',
           circle: 'bg-amber-600',
-          circleHover: 'hover:bg-amber-700',
           text: 'text-amber-900',
           textLight: 'text-amber-800'
         };
-      case 'supplier':
+      case 'blue':
         return {
           bg: 'bg-blue-100',
           bgDark: 'bg-blue-50',
           border: 'border-blue-200',
           circle: 'bg-blue-600',
-          circleHover: 'hover:bg-blue-700',
           text: 'text-blue-900',
           textLight: 'text-blue-800'
         };
@@ -151,7 +151,6 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
           bgDark: 'bg-gray-50',
           border: 'border-gray-200',
           circle: 'bg-gray-600',
-          circleHover: 'hover:bg-gray-700',
           text: 'text-gray-900',
           textLight: 'text-gray-800'
         };
@@ -161,81 +160,68 @@ const HowItWorksModal = ({ isOpen, onClose, userRole }) => {
   const colors = getColorClasses();
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className={`${colors.bg} rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto`}>
-        {/* Header */}
-        <div className={`sticky top-0 ${colors.bg} border-b ${colors.border} px-6 py-4 flex justify-between items-center`}>
-          <h2 className="text-2xl font-bold text-gray-900">{content.title}</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition"
-            aria-label="Close"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 space-y-6">
-          {/* Purpose Section */}
-          {content.purpose && (
-            <div className={`p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
-              <h3 className={`font-semibold ${colors.text} mb-2`}>Your Role</h3>
-              <p className="text-gray-700 leading-relaxed">{content.purpose}</p>
+    <div className="min-h-screen bg-gray-50 flex">
+      <RoleSidebar />
+      
+      <main className="flex-1 ml-64 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className={`${colors.bg} rounded-lg shadow-lg`}>
+            {/* Header */}
+            <div className={`${colors.bg} border-b ${colors.border} px-6 py-6`}>
+              <h1 className="text-3xl font-bold text-gray-900">{content.title}</h1>
             </div>
-          )}
 
-          {/* Features Section */}
-          {content.features && content.features.length > 0 && (
-            <>
-              <h3 className="text-lg font-bold text-gray-900 mt-6 mb-4">What You Can Do</h3>
-              <div className="space-y-4">
-                {content.features.map((feature, index) => (
-                  <div key={index} className="flex gap-4">
-                    {/* Bullet Point */}
-                    <div className="flex-shrink-0 mt-1">
-                      <div className={`w-2 h-2 rounded-full ${colors.circle}`}></div>
-                    </div>
+            {/* Content */}
+            <div className="p-6 space-y-6">
+              {/* Purpose Section */}
+              {content.purpose && (
+                <div className={`p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
+                  <h3 className={`font-semibold ${colors.text} mb-2`}>Your Role</h3>
+                  <p className="text-gray-700 leading-relaxed">{content.purpose}</p>
+                </div>
+              )}
 
-                    {/* Feature Content */}
-                    <div className="flex-1">
-                      <h4 className="text-base font-semibold text-gray-900 mb-1">{feature.title}</h4>
-                      <p className="text-gray-600 leading-relaxed text-sm">{feature.description}</p>
-                    </div>
+              {/* Features Section */}
+              {content.features && content.features.length > 0 && (
+                <>
+                  <h3 className="text-lg font-bold text-gray-900 mt-6 mb-4">What You Can Do</h3>
+                  <div className="space-y-4">
+                    {content.features.map((feature, index) => (
+                      <div key={index} className="flex gap-4">
+                        {/* Bullet Point */}
+                        <div className="flex-shrink-0 mt-1">
+                          <div className={`w-2 h-2 rounded-full ${colors.circle}`}></div>
+                        </div>
+
+                        {/* Feature Content */}
+                        <div className="flex-1">
+                          <h4 className="text-base font-semibold text-gray-900 mb-1">{feature.title}</h4>
+                          <p className="text-gray-600 leading-relaxed text-sm">{feature.description}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </>
-          )}
+                </>
+              )}
 
-          {/* Footer Info */}
-          <div className={`mt-8 p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
-            <h4 className={`font-semibold ${colors.text} mb-2`}>Key Features</h4>
-            <ul className={`space-y-1 text-sm ${colors.textLight}`}>
-              <li>• Secure, tamper-proof record keeping</li>
-              <li>• Real-time food tracking and reports</li>
-              <li>• Food safety compliance built-in</li>
-              <li>• Fair distribution based on need and participation</li>
-              <li>• Legal protection for donors (Good Samaritan Act)</li>
-            </ul>
+              {/* Footer Info */}
+              <div className={`mt-8 p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
+                <h4 className={`font-semibold ${colors.text} mb-2`}>Key Features</h4>
+                <ul className={`space-y-1 text-sm ${colors.textLight}`}>
+                  <li>• Secure, tamper-proof record keeping</li>
+                  <li>• Real-time food tracking and reports</li>
+                  <li>• Food safety compliance built-in</li>
+                  <li>• Fair distribution based on need and participation</li>
+                  <li>• Legal protection for donors (Good Samaritan Act)</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className={`sticky bottom-0 ${colors.bgDark} border-t ${colors.border} px-6 py-4`}>
-          <button
-            onClick={onClose}
-            className={`w-full px-4 py-2 ${colors.circle} text-white rounded-lg ${colors.circleHover} transition font-medium`}
-          >
-            Got It
-          </button>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default HowItWorksModal;
+export default HowItWorks;
 

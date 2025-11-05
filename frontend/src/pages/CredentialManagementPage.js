@@ -1,42 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { walletAPI } from '../services/api';
+import PantrySidebar from '../components/PantrySidebar';
 
-const NFTManagementPage = () => {
+const CredentialManagementPage = () => {
   const navigate = useNavigate();
-  const { type } = useParams(); // Get NFT type from URL
-  const [custodialNFTs, setCustodialNFTs] = useState([]);
+  const { type } = useParams(); // Get credential type from URL
+  const [custodialCredentials, setCustodialCredentials] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showMintModal, setShowMintModal] = useState(false);
+  const [showIssueModal, setShowIssueModal] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [mintForm, setMintForm] = useState({
+  const [issueForm, setIssueForm] = useState({
     userId: '',
     userEmail: '',
-    nftType: '',
+    credentialType: '',
     metadata: {}
   });
 
   useEffect(() => {
-    fetchAllNFTs();
+    fetchAllCredentials();
   }, []);
 
-  const fetchAllNFTs = async () => {
+  const fetchAllCredentials = async () => {
     try {
       setLoading(true);
-      const nftsRes = await walletAPI.getCustodialNFTs();
-      setCustodialNFTs(nftsRes.data?.data || []);
+      const credentialsRes = await walletAPI.getCustodialNFTs();
+      setCustodialCredentials(credentialsRes.data?.data || []);
     } catch (error) {
-      console.error('Error fetching NFTs:', error);
+      console.error('Error fetching credentials:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const nftCategories = [
+  const credentialCategories = [
     {
       type: 'governance',
-      name: 'Governance NFTs',
-      description: 'Voting rights for students',
+      name: 'Voting Rights',
+      description: 'Governance credentials for students',
       color: 'amber',
       icon: '',
       userType: 'Student',
@@ -44,8 +46,8 @@ const NFTManagementPage = () => {
     },
     {
       type: 'allocation',
-      name: 'Allocation NFTs',
-      description: 'Food pickup tickets for students',
+      name: 'Pickup Tickets',
+      description: 'Food pickup credentials for students',
       color: 'green',
       icon: '',
       userType: 'Student',
@@ -53,8 +55,8 @@ const NFTManagementPage = () => {
     },
     {
       type: 'volunteer',
-      name: 'Volunteer NFTs',
-      description: 'Service badges for students',
+      name: 'Service Badges',
+      description: 'Volunteer credentials for students',
       color: 'yellow',
       icon: '',
       userType: 'Student',
@@ -62,8 +64,8 @@ const NFTManagementPage = () => {
     },
     {
       type: 'supplier',
-      name: 'Supplier NFTs',
-      description: 'Donation receipts for suppliers',
+      name: 'Donation Receipts',
+      description: 'Verification credentials for suppliers',
       color: 'blue',
       icon: '',
       userType: 'Supplier',
@@ -73,8 +75,8 @@ const NFTManagementPage = () => {
 
   // Filter categories based on type parameter
   const filteredCategories = type 
-    ? nftCategories.filter(cat => cat.type === type)
-    : nftCategories;
+    ? credentialCategories.filter(cat => cat.type === type)
+    : credentialCategories;
 
   const getColorClasses = (color) => {
     const colors = {
@@ -114,77 +116,71 @@ const NFTManagementPage = () => {
     return colors[color];
   };
 
-  const getNFTsByType = (type) => {
-    return custodialNFTs.filter(nft => nft.nft_type === type);
+  const getCredentialsByType = (type) => {
+    return custodialCredentials.filter(cred => cred.nft_type === type);
   };
 
-  const handleOpenMintModal = (category) => {
+  const handleOpenIssueModal = (category) => {
     setSelectedCategory(category);
-    setMintForm({
+    setIssueForm({
       userId: '',
       userEmail: '',
-      nftType: category.type,
+      credentialType: category.type,
       metadata: {}
     });
-    setShowMintModal(true);
+    setShowIssueModal(true);
   };
 
-  const handleMintNFT = async (e) => {
+  const handleIssueCredential = async (e) => {
     e.preventDefault();
     try {
-      alert(`Minting ${selectedCategory.name}...\n\nRecipient: ${mintForm.userEmail}\nType: ${mintForm.nftType}\n\nThis will trigger the Pantry's custodial wallet to mint the NFT.`);
-      setShowMintModal(false);
-      setMintForm({ userId: '', userEmail: '', nftType: '', metadata: {} });
+      alert(`Issuing ${selectedCategory.name}...\n\nRecipient: ${issueForm.userEmail}\nType: ${issueForm.credentialType}\n\nThis will trigger the Pantry's custodial wallet to issue the credential.`);
+      setShowIssueModal(false);
+      setIssueForm({ userId: '', userEmail: '', credentialType: '', metadata: {} });
       setSelectedCategory(null);
-      await fetchAllNFTs();
+      await fetchAllCredentials();
     } catch (error) {
-      console.error('Error minting NFT:', error);
-      alert('Failed to mint NFT');
+      console.error('Error issuing credential:', error);
+      alert('Failed to issue credential');
     }
   };
 
-  const handleRedeemNFT = async (nftId, nftType) => {
-    if (window.confirm(`Are you sure you want to mark this ${nftType} NFT as redeemed?`)) {
+  const handleRedeemCredential = async (credId, credType) => {
+    if (window.confirm(`Are you sure you want to mark this ${credType} credential as redeemed?`)) {
       try {
-        alert(`Redeeming NFT ${nftId}...\n\nThis would update the NFT status to 'redeemed' in the custodial wallet.`);
-        await fetchAllNFTs();
+        alert(`Redeeming credential ${credId}...\n\nThis would update the credential status to 'redeemed' in the custodial wallet.`);
+        await fetchAllCredentials();
       } catch (error) {
-        console.error('Error redeeming NFT:', error);
-        alert('Failed to redeem NFT');
+        console.error('Error redeeming credential:', error);
+        alert('Failed to redeem credential');
       }
     }
   };
 
-  const totalNFTs = custodialNFTs.length;
-  const activeNFTs = custodialNFTs.filter(n => n.nft_status === 'active').length;
-  const redeemedNFTs = custodialNFTs.filter(n => n.nft_status === 'redeemed').length;
+  const totalCredentials = custodialCredentials.length;
+  const activeCredentials = custodialCredentials.filter(n => n.nft_status === 'active').length;
+  const redeemedCredentials = custodialCredentials.filter(n => n.nft_status === 'redeemed').length;
 
   return (
-    <div className="min-h-screen bg-amber-50">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-amber-600 to-amber-700 shadow-lg">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <button
-                onClick={() => navigate('/pantry')}
-                className="text-white hover:text-amber-200 mb-2 flex items-center"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back to Dashboard
-              </button>
-              <h1 className="text-3xl font-bold text-white">
-                {type 
-                  ? `${nftCategories.find(c => c.type === type)?.name || 'NFT'} Management`
-                  : 'Master NFT Management'
+    <div className="min-h-screen bg-amber-50 flex">
+      <PantrySidebar user={user} />
+      
+      <main className="flex-1 ml-64">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-amber-600 to-amber-700 shadow-lg">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-white">
+                  {type 
+                    ? `${credentialCategories.find(c => c.type === type)?.name || 'Credential'} Management`
+                    : 'Master Credential Management'
                 }
               </h1>
               <p className="text-sm text-amber-200 mt-1">
                 {type
-                  ? `Mint, monitor, and manage ${nftCategories.find(c => c.type === type)?.description || 'NFTs'}`
-                  : 'Mint, monitor, and manage all custodial NFTs across 4 categories'
+                  ? `Issue, monitor, and manage ${credentialCategories.find(c => c.type === type)?.description || 'credentials'}`
+                  : 'Issue, monitor, and manage all custodial credentials across 4 categories'
                 }
               </p>
             </div>
@@ -196,32 +192,32 @@ const NFTManagementPage = () => {
         {/* Overall Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-amber-600">
-            <p className="text-3xl font-bold text-amber-600">{totalNFTs}</p>
-            <p className="text-sm text-gray-600 mt-1">Total NFTs in Custody</p>
+            <p className="text-3xl font-bold text-amber-600">{totalCredentials}</p>
+            <p className="text-sm text-gray-600 mt-1">Total Credentials in Custody</p>
           </div>
           <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-600">
-            <p className="text-3xl font-bold text-green-600">{activeNFTs}</p>
-            <p className="text-sm text-gray-600 mt-1">Active NFTs</p>
+            <p className="text-3xl font-bold text-green-600">{activeCredentials}</p>
+            <p className="text-sm text-gray-600 mt-1">Active Credentials</p>
           </div>
           <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gray-600">
-            <p className="text-3xl font-bold text-gray-600">{redeemedNFTs}</p>
-            <p className="text-sm text-gray-600 mt-1">Redeemed NFTs</p>
+            <p className="text-3xl font-bold text-gray-600">{redeemedCredentials}</p>
+            <p className="text-sm text-gray-600 mt-1">Redeemed Credentials</p>
           </div>
         </div>
 
-        {/* NFT Category Sections */}
+        {/* Credential Category Sections */}
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading NFTs...</p>
+            <p className="mt-4 text-gray-600">Loading credentials...</p>
           </div>
         ) : (
           <div className="space-y-6">
             {filteredCategories.map((category) => {
               const colors = getColorClasses(category.color);
-              const nfts = getNFTsByType(category.type);
-              const activeCount = nfts.filter(n => n.nft_status === 'active').length;
-              const redeemedCount = nfts.filter(n => n.nft_status === 'redeemed').length;
+              const credentials = getCredentialsByType(category.type);
+              const activeCount = credentials.filter(n => n.nft_status === 'active').length;
+              const redeemedCount = credentials.filter(n => n.nft_status === 'redeemed').length;
 
               return (
                 <div key={category.type} className={`bg-white rounded-lg shadow-lg border-2 ${colors.border} overflow-hidden`}>
@@ -233,13 +229,13 @@ const NFTManagementPage = () => {
                         <p className="text-sm text-gray-600">{category.description}</p>
                       </div>
                       <button
-                        onClick={() => handleOpenMintModal(category)}
+                        onClick={() => handleOpenIssueModal(category)}
                         className={`${colors.button} text-white px-4 py-2 rounded-lg font-semibold transition flex items-center gap-2`}
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
-                        Mint New
+                        Issue New
                       </button>
                     </div>
                   </div>
@@ -248,7 +244,7 @@ const NFTManagementPage = () => {
                   <div className={`${colors.bg} px-6 py-3 flex items-center justify-between border-b ${colors.border}`}>
                     <div className="flex items-center gap-6">
                       <div>
-                        <p className={`text-2xl font-bold ${colors.text}`}>{nfts.length}</p>
+                        <p className={`text-2xl font-bold ${colors.text}`}>{credentials.length}</p>
                         <p className="text-xs text-gray-600">Total</p>
                       </div>
                       <div>
@@ -272,63 +268,63 @@ const NFTManagementPage = () => {
                     <p className="text-sm text-gray-700 mt-1">{category.purpose}</p>
                   </div>
 
-                  {/* NFT List */}
-                  {nfts.length === 0 ? (
+                  {/* Credential List */}
+                  {credentials.length === 0 ? (
                     <div className="px-6 py-8 text-center">
-                      <p className="text-gray-500">No {category.name.toLowerCase()} have been minted yet</p>
+                      <p className="text-gray-500">No {category.name.toLowerCase()} have been issued yet</p>
                       <button
-                        onClick={() => handleOpenMintModal(category)}
+                        onClick={() => handleOpenIssueModal(category)}
                         className={`mt-4 ${colors.button} text-white px-6 py-2 rounded-lg font-semibold transition`}
                       >
-                        Mint First NFT
+                        Issue First Credential
                       </button>
                     </div>
                   ) : (
                     <div className="divide-y divide-gray-200">
-                      {nfts.slice(0, 5).map((nft) => (
-                        <div key={nft.mapping_id} className={`px-6 py-4 ${colors.hover} transition`}>
+                      {credentials.slice(0, 5).map((cred) => (
+                        <div key={cred.mapping_id} className={`px-6 py-4 ${colors.hover} transition`}>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 flex-1">
                               <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${colors.badge}`}>
-                                {nft.nft_type.charAt(0).toUpperCase()}
+                                {cred.nft_type.charAt(0).toUpperCase()}
                               </div>
                               <div className="flex-1">
                                 <p className="text-sm font-semibold text-gray-900">
-                                  {nft.first_name} {nft.last_name}
+                                  {cred.first_name} {cred.last_name}
                                 </p>
-                                <p className="text-xs text-gray-600">{nft.email}</p>
-                                <p className="text-xs text-gray-500 font-mono mt-1 break-all">ID: {nft.nft_id}</p>
+                                <p className="text-xs text-gray-600">{cred.email}</p>
+                                <p className="text-xs text-gray-500 font-mono mt-1 break-all">ID: {cred.nft_id}</p>
                               </div>
                               <div className="text-center">
-                                <p className="text-xs text-gray-500">Minted</p>
-                                <p className="text-sm text-gray-700">{new Date(nft.minted_at).toLocaleDateString()}</p>
+                                <p className="text-xs text-gray-500">Issued</p>
+                                <p className="text-sm text-gray-700">{new Date(cred.minted_at).toLocaleDateString()}</p>
                               </div>
                               <div>
                                 <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  nft.nft_status === 'active' ? 'bg-green-100 text-green-800' :
-                                  nft.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
+                                  cred.nft_status === 'active' ? 'bg-green-100 text-green-800' :
+                                  cred.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
                                   'bg-red-100 text-red-800'
                                 }`}>
-                                  {nft.nft_status}
+                                  {cred.nft_status}
                                 </span>
                               </div>
                             </div>
                             <div className="flex gap-2 ml-4">
                               <button
-                                onClick={() => navigate(`/user/${nft.user_id}`)}
+                                onClick={() => navigate(`/user/${cred.user_id}`)}
                                 className="text-blue-600 hover:text-blue-900 font-medium text-sm px-3 py-1 border border-blue-300 rounded hover:bg-blue-50 transition"
                               >
                                 View User
                               </button>
                               <button
-                                onClick={() => navigate(`/nft/${nft.nft_id}`)}
+                                onClick={() => navigate(`/nft/${cred.nft_id}`)}
                                 className={`${colors.text} hover:opacity-75 font-medium text-sm px-3 py-1 border ${colors.border} rounded hover:${colors.bg} transition`}
                               >
                                 Details
                               </button>
-                              {nft.nft_status === 'active' && category.type === 'allocation' && (
+                              {cred.nft_status === 'active' && category.type === 'allocation' && (
                                 <button
-                                  onClick={() => handleRedeemNFT(nft.nft_id, category.type)}
+                                  onClick={() => handleRedeemCredential(cred.nft_id, category.type)}
                                   className="text-gray-600 hover:text-gray-900 font-medium text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition"
                                 >
                                   Redeem
@@ -338,10 +334,10 @@ const NFTManagementPage = () => {
                           </div>
                         </div>
                       ))}
-                      {nfts.length > 5 && (
+                      {credentials.length > 5 && (
                         <div className={`px-6 py-3 ${colors.bg} text-center`}>
                           <p className="text-sm text-gray-600">
-                            Showing 5 of {nfts.length} {category.name.toLowerCase()}
+                            Showing 5 of {credentials.length} {category.name.toLowerCase()}
                           </p>
                           <p className="text-xs text-gray-500 mt-1">Use filters above to view more</p>
                         </div>
@@ -355,8 +351,8 @@ const NFTManagementPage = () => {
         )}
       </main>
 
-      {/* Mint Modal */}
-      {showMintModal && selectedCategory && (
+      {/* Issue Modal */}
+      {showIssueModal && selectedCategory && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4">
             <div className={`${getColorClasses(selectedCategory.color).bg} px-6 py-4 border-b-2 ${getColorClasses(selectedCategory.color).border}`}>
@@ -364,12 +360,12 @@ const NFTManagementPage = () => {
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{selectedCategory.icon}</span>
                   <h3 className={`text-lg font-bold ${getColorClasses(selectedCategory.color).text}`}>
-                    Mint {selectedCategory.name}
+                    Issue {selectedCategory.name}
                   </h3>
                 </div>
                 <button
                   onClick={() => {
-                    setShowMintModal(false);
+                    setShowIssueModal(false);
                     setSelectedCategory(null);
                   }}
                   className="text-gray-500 hover:text-gray-700"
@@ -380,7 +376,7 @@ const NFTManagementPage = () => {
                 </button>
               </div>
             </div>
-            <form onSubmit={handleMintNFT} className="p-6">
+            <form onSubmit={handleIssueCredential} className="p-6">
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Recipient Email *
@@ -388,17 +384,17 @@ const NFTManagementPage = () => {
                 <input
                   type="email"
                   required
-                  value={mintForm.userEmail}
-                  onChange={(e) => setMintForm({ ...mintForm, userEmail: e.target.value })}
+                  value={issueForm.userEmail}
+                  onChange={(e) => setIssueForm({ ...issueForm, userEmail: e.target.value })}
                   placeholder={`${selectedCategory.userType} email address`}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                 />
-                <p className="text-xs text-gray-500 mt-1">Enter the {selectedCategory.userType.toLowerCase()}'s email to mint their NFT</p>
+                <p className="text-xs text-gray-500 mt-1">Enter the {selectedCategory.userType.toLowerCase()}'s email to issue their credential</p>
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  NFT Type
+                  Credential Type
                 </label>
                 <input
                   type="text"
@@ -421,7 +417,7 @@ const NFTManagementPage = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    setShowMintModal(false);
+                    setShowIssueModal(false);
                     setSelectedCategory(null);
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
@@ -432,15 +428,16 @@ const NFTManagementPage = () => {
                   type="submit"
                   className={`flex-1 px-4 py-2 ${getColorClasses(selectedCategory.color).button} text-white rounded-lg transition font-semibold`}
                 >
-                  Mint NFT
+                  Issue Credential
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 };
 
-export default NFTManagementPage;
+export default CredentialManagementPage;

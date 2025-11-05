@@ -5,12 +5,11 @@ import { DirectWalletProvider } from './contexts/DirectWalletContext';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import StudentDashboard from './pages/StudentDashboard';
-import PantryDashboard from './pages/PantryDashboard';
+import Dashboard from './pages/Dashboard';
 import UserDetailPage from './pages/UserDetailPage';
 import NFTDetailPage from './pages/NFTDetailPage';
-import NFTManagementPage from './pages/NFTManagementPage';
-import SupplierDashboard from './pages/SupplierDashboard';
+import CredentialManagementPage from './pages/CredentialManagementPage';
+import AddDonation from './pages/AddDonation';
 import Inventory from './pages/Inventory';
 import DonationHistory from './pages/DonationHistory';
 import Voting from './pages/Voting';
@@ -19,9 +18,12 @@ import Allocations from './pages/Allocations';
 import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
 import VolunteerHub from './pages/VolunteerHub';
-import MyNFTs from './pages/MyNFTs';
+import MyCredentials from './pages/MyCredentials';
 import GovernanceProposals from './pages/GovernanceProposals';
 import CreateProposal from './pages/CreateProposal';
+import HowItWorks from './pages/HowItWorks';
+import StudentAnalytics from './pages/StudentAnalytics';
+import StudentInventory from './pages/StudentInventory';
 import './styles/App.css';
 
 // Protected route component
@@ -42,18 +44,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 // Role-based dashboard redirect
 const DashboardRedirect = () => {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const token = localStorage.getItem('token');
   
-  switch (user.role) {
-    case 'student':
-      return <Navigate to="/student" />;
-    case 'pantry':
-      return <Navigate to="/pantry" />;
-    case 'supplier':
-      return <Navigate to="/supplier" />;
-    default:
-      return <Navigate to="/login" />;
+  if (!token) {
+    return <Navigate to="/login" />;
   }
+  
+  return <Navigate to="/dashboard" />;
 };
 
 function App() {
@@ -68,33 +65,20 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               
-              {/* Dashboard redirect for authenticated users */}
+              {/* Unified Dashboard for all user roles */}
               <Route 
                 path="/dashboard" 
                 element={
                   <ProtectedRoute>
-                    <DashboardRedirect />
+                    <Dashboard />
                   </ProtectedRoute>
                 } 
               />
               
-              <Route 
-                path="/student" 
-                element={
-                  <ProtectedRoute allowedRoles={['student']}>
-                    <StudentDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              <Route 
-                path="/pantry" 
-                element={
-                  <ProtectedRoute allowedRoles={['pantry']}>
-                    <PantryDashboard />
-                  </ProtectedRoute>
-                } 
-              />
+              {/* Legacy routes - redirect to dashboard */}
+              <Route path="/student" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/pantry" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/supplier" element={<Navigate to="/dashboard" replace />} />
               
               <Route 
                 path="/create-proposal" 
@@ -124,28 +108,28 @@ function App() {
               />
               
               <Route 
-                path="/nft-management" 
+                path="/credential-management" 
                 element={
                   <ProtectedRoute allowedRoles={['pantry']}>
-                    <NFTManagementPage />
+                    <CredentialManagementPage />
                   </ProtectedRoute>
                 } 
               />
               
               <Route 
-                path="/nft-management/:type" 
+                path="/credential-management/:type" 
                 element={
                   <ProtectedRoute allowedRoles={['pantry']}>
-                    <NFTManagementPage />
+                    <CredentialManagementPage />
                   </ProtectedRoute>
                 } 
               />
               
               <Route 
-                path="/supplier" 
+                path="/add-donation" 
                 element={
                   <ProtectedRoute allowedRoles={['supplier']}>
-                    <SupplierDashboard />
+                    <AddDonation />
                   </ProtectedRoute>
                 } 
               />
@@ -153,10 +137,19 @@ function App() {
               <Route 
                 path="/inventory" 
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={['pantry', 'bni']}>
                     <Inventory />
                   </ProtectedRoute>
-                } 
+                }
+              />
+              
+              <Route 
+                path="/my-food" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <StudentInventory />
+                  </ProtectedRoute>
+                }
               />
               
               <Route 
@@ -223,10 +216,10 @@ function App() {
               />
               
               <Route 
-                path="/nfts" 
+                path="/credentials" 
                 element={
                   <ProtectedRoute allowedRoles={['student', 'supplier']}>
-                    <MyNFTs />
+                    <MyCredentials />
                   </ProtectedRoute>
                 }
               />
@@ -236,6 +229,24 @@ function App() {
                 element={
                   <ProtectedRoute allowedRoles={['student']}>
                     <GovernanceProposals />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route 
+                path="/how-it-works" 
+                element={
+                  <ProtectedRoute>
+                    <HowItWorks />
+                  </ProtectedRoute>
+                }
+              />
+              
+              <Route 
+                path="/student-analytics" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <StudentAnalytics />
                   </ProtectedRoute>
                 }
               />

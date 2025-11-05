@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { inventoryAPI } from '../services/api';
+import SupplierSidebar from '../components/SupplierSidebar';
 
 const DonationHistory = () => {
   const navigate = useNavigate();
@@ -83,23 +84,20 @@ const DonationHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-primary-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Redeemed Donation History</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {filteredDonations.length} completed donations
-            </p>
+    <div className="min-h-screen bg-primary-50 flex">
+      <SupplierSidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Redeemed Donation History</h1>
+              <p className="text-sm text-gray-600 mt-1">
+                {filteredDonations.length} completed donations
+              </p>
+            </div>
           </div>
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-          >
-            ← Back
-          </button>
-        </div>
 
         {/* Filters */}
         <div className="bg-blue-100 rounded-lg shadow p-4 mb-6">
@@ -251,7 +249,8 @@ const DonationHistory = () => {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

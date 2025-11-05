@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { analyticsAPI, inventoryAPI, allocationAPI, votingAPI, supplierAPI } from '../services/api';
 import { downloadCSV, downloadJSON, downloadTextReport, formatDataForExport } from '../utils/exportData';
+import StudentSidebar from '../components/StudentSidebar';
 
 const Reports = () => {
   const [loading, setLoading] = useState(false);
@@ -179,19 +180,17 @@ const Reports = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Reports & Export</h1>
-            <p className="text-sm text-gray-600 mt-1">Generate and download platform data</p>
+    <div className="min-h-screen bg-gray-50 flex">
+      <StudentSidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Reports & Export</h1>
+              <p className="text-sm text-gray-600 mt-1">Generate and download platform data</p>
+            </div>
           </div>
-          <button
-            onClick={() => window.history.back()}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
-          >
-            ← Back
-          </button>
         </div>
 
         {/* Report Selection */}
@@ -297,7 +296,7 @@ const Reports = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
   const [activeUserType, setActiveUserType] = useState('student');
+  const [openFaqId, setOpenFaqId] = useState(null);
   const navigate = useNavigate();
 
   const userTypes = {
@@ -24,7 +25,7 @@ const LandingPage = () => {
       sectionBg: 'bg-amber-100',
       title: 'Pantry',
       headline: 'Operate. Govern. Allocate with Intelligence.',
-      subheadline: 'Combined operations and governance with AI-driven allocation, supplier verification, and blockchain accountability.',
+      subheadline: 'Combined operations and governance with data-driven allocation, supplier verification, and blockchain accountability.',
       cta: 'Get Started',
       ctaAction: () => navigate('/login')
     },
@@ -44,40 +45,40 @@ const LandingPage = () => {
   const features = [
     {
       title: 'Blockchain Transparency',
-      description: 'Every transaction, vote, and allocation is recorded on Aptos for full accountability and auditability.'
+      description: 'Every transaction and allocation is permanently recorded for full accountability.'
     },
     {
       title: 'Fair Allocation',
-      description: 'AI-powered algorithm ensures equitable distribution based on need, participation, and reliability.'
+      description: 'Smart algorithm ensures equitable distribution based on need and participation.'
     },
     {
       title: 'Liability Protection',
-      description: 'Smart contracts enforce VLCP compliance and Good Samaritan Act protection for all suppliers.'
+      description: 'Automatic compliance and Good Samaritan Act protection for all donations.'
     },
     {
       title: 'Real-Time Analytics',
-      description: 'Live dashboards provide instant insights on inventory, demand, allocations, and compliance metrics.'
+      description: 'Live dashboards show inventory, demand, allocations, and key metrics.'
     }
   ];
 
   const howItWorks = {
     student: [
-      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID - Pantry manages your custodial wallet automatically' },
-      { step: 2, title: 'Participate in Governance', description: 'Vote on platform proposals, supplier approvals, and policy changes' },
-      { step: 3, title: 'Earn Priority', description: 'Gain priority access through governance participation, volunteering, and reliable pickups' },
-      { step: 4, title: 'Claim & Pickup', description: 'Receive pickup ticket when approved, show QR code at pantry, collect food' }
+      { step: 1, title: 'Register', description: 'Sign up with Cal Poly ID and get a custodial wallet managed by the Pantry' },
+      { step: 2, title: 'Vote & Participate', description: 'Vote on proposals and policies to shape what food the pantry stocks' },
+      { step: 3, title: 'Earn Priority', description: 'Gain priority through voting, volunteering, and reliable pickups' },
+      { step: 4, title: 'Claim & Pickup', description: 'Get your pickup ticket, show QR code at pantry, and collect food' }
     ],
     pantry: [
-      { step: 1, title: 'Manage Operations', description: 'Combined BNI + Pantry team handles supplier verification, inventory, and distribution logistics' },
-      { step: 2, title: 'Create Proposals', description: 'Identify needs and create governance proposals for students to vote on - execute approved decisions via multi-sig' },
-      { step: 3, title: 'Custodial Wallet Service', description: 'Hold ONE custodial wallet for ALL students - issue NFTs and execute blockchain transactions on their behalf' },
-      { step: 4, title: 'POAS & Analytics', description: 'Use AI-powered POAS (allocation algorithm), verify pickups via QR codes, monitor platform health' }
+      { step: 1, title: 'Manage Operations', description: 'Verify suppliers, manage inventory, and handle food distribution' },
+      { step: 2, title: 'Create Proposals', description: 'Create proposals for students to vote on and execute approved decisions' },
+      { step: 3, title: 'Manage Wallets', description: 'Hold custodial wallets for students and issue credentials on their behalf' },
+      { step: 4, title: 'POAS & Analytics', description: 'Use POAS for allocations, verify pickups, and monitor platform health' }
     ],
     supplier: [
-      { step: 1, title: 'Apply & Get Approved', description: 'Submit application - Pantry verifies your credentials for donation tracking' },
-      { step: 2, title: 'Receive Food Requests', description: 'Pantry sends food requests based on student governance votes and current needs' },
-      { step: 3, title: 'Fulfill Donations', description: 'Log donations with type, quantity, and location - inventory automatically updated' },
-      { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, CO₂ reduced, and blockchain-verified donation receipts' }
+      { step: 1, title: 'Apply & Get Approved', description: 'Submit application and get verified by the Pantry for donations' },
+      { step: 2, title: 'Receive Requests', description: 'Get food requests based on student votes and current needs' },
+      { step: 3, title: 'Log Donations', description: 'Log donations with type, quantity, and location for tracking' },
+      { step: 4, title: 'Track Impact', description: 'View pounds donated, meals saved, and verified receipts' }
     ]
   };
 
@@ -86,86 +87,86 @@ const LandingPage = () => {
       {
         id: 1,
         question: "How do I get food from FFQ?",
-        answer: "Vote on proposals and volunteer to build priority access. The pantry allocates food based on your participation, need, and pickup reliability. When approved, you'll receive a digital pickup ticket to collect your food. More engagement = better priority."
+        answer: "Vote and volunteer to earn priority. The pantry allocates food based on your participation and need. You'll get a pickup ticket when approved."
       },
       {
         id: 2,
-        question: "What is a pickup ticket and why do I need one?",
-        answer: "It's your digital proof of food allocation. The Pantry automatically creates it when you're approved. Workers scan it at pickup to verify your claim, then mark it 'used' to prevent duplicate claims. It's tamper-proof and can't be forged."
+        question: "What is a pickup ticket?",
+        answer: "Digital proof of your food allocation. Show it at pickup. It's tamper-proof and automatically marked as used after collection."
       },
       {
         id: 3,
-        question: "How does voting work and why does my vote matter?",
-        answer: "Your votes tell the pantry what food you want and are permanently recorded. More participation = more influence in future decisions. This helps the pantry predict demand and stock what students actually need. Your voice shapes the food available!"
+        question: "Why does my vote matter?",
+        answer: "Your votes shape what food gets stocked and help the pantry predict demand. More participation = more influence."
       },
       {
         id: 4,
-        question: "Do I need cryptocurrency or money to use FFQ?",
-        answer: "No! FFQ is 100% free. Just sign up with your Cal Poly ID—no crypto, no fees, no technical setup. The Pantry manages everything. It's just a regular app."
+        question: "Do I need cryptocurrency?",
+        answer: "No. FFQ is free—no crypto, no fees. Just sign up with your Cal Poly ID. The Pantry handles everything behind the scenes."
       },
       {
         id: 5,
-        question: "Why is FFQ better than traditional food pantries?",
-        answer: "Traditional pantries use first-come-first-served (favors those who can skip class), lack transparency, and rely on manual processes prone to bias. FFQ provides fair AI-powered allocation, complete supply chain visibility, student voting power, and fraud prevention. It's an equitable, student-driven system—not just charity."
+        question: "Why FFQ over traditional pantries?",
+        answer: "Traditional pantries favor those who can skip class and lack transparency. FFQ uses fair allocation, gives students voting power, and prevents fraud."
       }
     ],
     pantry: [
       {
         id: 1,
-        question: "What are the Pantry's responsibilities in FFQ?",
-        answer: "You handle daily operations (donations, allocations, pickups), governance tasks (verify suppliers, issue credentials), and monitoring (analytics, compliance, audits). The Pantry manages a secure team account on behalf of all students using multi-party approval—no single person controls critical functions."
+        question: "What are the Pantry's responsibilities?",
+        answer: "Handle operations (donations, allocations, pickups), governance (verify suppliers, issue credentials), and monitoring (analytics, compliance). Multi-party approval ensures no single person controls critical functions."
       },
       {
         id: 2,
-        question: "How does POAS help us allocate food fairly?",
-        answer: "POAS is an AI algorithm that scores students based on governance participation (35%), volunteering (20%), need (20%), pickup reliability (10%), and recency (10%). It provides allocation recommendations you review and approve—rewarding engaged students while prioritizing those in need. All data is permanently recorded for transparency."
+        question: "How does POAS help allocate food?",
+        answer: "POAS scores students based on participation, volunteering, need, and reliability. It provides recommendations you review and approve. All data is permanently recorded."
       },
       {
         id: 3,
-        question: "How do we verify and approve new suppliers?",
-        answer: "Review their application and credentials (EIN, licenses, certifications). If approved, issue a verified Partner Certificate through your secure account. The system handles all technical setup and permanently records the verification—ensuring only legitimate suppliers can participate."
+        question: "How do we verify new suppliers?",
+        answer: "Review their credentials (EIN, licenses). If approved, issue a Partner Certificate. The system handles setup and records the verification."
       },
       {
         id: 4,
-        question: "What is multi-party approval and why is it critical?",
-        answer: "Multiple people must approve important actions (allocations, donations)—like a safety deposit box needing two keys. FFQ uses 2-of-3 or 3-of-5 approval setups. This prevents unauthorized changes, protects against fraud, and creates an audit trail for compliance and accountability."
+        question: "What is multi-party approval?",
+        answer: "Multiple people must approve important actions. Uses 2-of-3 or 3-of-5 setups. Prevents fraud and creates an audit trail."
       },
       {
         id: 5,
-        question: "How does the secure account system work for students?",
-        answer: "The Pantry maintains a secure team account that manages all verification for students—no apps, credentials, or fees required. When students vote or claim food, the system automatically verifies and issues credentials. They just see a regular app; security runs in the background."
+        question: "How does the student wallet system work?",
+        answer: "The Pantry holds secure wallets for students. When they vote or claim food, the system handles verification automatically. Students see a regular app."
       },
       {
         id: 6,
-        question: "What happens when we scan a student's pickup ticket?",
-        answer: "The system verifies the ticket is authentic, owned by the student, not yet redeemed, and within the valid timeframe. You mark it 'redeemed,' permanently updating the status to prevent duplicate claims. Creates tamper-proof records and real-time inventory tracking."
+        question: "What happens when we scan a pickup ticket?",
+        answer: "System verifies authenticity and ownership. You mark it redeemed, permanently updating status to prevent duplicate claims."
       }
     ],
     supplier: [
       {
         id: 1,
-        question: "How do I donate food through FFQ?",
-        answer: "After approval, log in and list your surplus food (weight, type, location). The Pantry manages all verification—no technical setup needed. You get a permanent donation receipt, and the system tracks where your food goes and how many students it helps. Just focus on donating!"
+        question: "How do I donate food?",
+        answer: "Log in and list your surplus food (weight, type, location). The Pantry handles verification. You get a permanent receipt and tracking."
       },
       {
         id: 2,
-        question: "What is a donation receipt and how does it help my business?",
-        answer: "It's permanent, verifiable proof of your donation for: (1) IRS-compliant tax deductions, (2) Public reputation building, (3) Impact metrics (students helped). Unlike paper receipts, digital records can't be lost or forged. Show stakeholders real, auditable proof of your social impact."
+        question: "What is a donation receipt?",
+        answer: "Permanent proof for tax deductions and impact reporting. Digital records can't be lost or forged—show stakeholders auditable proof of your impact."
       },
       {
         id: 3,
-        question: "How does FFQ protect us from liability when donating food?",
-        answer: "FFQ enforces Good Samaritan Act and SB 1383 compliance automatically. The system verifies donations meet VLCP food safety standards (temperature logs, handling, timestamps). Everything is permanently recorded, creating an immutable compliance trail. You have tamper-proof proof that all requirements were met."
+        question: "How does FFQ protect from liability?",
+        answer: "Automatic Good Samaritan Act and SB 1383 compliance. System verifies food safety standards and creates an immutable compliance trail."
       },
       {
         id: 4,
-        question: "Can I track where my donated food goes?",
-        answer: "Yes! See which pantry received it, when it was distributed, which students benefited (anonymous), and impact metrics (lbs rescued, meals provided, CO₂ saved). Your dashboard shows donation history and cumulative impact—perfect for stakeholder reports and grant applications."
+        question: "Can I track my donations?",
+        answer: "Yes. See distribution details, anonymous student impact, and metrics (lbs rescued, meals, CO₂ saved) for reports."
       },
       {
         id: 5,
-        question: "Do I need any technical setup to participate?",
-        answer: "No! FFQ is completely free—no setup, no fees. The Pantry manages all verification and record-keeping. Just log in and start donating. The technology handles compliance, receipts, and tracking in the background. It's a simple platform with permanent verified proof."
+        question: "Do I need technical setup?",
+        answer: "No. FFQ is free—no setup, no fees. Just log in and donate. The system handles compliance and tracking automatically."
       }
     ]
   };
@@ -210,7 +211,8 @@ const LandingPage = () => {
       hover: 'hover:bg-primary-200',
       plusSign: 'text-primary-600',
       ctaBackground: 'bg-primary-200',
-      ctaButton: 'bg-primary-600 hover:bg-primary-700'
+      ctaButton: 'bg-primary-600 hover:bg-primary-700',
+      answerText: 'text-green-600'
     },
     pantry: {
       background: 'bg-amber-100',
@@ -218,7 +220,8 @@ const LandingPage = () => {
       hover: 'hover:bg-amber-200',
       plusSign: 'text-amber-600',
       ctaBackground: 'bg-amber-200',
-      ctaButton: 'bg-amber-600 hover:bg-amber-700'
+      ctaButton: 'bg-amber-600 hover:bg-amber-700',
+      answerText: 'text-orange-600'
     },
     supplier: {
       background: 'bg-blue-100',
@@ -226,7 +229,8 @@ const LandingPage = () => {
       hover: 'hover:bg-blue-200',
       plusSign: 'text-blue-600',
       ctaBackground: 'bg-blue-200',
-      ctaButton: 'bg-blue-600 hover:bg-blue-700'
+      ctaButton: 'bg-blue-600 hover:bg-blue-700',
+      answerText: 'text-blue-600'
     }
   };
 
@@ -236,14 +240,8 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-primary-200 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Left - FAQ & Features & How It Works */}
+            {/* Left - Features & How It Works & Governance */}
             <div className="flex items-center gap-8">
-              <button
-                onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
-                className="text-gray-600 hover:text-gray-900 transition font-medium"
-              >
-                FAQ
-              </button>
               <button
                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-gray-600 hover:text-gray-900 transition font-medium"
@@ -255,6 +253,12 @@ const LandingPage = () => {
                 className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
                 How It Works
+              </button>
+              <button
+                onClick={() => document.getElementById('governance')?.scrollIntoView({ behavior: 'smooth' })}
+                className="text-gray-600 hover:text-gray-900 transition font-medium"
+              >
+                Governance
               </button>
             </div>
             
@@ -268,13 +272,13 @@ const LandingPage = () => {
               </button>
             </div>
             
-            {/* Right - Navigation */}
+            {/* Right - FAQ & Get Started */}
             <div className="flex items-center gap-8">
               <button
-                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.querySelector('section:has(#faq-1)')?.scrollIntoView({ behavior: 'smooth' })}
                 className="text-gray-600 hover:text-gray-900 transition font-medium"
               >
-                How It Works
+                FAQ
               </button>
               <button
                 onClick={() => navigate('/login')}
@@ -333,7 +337,7 @@ const LandingPage = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Free Foodie Quest?</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A secure digital platform that brings transparency, fairness, and efficiency to campus food pantries.
+              Transparent, fair, and efficient campus food distribution.
             </p>
           </div>
 
@@ -358,7 +362,7 @@ const LandingPage = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Student-driven democratic governance: students vote, Pantry executes, suppliers fulfill requests
+              Students vote, Pantry executes, Suppliers fulfill
             </p>
             
             {/* Visual Flow Diagram */}
@@ -366,8 +370,8 @@ const LandingPage = () => {
               
               {/* Title: Governance Model */}
               <div className="text-center mb-6">
-                <h3 className="text-lg font-bold text-gray-900">Student-Centric Governance Model</h3>
-                <p className="text-xs text-gray-600 mt-1">Students have 100% voting power on all platform decisions</p>
+                <h3 className="text-lg font-bold text-gray-900">Student-Centric Governance</h3>
+                <p className="text-xs text-gray-600 mt-1">Students have full voting power</p>
               </div>
 
               {/* Three Entities with Roles */}
@@ -507,6 +511,133 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Governance Section */}
+      <section id="governance" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">What is Governance?</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Student government for your food pantry. You vote on what food is available.
+            </p>
+          </div>
+
+          {/* Simple Explanation Card */}
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 shadow-lg border-2 border-primary-200">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">
+                  <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">Governance in Simple Terms</h3>
+                  <p className="text-gray-700 text-lg leading-relaxed">
+                    Students vote on what food to stock and policies to implement. Your votes shape the pantry. More participation = higher priority for food.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* How Governance Works in FFQ */}
+          <div className="mb-16">
+            <h3 className="text-3xl font-bold text-gray-900 text-center mb-12">How Governance Works in FFQ</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {/* Step 1 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 hover:shadow-xl transition-shadow h-full flex flex-col">
+                  <div className={`w-12 h-12 rounded-full ${howItWorksColors[activeUserType].stepCircle} text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto`}>
+                    1
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-3 text-center">Pantry Creates Proposal</h4>
+                  <p className="text-gray-600 text-center flex-grow">
+                    Pantry creates proposals for students to vote on.
+                  </p>
+                  <div className="mt-4 p-3 bg-primary-50 rounded-lg border border-primary-200">
+                    <p className="text-sm text-primary-800 font-medium">Example: "Should we stock more gluten-free bread?"</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 hover:shadow-xl transition-shadow h-full flex flex-col">
+                  <div className={`w-12 h-12 rounded-full ${howItWorksColors[activeUserType].stepCircle} text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto`}>
+                    2
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-3 text-center">Students Vote</h4>
+                  <p className="text-gray-600 text-center flex-grow">
+                    Students cast their vote. Every vote is recorded.
+                  </p>
+                  <div className="mt-4 p-3 bg-primary-50 rounded-lg border border-primary-200">
+                    <p className="text-sm text-primary-800 font-medium">Voting increases your priority for food allocations!</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative">
+                <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6 hover:shadow-xl transition-shadow h-full flex flex-col">
+                  <div className={`w-12 h-12 rounded-full ${howItWorksColors[activeUserType].stepCircle} text-white flex items-center justify-center font-bold text-xl mb-4 mx-auto`}>
+                    3
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-900 mb-3 text-center">Decision Executed</h4>
+                  <p className="text-gray-600 text-center flex-grow">
+                    Pantry implements approved decisions.
+                  </p>
+                  <div className="mt-4 p-3 bg-primary-50 rounded-lg border border-primary-200">
+                    <p className="text-sm text-primary-800 font-medium">Democracy in action—students decide the outcome!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* What You Can Vote On */}
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 shadow-lg border-2 border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">What Can You Vote On?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-start gap-3 bg-white rounded-lg p-4 shadow-sm">
+                  <div className={`w-2 h-2 rounded-full ${howItWorksColors[activeUserType].stepCircle} mt-2 flex-shrink-0`}></div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Food Types & Preferences</p>
+                    <p className="text-sm text-gray-600 mt-1">"Should we stock more organic produce?"</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-white rounded-lg p-4 shadow-sm">
+                  <div className={`w-2 h-2 rounded-full ${howItWorksColors[activeUserType].stepCircle} mt-2 flex-shrink-0`}></div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Supplier Approvals</p>
+                    <p className="text-sm text-gray-600 mt-1">"Should we accept donations from this restaurant?"</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-white rounded-lg p-4 shadow-sm">
+                  <div className={`w-2 h-2 rounded-full ${howItWorksColors[activeUserType].stepCircle} mt-2 flex-shrink-0`}></div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Operating Hours & Policies</p>
+                    <p className="text-sm text-gray-600 mt-1">"Should we add weekend pickup hours?"</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 bg-white rounded-lg p-4 shadow-sm">
+                  <div className={`w-2 h-2 rounded-full ${howItWorksColors[activeUserType].stepCircle} mt-2 flex-shrink-0`}></div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Allocation Priorities</p>
+                    <p className="text-sm text-gray-600 mt-1">"Should volunteer hours count for more priority?"</p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-gray-700">
+                  <strong>If it affects the pantry, you vote on it.</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className={`py-20 px-4 sm:px-6 lg:px-8 ${currentUser.sectionBg}`}>
         <div className="max-w-4xl mx-auto">
@@ -523,7 +654,10 @@ const LandingPage = () => {
               {Object.entries(userTypes).map(([key, type]) => (
                 <button
                   key={key}
-                  onClick={() => setActiveUserType(key)}
+                  onClick={() => {
+                    setActiveUserType(key);
+                    setOpenFaqId(null); // Close any open FAQ when switching user types
+                  }}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all ${
                     activeUserType === key
                       ? `${howItWorksColors[key].activeTab} text-white`
@@ -537,67 +671,47 @@ const LandingPage = () => {
           </div>
 
           <div className="space-y-4">
-            {currentFaqs.map((faq) => (
-              <div key={faq.id} className={`${faqColors[activeUserType].background} rounded-lg shadow-md overflow-hidden border-2 ${faqColors[activeUserType].border}`}>
-                <button
-                  onClick={() => {
-                    const content = document.getElementById(`faq-${faq.id}`);
-                    if (content) {
-                      content.style.display = content.style.display === 'none' ? 'block' : 'none';
-                    }
-                  }}
-                  className={`w-full px-6 py-5 text-left flex justify-between items-center ${faqColors[activeUserType].hover} transition`}
-                >
-                  <span className="text-lg font-semibold text-gray-900">
-                    {faq.question}
-                  </span>
-                  <span className={`text-2xl ${faqColors[activeUserType].plusSign}`}>+</span>
-                </button>
-                <div id={`faq-${faq.id}`} style={{ display: 'none' }} className="px-6 pb-5">
-                  <p className="text-gray-700">
-                    {faq.answer}
-                  </p>
+            {currentFaqs.map((faq) => {
+              const isOpen = openFaqId === faq.id;
+              return (
+                <div key={faq.id} className={`${faqColors[activeUserType].background} rounded-lg shadow-md overflow-hidden border-2 ${faqColors[activeUserType].border} transition-all duration-300`}>
+                  <button
+                    onClick={() => setOpenFaqId(isOpen ? null : faq.id)}
+                    className={`w-full px-6 py-5 text-left flex justify-between items-center ${faqColors[activeUserType].hover} transition`}
+                  >
+                    <span className="text-lg font-semibold text-gray-900">
+                      {faq.question}
+                    </span>
+                    <span className={`text-2xl ${faqColors[activeUserType].plusSign} transform transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
+                      +
+                    </span>
+                  </button>
+                  <div 
+                    className={`px-6 transition-all duration-300 ease-in-out ${
+                      isOpen ? 'max-h-96 pb-5 pt-3 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                    }`}
+                  >
+                    <p className={`font-bold ${faqColors[activeUserType].answerText}`}>
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className={`mt-12 text-center ${faqColors[activeUserType].ctaBackground} rounded-xl p-8`}>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              Still have questions?
+              Ready to get started?
             </h3>
             <p className="text-gray-700 mb-6">
-              We're here to help! Blockchain might seem complex, but using FFQ is simple.
+              Using FFQ is simple and free.
             </p>
             <button
               onClick={() => navigate('/login')}
               className={`px-8 py-3 ${faqColors[activeUserType].ctaButton} text-white font-semibold rounded-lg transition shadow-lg`}
             >
-              Try It Yourself - It's Free!
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Get Started?</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join hundreds of students, pantry workers, and suppliers using FFQ today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => navigate('/login')}
-              className="px-8 py-4 bg-white text-primary-600 text-lg font-semibold rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
-            >
-              Get Started Now
-            </button>
-            <button
-              onClick={() => document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-primary-500 text-white text-lg font-semibold rounded-lg border-2 border-white hover:bg-primary-400 transition-all"
-            >
-              Learn More
+              Get Started - It's Free
             </button>
           </div>
         </div>

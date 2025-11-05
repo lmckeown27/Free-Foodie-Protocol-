@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI, volunteerAPI } from '../services/api';
-import HowItWorksModal from '../components/HowItWorksModal';
 import PickupQRCode from '../components/PickupQRCode';
+import StudentSidebar from '../components/StudentSidebar';
 
 const StudentDashboard = () => {
   const [inventory, setInventory] = useState([]);
   const [allocations, setAllocations] = useState([]);
-  const [nfts, setNfts] = useState({ governance: 0, allocation: 0 });
+  const [credentials, setCredentials] = useState({ governance: 0, allocation: 0 });
   const [trending, setTrending] = useState([]);
   const [poasScore, setPoasScore] = useState(null);
   const [volunteerData, setVolunteerData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showHowItWorks, setShowHowItWorks] = useState(false);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   
   useEffect(() => {
@@ -21,7 +20,7 @@ const StudentDashboard = () => {
   
   const fetchDashboardData = async () => {
     try {
-      const [inventoryRes, allocationsRes, nftsRes, trendingRes] = await Promise.all([
+      const [inventoryRes, allocationsRes, credentialsRes, trendingRes] = await Promise.all([
         inventoryAPI.getInventory({ limit: 10 }),
         allocationAPI.getMyAllocations(),
         nftAPI.getMyNFTs(),
@@ -31,9 +30,9 @@ const StudentDashboard = () => {
       setInventory(inventoryRes.data.data);
       setAllocations(allocationsRes.data.data.filter(a => a.status === 'approved'));
       
-      const governanceCount = nftsRes.data.data.filter(n => n.nft_type === 'governance').length;
-      const allocationCount = nftsRes.data.data.filter(n => n.nft_type === 'allocation').length;
-      setNfts({ governance: governanceCount, allocation: allocationCount });
+      const governanceCount = credentialsRes.data.data.filter(c => c.credential_type === 'governance' || c.nft_type === 'governance').length;
+      const allocationCount = credentialsRes.data.data.filter(c => c.credential_type === 'allocation' || c.nft_type === 'allocation').length;
+      setCredentials({ governance: governanceCount, allocation: allocationCount });
       
       setTrending(trendingRes.data.data);
       
@@ -61,12 +60,6 @@ const StudentDashboard = () => {
     }
   };
   
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
-  };
-  
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -76,32 +69,11 @@ const StudentDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-primary-50">
-      {/* Header */}
-      <header className="bg-primary-100 shadow">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-primary-600">Free Foodie Quest</h1>
-            <p className="text-sm text-gray-600">Welcome, {user.first_name}!</p>
-          </div>
-          <div className="flex gap-3 items-center">
-            <button
-              onClick={() => setShowHowItWorks(true)}
-              className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition"
-            >
-              How This Works
-            </button>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-primary-50 flex">
+      <StudentSidebar user={user} />
       
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      {/* Main Content */}
+      <main className="flex-1 ml-64 p-6">
         {/* Cal Poly ID Badge */}
         <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-4 mb-6">
           <div className="flex items-center justify-between">
@@ -114,90 +86,6 @@ const StudentDashboard = () => {
               <p className="text-xs font-mono bg-white/20 px-3 py-1 rounded">Managed by Basic Needs Initiative</p>
             </div>
           </div>
-        </div>
-        
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          
-          <div className="bg-primary-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Voting Power</h3>
-            <p className="text-3xl font-bold text-primary-700 mt-2">{nfts.governance}</p>
-            <p className="text-xs text-gray-500 mt-1">Active voting rights</p>
-          </div>
-          
-          <div className="bg-primary-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Active Claims</h3>
-            <p className="text-3xl font-bold text-primary-600 mt-2">{allocations.length}</p>
-            <p className="text-xs text-gray-500 mt-1">Ready to pick up</p>
-          </div>
-          
-          <div className="bg-primary-100 rounded-lg shadow p-6">
-            <h3 className="text-sm font-medium text-gray-500">Total Pickups</h3>
-            <p className="text-3xl font-bold text-primary-800 mt-2">{nfts.allocation}</p>
-            <p className="text-xs text-gray-500 mt-1">Lifetime claims</p>
-          </div>
-          
-          {/* Volunteer Stats Card */}
-          <Link 
-            to="/volunteer"
-            className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg shadow-lg p-6 hover:shadow-xl transition group"
-          >
-            <h3 className="text-sm font-medium text-white opacity-90">Volunteer Hours</h3>
-            <p className="text-3xl font-bold text-white mt-2">
-              {volunteerData?.summary?.verified_hours || 0}
-            </p>
-            <div className="flex items-center justify-between mt-2">
-              <p className="text-xs text-white opacity-75">
-                {volunteerData?.summary?.current_tier ? `${volunteerData.summary.current_tier.charAt(0).toUpperCase() + volunteerData.summary.current_tier.slice(1)} Tier` : 'Start volunteering!'}
-              </p>
-              <span className="text-white opacity-75 group-hover:opacity-100 transition">→</span>
-            </div>
-          </Link>
-        </div>
-        
-        {/* Impact & Engagement Banner */}
-        <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Make an Impact</h2>
-            <p className="text-sm opacity-90 mb-4">
-              Participate in governance and volunteer to support the community and gain priority access to food allocations
-            </p>
-            <div className="flex justify-center gap-3">
-              <Link to="/volunteer" className="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium">
-                Log Volunteer Hours
-              </Link>
-              <Link to="/governance" className="px-6 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 transition font-medium">
-                View Governance
-              </Link>
-            </div>
-          </div>
-        </div>
-        
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <Link
-            to="/inventory"
-            className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-8 hover:from-primary-600 hover:to-primary-700 transition transform hover:scale-105"
-          >
-            <h2 className="text-2xl font-bold mb-2">Browse Inventory</h2>
-            <p className="text-primary-100">View available food items</p>
-          </Link>
-          
-          <Link
-            to="/nfts"
-            className="bg-gradient-to-r from-amber-500 to-amber-600 text-white rounded-lg shadow-lg p-8 hover:from-amber-600 hover:to-amber-700 transition transform hover:scale-105"
-          >
-            <h2 className="text-2xl font-bold mb-2">My Credentials</h2>
-            <p className="text-amber-100">View your achievements and records</p>
-          </Link>
-          
-          <Link
-            to="/governance"
-            className="bg-gradient-to-r from-primary-400 to-primary-500 text-white rounded-lg shadow-lg p-8 hover:from-primary-500 hover:to-primary-600 transition transform hover:scale-105"
-          >
-            <h2 className="text-2xl font-bold mb-2">Governance</h2>
-            <p className="text-primary-100">Vote on proposals to increase POAS</p>
-          </Link>
         </div>
         
         {/* Available Food Inventory */}
@@ -228,8 +116,8 @@ const StudentDashboard = () => {
               </div>
             )}
             <div className="mt-4 text-center">
-              <Link to="/inventory" className="text-primary-600 hover:text-primary-700 font-medium">
-                View Full Inventory →
+              <Link to="/my-food" className="text-primary-600 hover:text-primary-700 font-medium">
+                View All My Food →
               </Link>
             </div>
           </div>
@@ -291,13 +179,6 @@ const StudentDashboard = () => {
           </div>
         </div>
       </main>
-
-      {/* How It Works Modal */}
-      <HowItWorksModal 
-        isOpen={showHowItWorks} 
-        onClose={() => setShowHowItWorks(false)} 
-        userRole="student" 
-      />
     </div>
   );
 };

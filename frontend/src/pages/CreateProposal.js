@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { governanceAPI } from '../services/api';
+import PantrySidebar from '../components/PantrySidebar';
 
 const CreateProposal = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -122,18 +124,18 @@ const CreateProposal = () => {
   const selectedType = proposalTypes.find(t => t.value === formData.proposal_type);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to="/pantry" className="text-amber-600 hover:text-amber-700 mb-4 inline-block">
-            ← Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Create New Proposal</h1>
-          <p className="text-gray-600 mt-2">
-            Submit a proposal for student voting. Students have 100% voting power on all governance decisions.
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50 flex">
+      <PantrySidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Create New Proposal</h1>
+            <p className="text-gray-600 mt-2">
+              Submit a proposal for student voting. Students have 100% voting power on all governance decisions.
+            </p>
+          </div>
 
         {/* Info Banner */}
         <div className="bg-gradient-to-r from-amber-100 to-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
@@ -294,7 +296,8 @@ const CreateProposal = () => {
             </p>
           </div>
         </form>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

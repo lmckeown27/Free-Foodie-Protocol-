@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { governanceAPI } from '../services/api';
+import StudentSidebar from '../components/StudentSidebar';
 
 const GovernanceProposals = () => {
   const [proposals, setProposals] = useState([]);
@@ -112,14 +113,14 @@ const GovernanceProposals = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to="/student" className="text-primary-600 hover:text-primary-700 mb-4 inline-block">
-            ← Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Vote on Proposals</h1>
+    <div className="min-h-screen bg-gray-50 flex">
+      <StudentSidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Vote on Proposals</h1>
           <p className="text-gray-600 mt-2">
             Shape the future of FFQ! Each vote boosts your food priority by 35%.
           </p>
@@ -322,7 +323,8 @@ const GovernanceProposals = () => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

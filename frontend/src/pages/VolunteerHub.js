@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { volunteerAPI } from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import StudentSidebar from '../components/StudentSidebar';
 
 const VolunteerHub = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const VolunteerHub = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showLogModal, setShowLogModal] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [formData, setFormData] = useState({
     activity_type: '',
     hours: '',
@@ -60,12 +62,12 @@ const VolunteerHub = () => {
 
   const getTierInfo = (tier) => {
     const tiers = {
-      bronze: { color: 'from-amber-700 to-amber-500', icon: '🥉', text: 'Bronze' },
-      silver: { color: 'from-gray-400 to-gray-200', icon: '🥈', text: 'Silver' },
-      gold: { color: 'from-yellow-500 to-yellow-300', icon: '🥇', text: 'Gold' },
-      platinum: { color: 'from-amber-600 to-pink-400', icon: '💎', text: 'Platinum' }
+      bronze: { color: 'from-amber-700 to-amber-500', text: 'Bronze' },
+      silver: { color: 'from-gray-400 to-gray-200', text: 'Silver' },
+      gold: { color: 'from-yellow-500 to-yellow-300', text: 'Gold' },
+      platinum: { color: 'from-amber-600 to-pink-400', text: 'Platinum' }
     };
-    return tiers[tier] || { color: 'from-gray-500 to-gray-300', icon: '⭐', text: 'No Tier' };
+    return tiers[tier] || { color: 'from-gray-500 to-gray-300', text: 'No Tier' };
   };
 
   const getStatusColor = (status) => {
@@ -93,25 +95,22 @@ const VolunteerHub = () => {
   }
 
   return (
-    <div className="min-h-screen bg-primary-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
+    <div className="min-h-screen bg-primary-50 flex">
+      <StudentSidebar user={user} />
+      
+      <main className="flex-1 ml-64 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Volunteer Hub</h1>
+              <p className="text-gray-600 mt-1">Earn NFTs and boost your POAS score by volunteering</p>
+            </div>
             <button
-              onClick={() => navigate('/student')}
-              className="text-primary-600 hover:text-primary-700 mb-2 flex items-center"
+              onClick={() => setShowLogModal(true)}
+              className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium shadow-md hover:shadow-lg transition"
             >
-              ← Back to Dashboard
-            </button>
-            <h1 className="text-3xl font-bold text-gray-900">Volunteer Hub</h1>
-            <p className="text-gray-600 mt-1">Earn NFTs and boost your POAS score by volunteering</p>
-          </div>
-          <button
-            onClick={() => setShowLogModal(true)}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium shadow-md hover:shadow-lg transition"
-          >
-            + Log Volunteer Hours
+              + Log Volunteer Hours
           </button>
         </div>
 
@@ -319,7 +318,7 @@ const VolunteerHub = () => {
             </div>
             <div className="divide-y divide-gray-200">
               {leaderboard.map((student, index) => {
-                const tierInfo = student.highest_tier ? getTierInfo(student.highest_tier) : { icon: '⭐', color: 'from-gray-300 to-gray-100' };
+                const tierInfo = student.highest_tier ? getTierInfo(student.highest_tier) : { color: 'from-gray-300 to-gray-100' };
                 return (
                   <div key={student.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition">
                     <div className="flex items-center space-x-4">
@@ -340,7 +339,6 @@ const VolunteerHub = () => {
                     <div className="text-right">
                       {student.highest_tier && (
                         <div className="flex items-center space-x-2">
-                          <span className="text-2xl">{tierInfo.icon}</span>
                           <span className="text-sm font-medium text-gray-600">{tierInfo.text}</span>
                         </div>
                       )}
@@ -359,23 +357,11 @@ const VolunteerHub = () => {
               <p className="text-lg mb-4">
                 Volunteering doesn't just help the community—it directly improves your access to food through FFQ!
               </p>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Your POAS (Predicted Optimal Allocation Score) increases significantly with verified volunteer hours</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Higher POAS means you're prioritized when food becomes available</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Earn exclusive tier NFTs that unlock additional platform benefits</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">✓</span>
-                  <span>Build a verifiable record of community contribution</span>
-                </li>
+              <ul className="space-y-2 text-sm list-disc list-inside">
+                <li>Your POAS (Predicted Optimal Allocation Score) increases significantly with verified volunteer hours</li>
+                <li>Higher POAS means you're prioritized when food becomes available</li>
+                <li>Earn exclusive tier NFTs that unlock additional platform benefits</li>
+                <li>Build a verifiable record of community contribution</li>
               </ul>
             </div>
 
@@ -386,13 +372,12 @@ const VolunteerHub = () => {
                 return (
                   <div key={tier} className={`bg-white rounded-lg shadow-md p-6 border-2 ${hasEarned ? 'border-primary-500' : 'border-gray-200'}`}>
                     <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <span className="text-3xl">{tierInfo.icon}</span>
+                      <div>
                         <h3 className="text-xl font-bold text-gray-900">{tierInfo.text} Tier</h3>
                       </div>
                       {hasEarned && (
                         <span className="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                          Earned ✓
+                          Earned
                         </span>
                       )}
                     </div>
@@ -408,7 +393,7 @@ const VolunteerHub = () => {
             </div>
           </div>
         )}
-      </div>
+        </div>
 
       {/* Log Hours Modal */}
       {showLogModal && (
@@ -486,6 +471,7 @@ const VolunteerHub = () => {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 };
