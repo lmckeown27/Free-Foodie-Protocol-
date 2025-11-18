@@ -184,7 +184,7 @@ const setupDatabase = async () => {
         )),
         title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
-        proposed_by_entity VARCHAR(50) NOT NULL CHECK (proposed_by_entity IN ('pantry', 'supplier', 'student')),
+        proposed_by_entity VARCHAR(50) NOT NULL CHECK (proposed_by_entity IN ('pantry')),
         proposed_by_user UUID REFERENCES users(id) ON DELETE SET NULL,
         status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('draft', 'active', 'passed', 'failed', 'executed', 'cancelled')),
         voting_starts_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

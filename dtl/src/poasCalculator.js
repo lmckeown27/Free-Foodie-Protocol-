@@ -29,7 +29,273 @@ class POASCalculator {
   }
   
   /**
-   * Calculate POAS for all students
+   * Calculate collective POAS score for the entire system
+   * This represents the overall student body engagement and helps Pantry
+   * determine what food quantities to request from suppliers
+   */
+  async calculateCollectiveScore() {
+    const client = await this.pool.connect();
+    
+    try {
+      // Get all students
+      const studentsResult = await client.query(`
+        SELECT id FROM users WHERE role = 'student'
+      `);
+      
+      const totalStudents = studentsResult.rows.length;
+      
+      if (totalStudents === 0) {
+        return {
+          collective_poas_score: 0,
+          total_students: 0,
+          aggregate_components: {
+            governance_participation: 0,
+            volunteer_contribution: 0,
+            system_engagement: 0
+          },
+          interpretation: 'No students in system',
+          recommendation: 'Maintain minimal inventory levels'
+        };
+      }
+      
+      // Calculate aggregate metrics
+      let totalGovernanceParticipation = 0;
+      let totalVolunteerContribution = 0;
+      let totalRecency = 0;
+      
+      for (const student of studentsResult.rows) {
+        const govScore = await this.calculateGovernanceParticipation(student.id, client);
+        const volScore = await this.calculateVolunteerContribution(student.id, client);
+        const recencyScore = await this.calculateRecency(student.id, client);
+        
+        totalGovernanceParticipation += govScore;
+        totalVolunteerContribution += volScore;
+        totalRecency += recencyScore;
+      }
+      
+      // Calculate average scores across all students
+      const avgGovernance = totalGovernanceParticipation / totalStudents;
+      const avgVolunteer = totalVolunteerContribution / totalStudents;
+      const avgRecency = totalRecency / totalStudents;
+      
+      // Collective POAS weighs engagement factors
+      // Higher collective score = more active student body = request more food
+      const collectivePOAS = (
+        avgGovernance * 0.40 +      // 40% - Governance participation
+        avgVolunteer * 0.40 +        // 40% - Volunteer contribution  
+        avgRecency * 0.20            // 20% - Recent activity
+      );
+      
+      // Provide interpretation for Pantry
+      let interpretation = '';
+      let recommendation = '';
+      
+      if (collectivePOAS >= 75) {
+        interpretation = 'Very High - Highly engaged student body';
+        recommendation = 'Request maximum food quantities from suppliers. High redemption expected.';
+      } else if (collectivePOAS >= 50) {
+        interpretation = 'High - Active student engagement';
+        recommendation = 'Request increased food quantities. Good redemption rate expected.';
+      } else if (collectivePOAS >= 30) {
+        interpretation = 'Moderate - Average student engagement';
+        recommendation = 'Request standard food quantities based on historical averages.';
+      } else if (collectivePOAS >= 15) {
+        interpretation = 'Low - Below average engagement';
+        recommendation = 'Request reduced quantities. Consider engagement initiatives.';
+      } else {
+        interpretation = 'Very Low - Minimal engagement';
+        recommendation = 'Request minimal quantities. Focus on student outreach.';
+      }
+      
+      logger.info('Collective POAS calculated:', {
+        collectivePOAS,
+        totalStudents,
+        avgGovernance,
+        avgVolunteer,
+        avgRecency
+      });
+      
+      return {
+        collective_poas_score: Math.round(collectivePOAS * 100) / 100,
+        total_students: totalStudents,
+        aggregate_components: {
+          governance_participation: Math.round(avgGovernance * 100) / 100,
+          volunteer_contribution: Math.round(avgVolunteer * 100) / 100,
+          recent_activity: Math.round(avgRecency * 100) / 100
+        },
+        interpretation,
+        recommendation,
+        calculated_at: new Date()
+      };
+    } finally {
+      client.release();
+    }
+  }
+  
+  /**
+   * Calculate POAS scores for food items based on student demand and engagement
+   * Higher POAS score = Higher priority item that should be stocked/allocated
+   */
+  async calculateFoodItemScores() {
+    const client = await this.pool.connect();
+    
+    try {
+      // Get all available and allocated inventory items
+      const itemsResult = await client.query(`
+        SELECT DISTINCT 
+          item_name,
+          item_type,
+          id,
+          quantity,
+          unit,
+          status
+        FROM inventory
+        WHERE status IN ('available', 'allocated', 'pending')
+        ORDER BY item_name
+      `);
+      
+      const scores = [];
+      
+      for (const item of itemsResult.rows) {
+        const score = await this.calculateItemScore(item, client);
+        scores.push(score);
+      }
+      
+      // Sort by POAS score (highest first)
+      scores.sort((a, b) => b.poas_score - a.poas_score);
+      
+      return scores;
+    } finally {
+      client.release();
+    }
+  }
+  
+  /**
+   * Calculate POAS score for a specific food item
+   */
+  async calculateItemScore(item, client) {
+    // 1. Student demand (votes for this item)
+    const demandScore = await this.calculateItemDemand(item.item_name, item.item_type, client);
+    
+    // 2. Redemption rate (how often this item type gets picked up)
+    const redemptionScore = await this.calculateItemRedemptionRate(item.item_type, client);
+    
+    // 3. Urgency (expiring soon, low quantity)
+    const urgencyScore = await this.calculateItemUrgency(item, client);
+    
+    // 4. Trending score (recent votes/interest)
+    const trendingScore = await this.calculateItemTrending(item.item_name, item.item_type, client);
+    
+    // Calculate weighted POAS for the item
+    const poas = (
+      demandScore * 0.35 +        // 35% - Student demand/votes
+      redemptionScore * 0.25 +     // 25% - Redemption reliability
+      urgencyScore * 0.20 +        // 20% - Urgency/scarcity
+      trendingScore * 0.20         // 20% - Recent trending
+    );
+    
+    return {
+      item_id: item.id,
+      item_name: item.item_name,
+      item_type: item.item_type,
+      quantity: item.quantity,
+      unit: item.unit,
+      status: item.status,
+      poas_score: Math.round(poas * 100) / 100,
+      components: {
+        demand: Math.round(demandScore * 100) / 100,
+        redemption_rate: Math.round(redemptionScore * 100) / 100,
+        urgency: Math.round(urgencyScore * 100) / 100,
+        trending: Math.round(trendingScore * 100) / 100
+      },
+      calculated_at: new Date()
+    };
+  }
+  
+  /**
+   * Calculate student demand for this item based on votes
+   */
+  async calculateItemDemand(itemName, itemType, client) {
+    const result = await client.query(`
+      SELECT 
+        COUNT(*) as vote_count,
+        AVG(priority) as avg_priority
+      FROM voting
+      WHERE (item_name = $1 OR item_type = $2)
+        AND created_at >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    `, [itemName, itemType]);
+    
+    const voteCount = parseInt(result.rows[0].vote_count) || 0;
+    const avgPriority = parseFloat(result.rows[0].avg_priority) || 0;
+    
+    // Score based on vote count and average priority (1-5)
+    const volumeScore = Math.min((voteCount / 10) * 50, 50); // Max 50 points
+    const priorityScore = (avgPriority / 5) * 50; // Max 50 points
+    
+    return Math.min(volumeScore + priorityScore, 100);
+  }
+  
+  /**
+   * Calculate redemption rate for this item type
+   */
+  async calculateItemRedemptionRate(itemType, client) {
+    const result = await client.query(`
+      SELECT 
+        COUNT(*) as total_allocated,
+        COUNT(CASE WHEN status = 'redeemed' THEN 1 END) as redeemed_count
+      FROM allocations
+      WHERE item_type = $1
+        AND status IN ('redeemed', 'expired')
+    `, [itemType]);
+    
+    const total = parseInt(result.rows[0].total_allocated);
+    const redeemed = parseInt(result.rows[0].redeemed_count);
+    
+    if (total === 0) return 75; // Default score for new items
+    
+    return (redeemed / total) * 100;
+  }
+  
+  /**
+   * Calculate urgency score based on quantity and expiration
+   */
+  async calculateItemUrgency(item, client) {
+    let urgency = 50; // Base score
+    
+    // Low quantity increases urgency
+    if (item.quantity < 5) {
+      urgency += 30;
+    } else if (item.quantity < 10) {
+      urgency += 15;
+    }
+    
+    // Pending status (coming soon) reduces urgency
+    if (item.status === 'pending') {
+      urgency -= 20;
+    }
+    
+    return Math.max(0, Math.min(urgency, 100));
+  }
+  
+  /**
+   * Calculate trending score based on recent votes
+   */
+  async calculateItemTrending(itemName, itemType, client) {
+    const result = await client.query(`
+      SELECT COUNT(*) as recent_votes
+      FROM voting
+      WHERE (item_name = $1 OR item_type = $2)
+        AND created_at >= CURRENT_TIMESTAMP - INTERVAL '7 days'
+    `, [itemName, itemType]);
+    
+    const recentVotes = parseInt(result.rows[0].recent_votes) || 0;
+    
+    // 5+ votes in last week = trending
+    return Math.min((recentVotes / 5) * 100, 100);
+  }
+  
+  /**
+   * Calculate POAS for all students (used for allocation recommendations)
    */
   async calculateScores() {
     const client = await this.pool.connect();

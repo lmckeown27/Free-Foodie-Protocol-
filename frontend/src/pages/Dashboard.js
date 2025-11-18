@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { inventoryAPI, votingAPI, allocationAPI, nftAPI, poasAPI, volunteerAPI, analyticsAPI, walletAPI } from '../services/api';
+import { inventoryAPI, votingAPI, allocationAPI, nftAPI, analyticsAPI, walletAPI } from '../services/api';
 import StudentSidebar from '../components/StudentSidebar';
 import PantrySidebar from '../components/PantrySidebar';
 import SupplierSidebar from '../components/SupplierSidebar';
@@ -40,30 +40,28 @@ const Dashboard = () => {
   
   const fetchStudentDashboard = async () => {
     try {
-      const [allocationsRes, credentialsRes, poasRes, volunteerRes, inventoryRes, votingRes] = await Promise.all([
+      const [allocationsRes, credentialsRes, inventoryRes] = await Promise.all([
         allocationAPI.getMyAllocations().catch(() => ({ data: { data: [] } })),
         nftAPI.getMyNFTs().catch(() => ({ data: { data: [] } })),
-        poasAPI.getMyScore().catch(() => ({ data: { data: { score: 0, rank: 'N/A' } } })),
-        volunteerAPI.getMyHours().catch(() => ({ data: { data: { total_hours: 0, tier: 'None' } } })),
-        inventoryAPI.getInventory({ limit: 5 }).catch(() => ({ data: { data: [] } })),
-        votingAPI.getMyVotes().catch(() => ({ data: { data: [] } }))
+        inventoryAPI.getInventory({ limit: 5 }).catch(() => ({ data: { data: [] } }))
       ]);
       
-      const pendingAllocations = allocationsRes.data.data.filter(a => a.status === 'pending' || a.status === 'approved');
-      const governanceCredentials = credentialsRes.data.data.filter(c => c.credential_type === 'governance' || c.nft_type === 'governance').length;
-      const recentVotes = votingRes.data.data.slice(0, 5);
+      // Filter to show only active requests (not picked up yet)
+      const activeRequests = allocationsRes.data.data.filter(
+        a => a.status !== 'redeemed' && a.status !== 'completed' && a.status !== 'picked_up'
+      );
+      const approvedRequests = activeRequests.filter(a => a.status === 'approved');
+      
+      const allocationTickets = credentialsRes.data.data.filter(
+        c => c.credential_type === 'allocation' || c.nft_type === 'allocation'
+      ).length;
       
       setDashboardData({
-        poasScore: poasRes.data.data.score || 0,
-        poasRank: poasRes.data.data.rank || 'N/A',
-        pendingAllocations: pendingAllocations.length,
-        totalAllocations: allocationsRes.data.data.length,
-        votingRights: governanceCredentials,
-        volunteerHours: volunteerRes.data.data.total_hours || 0,
-        volunteerTier: volunteerRes.data.data.tier || 'None',
+        allocationTickets: allocationTickets,
+        activeRequests: activeRequests.length,
+        approvedRequests: approvedRequests.length,
         availableItems: inventoryRes.data.data.length,
-        recentVotes: recentVotes,
-        allocations: pendingAllocations.slice(0, 3)
+        requests: activeRequests.slice(0, 3)
       });
     } catch (error) {
       console.error('Error fetching student dashboard', error);
@@ -180,61 +178,61 @@ const Dashboard = () => {
         
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {/* POAS Score */}
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium opacity-90">POAS Score</h3>
-              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <p className="text-4xl font-bold mb-1">{dashboardData?.poasScore || 0}</p>
-            <p className="text-sm opacity-90">Rank: {dashboardData?.poasRank || 'N/A'}</p>
-          </div>
-          
-          {/* Pending Allocations */}
-          <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium opacity-90">Pending Pickups</h3>
-              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
-            </div>
-            <p className="text-4xl font-bold mb-1">{dashboardData?.pendingAllocations || 0}</p>
-            <p className="text-sm opacity-90">of {dashboardData?.totalAllocations || 0} total</p>
-          </div>
-          
-          {/* Voting Rights */}
-          <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium opacity-90">Voting Rights</h3>
-              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-              </svg>
-            </div>
-            <p className="text-4xl font-bold mb-1">{dashboardData?.votingRights || 0}</p>
-            <p className="text-sm opacity-90">Active credentials</p>
-          </div>
-          
-          {/* Volunteer Hours */}
+          {/* Allocation Tickets */}
           <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium opacity-90">Volunteer Hours</h3>
+              <h3 className="text-sm font-medium opacity-90">Allocation Tickets</h3>
               <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
               </svg>
             </div>
-            <p className="text-4xl font-bold mb-1">{dashboardData?.volunteerHours || 0}</p>
-            <p className="text-sm opacity-90">Tier: {dashboardData?.volunteerTier || 'None'}</p>
+            <p className="text-4xl font-bold mb-1">{dashboardData?.allocationTickets || 0}</p>
+            <p className="text-sm opacity-90">Available to use</p>
+          </div>
+          
+          {/* Active Requests */}
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium opacity-90">Active Requests</h3>
+              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+            </div>
+            <p className="text-4xl font-bold mb-1">{dashboardData?.activeRequests || 0}</p>
+            <p className="text-sm opacity-90">Food requests</p>
+          </div>
+          
+          {/* Ready for Pickup */}
+          <div className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium opacity-90">Ready for Pickup</h3>
+              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <p className="text-4xl font-bold mb-1">{dashboardData?.approvedRequests || 0}</p>
+            <p className="text-sm opacity-90">Approved items</p>
+          </div>
+          
+          {/* Items in Pantry */}
+          <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium opacity-90">Items in Pantry</h3>
+              <svg className="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+            <p className="text-4xl font-bold mb-1">{dashboardData?.availableItems || 0}</p>
+            <p className="text-sm opacity-90">Available now</p>
           </div>
         </div>
         
         {/* Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Recent Allocations */}
+          {/* My Active Requests */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Pending Pickups</h2>
+              <h2 className="text-xl font-bold text-gray-900">My Active Requests</h2>
               <button
                 onClick={() => navigate('/my-food')}
                 className="text-primary-600 hover:text-primary-700 text-sm font-medium"
@@ -242,70 +240,82 @@ const Dashboard = () => {
                 View All →
               </button>
             </div>
-            {dashboardData?.allocations?.length > 0 ? (
+            {dashboardData?.requests?.length > 0 ? (
               <div className="space-y-3">
-                {dashboardData.allocations.map((allocation, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
+                {dashboardData.requests.map((request, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border-2 border-gray-200">
                     <div>
-                      <p className="font-medium text-gray-900">{allocation.item_name || 'Food Item'}</p>
-                      <p className="text-sm text-gray-600">{allocation.quantity} {allocation.unit}</p>
+                      <p className="font-medium text-gray-900">{request.item_name || 'Food Item'}</p>
+                      <p className="text-sm text-gray-600">{request.quantity} {request.unit}</p>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      allocation.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                      request.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {allocation.status}
+                      {request.status === 'approved' ? 'Ready' : 'Pending'}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500 text-center py-4">No pending pickups</p>
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-3">No active requests yet</p>
+                <button
+                  onClick={() => navigate('/my-food')}
+                  className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium text-sm"
+                >
+                  Request Food
+                </button>
+              </div>
             )}
           </div>
           
-          {/* Available Food */}
+          {/* Quick Access to Earn Tickets */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">Available Food</h2>
+              <h2 className="text-xl font-bold text-gray-900">Earn More Tickets</h2>
+            </div>
+            <div className="space-y-4">
               <button
-                onClick={() => navigate('/my-food')}
-                className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                onClick={() => navigate('/governance')}
+                className="w-full p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-200 rounded-lg hover:shadow-md transition text-left group"
               >
-                Browse All →
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-blue-900">Vote on Proposals</p>
+                    <p className="text-sm text-blue-700">Earn 1 ticket per vote</p>
+                  </div>
+                  <svg className="w-5 h-5 text-blue-600 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </button>
+              
+              <button
+                onClick={() => navigate('/volunteering')}
+                className="w-full p-4 bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 rounded-lg hover:shadow-md transition text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-green-900">Volunteer</p>
+                    <p className="text-sm text-green-700">Earn 1-2 tickets per shift</p>
+                  </div>
+                  <svg className="w-5 h-5 text-green-600 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </button>
             </div>
-            <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-3">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <p className="text-3xl font-bold text-gray-900 mb-1">{dashboardData?.availableItems || 0}</p>
-              <p className="text-gray-600">Items available now</p>
-            </div>
           </div>
-        </div>
-        
-        {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Votes</h2>
-          {dashboardData?.recentVotes?.length > 0 ? (
-            <div className="space-y-3">
-              {dashboardData.recentVotes.map((vote, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">{vote.proposal_title || 'Proposal'}</p>
-                    <p className="text-sm text-gray-600">{vote.vote_choice}</p>
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    {new Date(vote.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center py-4">No recent votes</p>
-          )}
         </div>
       </div>
     </main>

@@ -465,7 +465,7 @@ const seedMockData = async () => {
         type: 'policy_update',
         title: 'Update Allocation Hours',
         description: 'Extend pantry pickup hours to 8pm on weekdays',
-        entity: 'student',
+        entity: 'pantry',
         status: 'passed'
       },
       {
@@ -496,7 +496,7 @@ const seedMockData = async () => {
         proposal.title,
         proposal.description,
         proposal.entity,
-        proposal.entity === 'pantry' ? pantryIds[0] : studentIds[0],
+        pantryIds[0], // Only pantry can create proposals
         proposal.status
       ]);
       proposalIds.push(result.rows[0].id);
@@ -893,6 +893,51 @@ const seedMockData = async () => {
     // ============================================
     // 11. CREATE AUDIT LOGS
     // ============================================
+    // CREATE FOOD VOTING DATA FOR POAS
+    // ============================================
+    
+    logger.info('Creating food votes for POAS scoring...');
+    
+    const foodItemsForVoting = [
+      // High demand items (priority 4-5)
+      { name: 'Organic Apples', type: 'Produce', avgPriority: 5, voteCount: 25 },
+      { name: 'Fresh Chicken Breast', type: 'Protein', avgPriority: 5, voteCount: 22 },
+      { name: 'Whole Wheat Bread', type: 'Bakery', avgPriority: 4, voteCount: 28 },
+      { name: 'Greek Yogurt', type: 'Dairy', avgPriority: 5, voteCount: 20 },
+      { name: 'Pizza Slices', type: 'Prepared Food', avgPriority: 5, voteCount: 30 },
+      { name: 'Fresh Bananas', type: 'Produce', avgPriority: 4, voteCount: 24 },
+      { name: 'Peanut Butter', type: 'Pantry', avgPriority: 4, voteCount: 21 },
+      { name: 'Sandwiches', type: 'Prepared Food', avgPriority: 3, voteCount: 18 },
+      { name: 'Canned Beans', type: 'Canned Goods', avgPriority: 3, voteCount: 15 },
+      { name: 'Fresh Tomatoes', type: 'Produce', avgPriority: 3, voteCount: 16 },
+      { name: 'Cereal', type: 'Grains', avgPriority: 3, voteCount: 19 },
+      { name: 'Granola', type: 'Snacks', avgPriority: 3, voteCount: 14 },
+      { name: 'Orange Juice', type: 'Beverages', avgPriority: 3, voteCount: 17 },
+      { name: 'Cookies', type: 'Bakery', avgPriority: 3, voteCount: 20 }
+    ];
+    
+    let totalVotes = 0;
+    for (const item of foodItemsForVoting) {
+      const numVoters = Math.min(item.voteCount, studentIds.length);
+      const voters = [...studentIds].sort(() => 0.5 - Math.random()).slice(0, numVoters);
+      
+      for (const voterId of voters) {
+        const priority = Math.max(1, Math.min(5, 
+          item.avgPriority + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * 2)
+        ));
+        const daysAgo = Math.floor(Math.random() * 25);
+        
+        await client.query(`
+          INSERT INTO voting (user_id, item_name, item_type, priority, created_at) 
+          VALUES ($1, $2, $3, $4, CURRENT_TIMESTAMP - INTERVAL '${daysAgo} days')
+        `, [voterId, item.name, item.type, priority]);
+        totalVotes++;
+      }
+    }
+    
+    logger.info(`Created ${totalVotes} food votes for POAS scoring`);
+    
+    // ============================================
     
     for (let i = 0; i < 50; i++) {
       const daysAgo = Math.floor(Math.random() * 14);
@@ -934,6 +979,7 @@ const seedMockData = async () => {
     console.log(`Volunteer NFTs: ${Math.floor(studentIds.length / 3)}`);
     console.log(`Total NFTs: ~${inventoryIds.length + Math.floor(studentIds.length * 2.5) + 15 + Math.floor(studentIds.length / 3)}`);
     console.log(`Notifications: ${studentIds.length * 2}`);
+    console.log(`Food Votes (for POAS): ~${14 * Math.min(25, studentIds.length)}`);
     console.log('========================================\n');
     
   } catch (error) {

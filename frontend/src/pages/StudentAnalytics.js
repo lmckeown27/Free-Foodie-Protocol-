@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import StudentSidebar from '../components/StudentSidebar';
-import { poasAPI, allocationAPI, votingAPI, volunteerAPI } from '../services/api';
+import { allocationAPI, votingAPI, volunteerAPI } from '../services/api';
 
 const StudentAnalytics = () => {
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,6 @@ const StudentAnalytics = () => {
       // For now, using mock data. Replace with real API calls later
       const mockData = {
         personal: {
-          poasScore: 78.5,
           totalAllocations: 12,
           redeemedAllocations: 10,
           totalVotes: 8,
@@ -78,7 +77,7 @@ const StudentAnalytics = () => {
           currentHours: 15,
           requiredHours: 20,
           progressPercentage: 75,
-          benefits: 'Increased POAS weight, Priority notifications'
+          benefits: 'Priority notifications, Special volunteer badge'
         }
       };
 
@@ -129,13 +128,15 @@ const StudentAnalytics = () => {
             <div className="bg-white rounded-lg shadow p-6 border-l-4 border-primary-500">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">POAS Score</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{analytics.personal.poasScore}</p>
-                  <p className="text-xs text-gray-500 mt-1">Priority ranking</p>
+                  <p className="text-sm font-medium text-gray-600">Total Credentials</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-2">
+                    {analytics.personal.governanceCredentials + analytics.personal.pickupTickets + analytics.personal.volunteerBadges}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">NFTs earned</p>
                 </div>
                 <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
                   <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
                 </div>
               </div>

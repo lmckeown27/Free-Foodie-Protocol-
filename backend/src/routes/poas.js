@@ -26,48 +26,41 @@ router.get('/calculate-all', authenticate, authorize('pantry'), async (req, res,
   }
 });
 
-// @route   GET /api/v1/poas/student/:studentId
-// @desc    Calculate POAS for specific student
-// @access  Private
-router.get('/student/:studentId', authenticate, async (req, res, next) => {
+// @route   GET /api/v1/poas/collective
+// @desc    Get collective POAS score for entire system
+// @access  Private/Pantry
+router.get('/collective', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
-    const { studentId } = req.params;
-    
-    // Students can only view their own score, others need authorization
-    if (req.user.role === 'student' && req.user.id !== studentId) {
-      return res.status(403).json({
-        success: false,
-        error: 'Access denied'
-      });
-    }
-    
-    logger.info(`Calculating POAS for student: ${studentId}`);
-    const score = await poasCalculator.calculateStudentScore(studentId);
+    logger.info('Calculating collective POAS score for entire system');
+    const collectiveScore = await poasCalculator.calculateCollectiveScore();
     
     res.json({
       success: true,
-      data: score
+      data: collectiveScore,
+      calculated_at: new Date()
     });
   } catch (error) {
-    logger.error(`Failed to calculate POAS for student ${req.params.studentId}`, error);
+    logger.error('Failed to calculate collective POAS score', error);
     next(error);
   }
 });
 
-// @route   GET /api/v1/poas/my-score
-// @desc    Get current user's POAS score
-// @access  Private/Student
-router.get('/my-score', authenticate, authorize('student'), async (req, res, next) => {
+// @route   GET /api/v1/poas/food-items
+// @desc    Get POAS scores for all food items
+// @access  Private/Pantry
+router.get('/food-items', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
-    logger.info(`Student ${req.user.id} requested their POAS score`);
-    const score = await poasCalculator.calculateStudentScore(req.user.id);
+    logger.info('Calculating POAS scores for all food items');
+    const itemScores = await poasCalculator.calculateFoodItemScores();
     
     res.json({
       success: true,
-      data: score
+      count: itemScores.length,
+      data: itemScores,
+      calculated_at: new Date()
     });
   } catch (error) {
-    logger.error(`Failed to calculate POAS for student ${req.user.id}`, error);
+    logger.error('Failed to calculate food item POAS scores', error);
     next(error);
   }
 });

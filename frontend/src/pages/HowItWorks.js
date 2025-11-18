@@ -10,35 +10,35 @@ const HowItWorks = () => {
         return {
           title: 'How This Works: Pantry',
           color: 'amber',
-          purpose: 'You manage all food operations, verify suppliers, create proposals for students to vote on, and ensure fair distribution using our data-driven recommendations. You also hold secure accounts for all students, so they never have to worry about technical details.',
+          purpose: 'You manage all food operations and control the entire Allocation Ticket system. Create governance proposals, manage inventory, approve student food requests, and review volunteer completions before issuing tickets. Only the Pantry can issue Allocation Tickets to students.',
           features: [
             {
-              title: 'Create Proposal',
-              description: 'Start a new vote for students on any topic (like "Should we add more vegan options?"). Students vote, and you see the results instantly.'
+              title: 'Create Governance Proposals',
+              description: 'Start new votes for students (like "Should we add more vegan options?"). ONLY the Pantry can create proposals. When students vote, they automatically earn 1 Allocation Ticket per vote.'
             },
             {
-              title: 'Allocate Food',
-              description: 'Our system shows you which students should get food based on their need, voting, and volunteer work. Click to assign food to students.'
+              title: 'Approve Volunteer Completions',
+              description: 'Receive notifications from Suppliers when students complete volunteer work. Review each completion and decide whether to approve and issue Allocation Tickets (1-2 per shift). Only you can issue tickets.'
             },
             {
-              title: 'Pending Supplier Approvals',
-              description: 'Review new supplier applications. Click "Approve" or "Deny" to control who can donate food to your pantry.'
+              title: 'Review Student Food Requests',
+              description: 'When students use their Allocation Tickets to request food, review and approve their requests (usually within 24 hours). Once approved, students can pick up their items.'
             },
             {
-              title: 'Custodial User Management',
-              description: 'View all student and supplier records in one place. Click on any user to see their full profile, history, and credentials.'
+              title: 'Confirm Pickups',
+              description: 'Scan student QR codes when they pick up food. Once confirmed, the item automatically disappears from their active requests and is marked as completed.'
             },
             {
-              title: 'Inventory Management',
-              description: 'See all available food, track what\'s coming soon, and monitor what\'s been picked up. Filter by food type, date, or supplier.'
+              title: 'Manage Inventory by Category',
+              description: 'Organize food by categories (Produce, Protein, Dairy, etc.) with governance context. Track what\'s available, low stock items, and what needs to be requested from suppliers.'
             },
             {
-              title: 'Analytics & Reports',
-              description: 'View real-time dashboards showing total distributions, student participation, supplier donations, and system health.'
+              title: 'Supply Planning (POAS)',
+              description: 'View POAS-based recommendations organized by priority (Critical, High, Medium, Low, Optional). Use this data to optimize what to request from suppliers based on student demand.'
             },
             {
-              title: 'Credential Management',
-              description: 'Issue voting rights, pickup tickets, and service badges to students. Verify supplier donation receipts. Everything is tracked securely.'
+              title: 'Allocation Ticket Control',
+              description: 'You are the ONLY entity that can issue Allocation Tickets. This ensures system integrity, prevents abuse, and maintains fair food distribution across all students.'
             }
           ]
         };
@@ -47,27 +47,31 @@ const HowItWorks = () => {
         return {
           title: 'How This Works: Supplier',
           color: 'blue',
-          purpose: 'You donate surplus food to help students while reducing waste. Get instant verified receipts for every donation (great for taxes!), track your impact in real-time, and see exactly how your food helps the community.',
+          purpose: 'You donate surplus food to help students while reducing waste, and recruit student volunteers to help with food operations. Get instant verified receipts for every donation, create volunteering opportunities, and track your community impact.',
           features: [
             {
-              title: 'Log Donation',
-              description: 'Click to record a new donation. Enter the food item, quantity, and weight. Submit and you\'ll instantly get a verified receipt.'
+              title: 'Donate Food',
+              description: 'Record a new food donation. Enter the food item, quantity, and details. Submit and you\'ll instantly get a verified receipt for your records (great for tax purposes!).'
             },
             {
-              title: 'Donation Lifecycle Tracker',
-              description: 'See the status of each donation you\'ve made: Donated → Available → Allocated → Redeemed. Watch your food go from your hands to students.'
+              title: 'Create Volunteering Opportunities',
+              description: 'Post volunteer opportunities for students (food sorting, packaging, delivery assistance, etc.). Specify hours, spots available, skills needed, and the Allocation Ticket reward (1-2 tickets per shift).'
             },
             {
-              title: 'View Complete Redeemed Donation History',
-              description: 'Click to see all past donations that have been picked up by students. Filter by date, item type, or status.'
+              title: 'Manage Student Signups',
+              description: 'See which students have signed up for your volunteering opportunities. View their profiles and track upcoming volunteer shifts.'
             },
             {
-              title: 'Impact Metrics Dashboard',
-              description: 'View your total pounds donated, CO₂ saved, students served, and donation receipts. Updated in real-time as students pick up your donations.'
+              title: 'Mark Volunteer Work Complete',
+              description: 'When a student completes their volunteer work, mark it as complete. This sends a notification to the Pantry for review. The Pantry decides whether to approve and issue the Allocation Tickets.'
             },
             {
-              title: 'My Credentials',
-              description: 'View all your verified donation receipts in one place. Each receipt includes the full donation details and verification record for compliance.'
+              title: 'Track Approval Status',
+              description: 'See the status of volunteer completions: "Not Notified" → "Pending Pantry Review" → "Ticket Issued by Pantry". You can only notify the Pantry; they have final approval.'
+            },
+            {
+              title: 'View Donation History',
+              description: 'Track all your past donations and see how they moved through the system: Donated → Available → Requested → Picked Up. Watch your food reach students in real-time.'
             }
           ]
         };
@@ -76,31 +80,31 @@ const HowItWorks = () => {
         return {
           title: 'How This Works: Students',
           color: 'primary',
-          purpose: 'Get free food from the pantry! Your voice matters here—vote on what food should be available, volunteer to help out, and you\'ll get priority access. The more you participate, the higher your priority for food allocation.',
+          purpose: 'Get free food from the pantry by earning Allocation Tickets! There are only TWO ways to earn tickets: vote on governance proposals or complete volunteering opportunities. Use your tickets to request food items from the Pantry.',
           features: [
             {
-              title: 'Vote on Proposals',
-              description: 'Click to see current votes and cast your vote on pantry changes. Each vote you cast increases your food priority by 35%!'
+              title: 'Earn Tickets by Voting',
+              description: 'Vote on governance proposals created by the Pantry (like "Should we add more vegan options?"). Every vote you cast earns you 1 Allocation Ticket automatically. Your voice helps decide what food is available!'
             },
             {
-              title: 'Log Volunteer Hours',
-              description: 'Helped at the pantry? Click here to record your volunteer hours. Volunteering gives you even higher priority for food.'
+              title: 'Earn Tickets by Volunteering',
+              description: 'Browse volunteering opportunities posted by Suppliers (food sorting, delivery assistance, etc). Sign up, complete the work, and the Supplier will notify the Pantry. Once the Pantry approves, you earn 1-2 Allocation Tickets per shift.'
             },
             {
-              title: 'View Available Food',
-              description: 'Browse what food is currently available at the pantry. See what\'s coming soon and when new donations arrive.'
+              title: 'Request Food with Your Tickets',
+              description: 'Browse available food items and use 1 Allocation Ticket to request any item. Your ticket is used immediately. The Pantry will review and approve your request (usually within 24 hours).'
             },
             {
-              title: 'My Allocations',
-              description: 'Check if food has been allocated to you. When you have a pickup ticket, it shows here with all the details.'
+              title: 'Pick Up Your Food',
+              description: 'Once approved, come to the Pantry and show your QR code. After the Pantry confirms pickup, the item automatically disappears from your requests list.'
             },
             {
-              title: 'My Credentials',
-              description: 'View your voting rights, pickup tickets, and service badges. See your participation history and volunteer achievements.'
+              title: 'View Your Ticket Balance',
+              description: 'Check your current Allocation Tickets on your Dashboard, Volunteering page, or Request Food page. Always visible so you know how many items you can request.'
             },
             {
-              title: 'Governance',
-              description: 'See all active and past proposals. View detailed voting results and proposal descriptions.'
+              title: 'Track Your Active Requests',
+              description: 'See all your food requests in one place. Requests show as "Pending" (awaiting approval) or "Ready" (approved for pickup). Items disappear once picked up.'
             }
           ]
         };
@@ -206,13 +210,14 @@ const HowItWorks = () => {
 
               {/* Footer Info */}
               <div className={`mt-8 p-4 ${colors.bgDark} rounded-lg border ${colors.border}`}>
-                <h4 className={`font-semibold ${colors.text} mb-2`}>Key Features</h4>
+                <h4 className={`font-semibold ${colors.text} mb-2`}>Key System Features</h4>
                 <ul className={`space-y-1 text-sm ${colors.textLight}`}>
-                  <li>• Secure, tamper-proof record keeping</li>
-                  <li>• Real-time food tracking and reports</li>
-                  <li>• Food safety compliance built-in</li>
-                  <li>• Fair distribution based on need and participation</li>
-                  <li>• Legal protection for donors (Good Samaritan Act)</li>
+                  <li>• Allocation Ticket economy for fair food access</li>
+                  <li>• Two clear ways to earn: Vote or Volunteer</li>
+                  <li>• Pantry controls all ticket issuance (prevents abuse)</li>
+                  <li>• Real-time tracking of requests and pickups</li>
+                  <li>• Automatic item removal after pickup confirmation</li>
+                  <li>• Secure, tamper-proof blockchain records</li>
                 </ul>
               </div>
             </div>

@@ -1,440 +1,309 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { walletAPI } from '../services/api';
+import { nftAPI, analyticsAPI } from '../services/api';
 import PantrySidebar from '../components/PantrySidebar';
 
 const CredentialManagementPage = () => {
   const navigate = useNavigate();
-  const { type } = useParams(); // Get credential type from URL
-  const [custodialCredentials, setCustodialCredentials] = useState([]);
+  const { type } = useParams();
+  const [allocationTickets, setAllocationTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showIssueModal, setShowIssueModal] = useState(false);
+  const [filterType, setFilterType] = useState('all'); // 'all', 'voting', 'volunteering'
   const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [issueForm, setIssueForm] = useState({
-    userId: '',
-    userEmail: '',
-    credentialType: '',
-    metadata: {}
-  });
 
   useEffect(() => {
-    fetchAllCredentials();
+    fetchAllocationTickets();
   }, []);
 
-  const fetchAllCredentials = async () => {
+  const fetchAllocationTickets = async () => {
     try {
       setLoading(true);
-      const credentialsRes = await walletAPI.getCustodialNFTs();
-      setCustodialCredentials(credentialsRes.data?.data || []);
+      const nftsRes = await nftAPI.getAllNFTs();
+      const allNFTs = nftsRes.data?.data || [];
+      
+      // Filter to only allocation tickets
+      const tickets = allNFTs.filter(
+        n => n.nft_type === 'allocation' || n.credential_type === 'allocation'
+      );
+      
+      setAllocationTickets(tickets);
     } catch (error) {
-      console.error('Error fetching credentials:', error);
+      console.error('Error fetching allocation tickets:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const credentialCategories = [
-    {
-      type: 'governance',
-      name: 'Voting Rights',
-      description: 'Governance credentials for students',
-      color: 'amber',
-      icon: '',
-      userType: 'Student',
-      purpose: 'Grant voting power in governance proposals'
-    },
-    {
-      type: 'allocation',
-      name: 'Pickup Tickets',
-      description: 'Food pickup credentials for students',
-      color: 'green',
-      icon: '',
-      userType: 'Student',
-      purpose: 'Authorize food pickup and claim rights'
-    },
-    {
-      type: 'volunteer',
-      name: 'Service Badges',
-      description: 'Volunteer credentials for students',
-      color: 'yellow',
-      icon: '',
-      userType: 'Student',
-      purpose: 'Recognize volunteer contributions and milestones'
-    },
-    {
-      type: 'supplier',
-      name: 'Donation Receipts',
-      description: 'Verification credentials for suppliers',
-      color: 'blue',
-      icon: '',
-      userType: 'Supplier',
-      purpose: 'Verify donations and track impact'
+  const getFilteredTickets = () => {
+    if (filterType === 'all') return allocationTickets;
+    if (filterType === 'voting') {
+      return allocationTickets.filter(
+        t => t.source === 'voting' || t.earned_via === 'voting'
+      );
     }
-  ];
-
-  // Filter categories based on type parameter
-  const filteredCategories = type 
-    ? credentialCategories.filter(cat => cat.type === type)
-    : credentialCategories;
-
-  const getColorClasses = (color) => {
-    const colors = {
-      amber: {
-        bg: 'bg-amber-50',
-        border: 'border-amber-200',
-        text: 'text-amber-700',
-        badge: 'bg-amber-600',
-        hover: 'hover:bg-amber-100',
-        button: 'bg-amber-600 hover:bg-amber-700'
-      },
-      green: {
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        text: 'text-green-700',
-        badge: 'bg-green-600',
-        hover: 'hover:bg-green-100',
-        button: 'bg-green-600 hover:bg-green-700'
-      },
-      yellow: {
-        bg: 'bg-yellow-50',
-        border: 'border-yellow-200',
-        text: 'text-yellow-700',
-        badge: 'bg-yellow-600',
-        hover: 'hover:bg-yellow-100',
-        button: 'bg-yellow-600 hover:bg-yellow-700'
-      },
-      blue: {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        text: 'text-blue-700',
-        badge: 'bg-blue-600',
-        hover: 'hover:bg-blue-100',
-        button: 'bg-blue-600 hover:bg-blue-700'
-      }
-    };
-    return colors[color];
-  };
-
-  const getCredentialsByType = (type) => {
-    return custodialCredentials.filter(cred => cred.nft_type === type);
-  };
-
-  const handleOpenIssueModal = (category) => {
-    setSelectedCategory(category);
-    setIssueForm({
-      userId: '',
-      userEmail: '',
-      credentialType: category.type,
-      metadata: {}
-    });
-    setShowIssueModal(true);
-  };
-
-  const handleIssueCredential = async (e) => {
-    e.preventDefault();
-    try {
-      alert(`Issuing ${selectedCategory.name}...\n\nRecipient: ${issueForm.userEmail}\nType: ${issueForm.credentialType}\n\nThis will trigger the Pantry's custodial wallet to issue the credential.`);
-      setShowIssueModal(false);
-      setIssueForm({ userId: '', userEmail: '', credentialType: '', metadata: {} });
-      setSelectedCategory(null);
-      await fetchAllCredentials();
-    } catch (error) {
-      console.error('Error issuing credential:', error);
-      alert('Failed to issue credential');
+    if (filterType === 'volunteering') {
+      return allocationTickets.filter(
+        t => t.source === 'volunteering' || t.earned_via === 'volunteering'
+      );
     }
+    return allocationTickets;
   };
 
-  const handleRedeemCredential = async (credId, credType) => {
-    if (window.confirm(`Are you sure you want to mark this ${credType} credential as redeemed?`)) {
-      try {
-        alert(`Redeeming credential ${credId}...\n\nThis would update the credential status to 'redeemed' in the custodial wallet.`);
-        await fetchAllCredentials();
-      } catch (error) {
-        console.error('Error redeeming credential:', error);
-        alert('Failed to redeem credential');
-      }
+  const filteredTickets = getFilteredTickets();
+  const votingTickets = allocationTickets.filter(
+    t => t.source === 'voting' || t.earned_via === 'voting'
+  );
+  const volunteeringTickets = allocationTickets.filter(
+    t => t.source === 'volunteering' || t.earned_via === 'volunteering'
+  );
+  const activeTickets = filteredTickets.filter(t => t.nft_status === 'active').length;
+  const usedTickets = filteredTickets.filter(
+    t => t.nft_status === 'redeemed' || t.nft_status === 'used'
+  ).length;
+
+  // Group tickets by student
+  const ticketsByStudent = {};
+  filteredTickets.forEach(ticket => {
+    const studentId = ticket.user_id;
+    if (!ticketsByStudent[studentId]) {
+      ticketsByStudent[studentId] = {
+        student: ticket,
+        tickets: [],
+        activeCount: 0,
+        usedCount: 0,
+        votingCount: 0,
+        volunteeringCount: 0
+      };
     }
-  };
+    ticketsByStudent[studentId].tickets.push(ticket);
+    if (ticket.nft_status === 'active') {
+      ticketsByStudent[studentId].activeCount++;
+    } else if (ticket.nft_status === 'redeemed' || ticket.nft_status === 'used') {
+      ticketsByStudent[studentId].usedCount++;
+    }
+    if (ticket.source === 'voting' || ticket.earned_via === 'voting') {
+      ticketsByStudent[studentId].votingCount++;
+    } else if (ticket.source === 'volunteering' || ticket.earned_via === 'volunteering') {
+      ticketsByStudent[studentId].volunteeringCount++;
+    }
+  });
 
-  const totalCredentials = custodialCredentials.length;
-  const activeCredentials = custodialCredentials.filter(n => n.nft_status === 'active').length;
-  const redeemedCredentials = custodialCredentials.filter(n => n.nft_status === 'redeemed').length;
+  const studentsList = Object.values(ticketsByStudent);
 
   return (
-    <div className="min-h-screen bg-amber-50 flex">
+    <div className="min-h-screen bg-purple-50 flex">
       <PantrySidebar user={user} />
       
       <main className="flex-1 ml-64">
         {/* Header */}
-        <header className="bg-gradient-to-r from-amber-600 to-amber-700 shadow-lg">
+        <header className="bg-gradient-to-r from-purple-600 to-purple-700 shadow-lg">
           <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-white">
-                  {type 
-                    ? `${credentialCategories.find(c => c.type === type)?.name || 'Credential'} Management`
-                    : 'Master Credential Management'
-                }
-              </h1>
-              <p className="text-sm text-amber-200 mt-1">
-                {type
-                  ? `Issue, monitor, and manage ${credentialCategories.find(c => c.type === type)?.description || 'credentials'}`
-                  : 'Issue, monitor, and manage all custodial credentials across 4 categories'
-                }
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {/* Overall Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-amber-600">
-            <p className="text-3xl font-bold text-amber-600">{totalCredentials}</p>
-            <p className="text-sm text-gray-600 mt-1">Total Credentials in Custody</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-600">
-            <p className="text-3xl font-bold text-green-600">{activeCredentials}</p>
-            <p className="text-sm text-gray-600 mt-1">Active Credentials</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-gray-600">
-            <p className="text-3xl font-bold text-gray-600">{redeemedCredentials}</p>
-            <p className="text-sm text-gray-600 mt-1">Redeemed Credentials</p>
-          </div>
-        </div>
-
-        {/* Credential Category Sections */}
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading credentials...</p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {filteredCategories.map((category) => {
-              const colors = getColorClasses(category.color);
-              const credentials = getCredentialsByType(category.type);
-              const activeCount = credentials.filter(n => n.nft_status === 'active').length;
-              const redeemedCount = credentials.filter(n => n.nft_status === 'redeemed').length;
-
-              return (
-                <div key={category.type} className={`bg-white rounded-lg shadow-lg border-2 ${colors.border} overflow-hidden`}>
-                  {/* Category Header */}
-                  <div className={`${colors.bg} px-6 py-4 border-b-2 ${colors.border}`}>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h2 className={`text-xl font-bold ${colors.text}`}>{category.name}</h2>
-                        <p className="text-sm text-gray-600">{category.description}</p>
-                      </div>
-                      <button
-                        onClick={() => handleOpenIssueModal(category)}
-                        className={`${colors.button} text-white px-4 py-2 rounded-lg font-semibold transition flex items-center gap-2`}
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Issue New
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Category Info Bar */}
-                  <div className={`${colors.bg} px-6 py-3 flex items-center justify-between border-b ${colors.border}`}>
-                    <div className="flex items-center gap-6">
-                      <div>
-                        <p className={`text-2xl font-bold ${colors.text}`}>{credentials.length}</p>
-                        <p className="text-xs text-gray-600">Total</p>
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-green-600">{activeCount}</p>
-                        <p className="text-xs text-gray-600">Active</p>
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold text-gray-600">{redeemedCount}</p>
-                        <p className="text-xs text-gray-600">Redeemed</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-600 uppercase font-semibold">User Type</p>
-                      <p className={`text-sm font-bold ${colors.text}`}>{category.userType}</p>
-                    </div>
-                  </div>
-
-                  {/* Purpose */}
-                  <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
-                    <p className="text-xs text-gray-500 uppercase font-semibold">Purpose</p>
-                    <p className="text-sm text-gray-700 mt-1">{category.purpose}</p>
-                  </div>
-
-                  {/* Credential List */}
-                  {credentials.length === 0 ? (
-                    <div className="px-6 py-8 text-center">
-                      <p className="text-gray-500">No {category.name.toLowerCase()} have been issued yet</p>
-                      <button
-                        onClick={() => handleOpenIssueModal(category)}
-                        className={`mt-4 ${colors.button} text-white px-6 py-2 rounded-lg font-semibold transition`}
-                      >
-                        Issue First Credential
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="divide-y divide-gray-200">
-                      {credentials.slice(0, 5).map((cred) => (
-                        <div key={cred.mapping_id} className={`px-6 py-4 ${colors.hover} transition`}>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 flex-1">
-                              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${colors.badge}`}>
-                                {cred.nft_type.charAt(0).toUpperCase()}
-                              </div>
-                              <div className="flex-1">
-                                <p className="text-sm font-semibold text-gray-900">
-                                  {cred.first_name} {cred.last_name}
-                                </p>
-                                <p className="text-xs text-gray-600">{cred.email}</p>
-                                <p className="text-xs text-gray-500 font-mono mt-1 break-all">ID: {cred.nft_id}</p>
-                              </div>
-                              <div className="text-center">
-                                <p className="text-xs text-gray-500">Issued</p>
-                                <p className="text-sm text-gray-700">{new Date(cred.minted_at).toLocaleDateString()}</p>
-                              </div>
-                              <div>
-                                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  cred.nft_status === 'active' ? 'bg-green-100 text-green-800' :
-                                  cred.nft_status === 'redeemed' ? 'bg-gray-100 text-gray-800' :
-                                  'bg-red-100 text-red-800'
-                                }`}>
-                                  {cred.nft_status}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="flex gap-2 ml-4">
-                              <button
-                                onClick={() => navigate(`/user/${cred.user_id}`)}
-                                className="text-blue-600 hover:text-blue-900 font-medium text-sm px-3 py-1 border border-blue-300 rounded hover:bg-blue-50 transition"
-                              >
-                                View User
-                              </button>
-                              <button
-                                onClick={() => navigate(`/nft/${cred.nft_id}`)}
-                                className={`${colors.text} hover:opacity-75 font-medium text-sm px-3 py-1 border ${colors.border} rounded hover:${colors.bg} transition`}
-                              >
-                                Details
-                              </button>
-                              {cred.nft_status === 'active' && category.type === 'allocation' && (
-                                <button
-                                  onClick={() => handleRedeemCredential(cred.nft_id, category.type)}
-                                  className="text-gray-600 hover:text-gray-900 font-medium text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition"
-                                >
-                                  Redeem
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                      {credentials.length > 5 && (
-                        <div className={`px-6 py-3 ${colors.bg} text-center`}>
-                          <p className="text-sm text-gray-600">
-                            Showing 5 of {credentials.length} {category.name.toLowerCase()}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">Use filters above to view more</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </main>
-
-      {/* Issue Modal */}
-      {showIssueModal && selectedCategory && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4">
-            <div className={`${getColorClasses(selectedCategory.color).bg} px-6 py-4 border-b-2 ${getColorClasses(selectedCategory.color).border}`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{selectedCategory.icon}</span>
-                  <h3 className={`text-lg font-bold ${getColorClasses(selectedCategory.color).text}`}>
-                    Issue {selectedCategory.name}
-                  </h3>
-                </div>
-                <button
-                  onClick={() => {
-                    setShowIssueModal(false);
-                    setSelectedCategory(null);
-                  }}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <form onSubmit={handleIssueCredential} className="p-6">
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Recipient Email *
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={issueForm.userEmail}
-                  onChange={(e) => setIssueForm({ ...issueForm, userEmail: e.target.value })}
-                  placeholder={`${selectedCategory.userType} email address`}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">Enter the {selectedCategory.userType.toLowerCase()}'s email to issue their credential</p>
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Credential Type
-                </label>
-                <input
-                  type="text"
-                  value={selectedCategory.name}
-                  disabled
-                  className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700"
-                />
-              </div>
-
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Purpose
-                </label>
-                <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-200">
-                  {selectedCategory.purpose}
+                <h1 className="text-3xl font-bold text-white">Allocation Ticket Management</h1>
+                <p className="text-sm text-purple-200 mt-1">
+                  View and track all allocation tickets issued to students
                 </p>
               </div>
+              <div className="bg-white/20 backdrop-blur rounded-lg px-4 py-2">
+                <p className="text-white text-sm font-medium">You Control Ticket Issuance</p>
+              </div>
+            </div>
+          </div>
+        </header>
 
-              <div className="flex gap-3">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          {/* Overall Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-600">
+              <p className="text-3xl font-bold text-purple-600">{allocationTickets.length}</p>
+              <p className="text-sm text-gray-600 mt-1">Total Tickets Issued</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-600">
+              <p className="text-3xl font-bold text-blue-600">{votingTickets.length}</p>
+              <p className="text-sm text-gray-600 mt-1">From Voting</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-600">
+              <p className="text-3xl font-bold text-green-600">{volunteeringTickets.length}</p>
+              <p className="text-sm text-gray-600 mt-1">From Volunteering</p>
+            </div>
+            <div className="bg-white rounded-lg shadow-lg p-6 border-l-4 border-amber-600">
+              <p className="text-3xl font-bold text-amber-600">
+                {Object.keys(ticketsByStudent).length}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">Students with Tickets</p>
+            </div>
+          </div>
+
+          {/* Filter Tabs */}
+          <div className="bg-white rounded-lg shadow-md mb-6">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Filter Tickets</h2>
+              <div className="flex gap-2">
                 <button
-                  type="button"
-                  onClick={() => {
-                    setShowIssueModal(false);
-                    setSelectedCategory(null);
-                  }}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                  onClick={() => setFilterType('all')}
+                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                    filterType === 'all'
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
                 >
-                  Cancel
+                  All Tickets ({allocationTickets.length})
                 </button>
                 <button
-                  type="submit"
-                  className={`flex-1 px-4 py-2 ${getColorClasses(selectedCategory.color).button} text-white rounded-lg transition font-semibold`}
+                  onClick={() => setFilterType('voting')}
+                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                    filterType === 'voting'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
                 >
-                  Issue Credential
+                  Earned from Voting ({votingTickets.length})
+                </button>
+                <button
+                  onClick={() => setFilterType('volunteering')}
+                  className={`px-4 py-2 rounded-lg font-medium transition ${
+                    filterType === 'volunteering'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Earned from Volunteering ({volunteeringTickets.length})
                 </button>
               </div>
-            </form>
+            </div>
+
+            {/* Filtered Stats */}
+            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+              <div className="flex items-center gap-6">
+                <div>
+                  <p className="text-2xl font-bold text-purple-600">{filteredTickets.length}</p>
+                  <p className="text-xs text-gray-600">Filtered Total</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-green-600">{activeTickets}</p>
+                  <p className="text-xs text-gray-600">Available</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-600">{usedTickets}</p>
+                  <p className="text-xs text-gray-600">Used</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Ticket Distribution by Student */}
+          <div className="bg-white rounded-lg shadow-md">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-purple-100 to-purple-50">
+              <h2 className="text-xl font-bold text-gray-900">Student Ticket Distribution</h2>
+              <p className="text-sm text-gray-600 mt-1">View tickets grouped by student</p>
+            </div>
+
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading tickets...</p>
+              </div>
+            ) : studentsList.length === 0 ? (
+              <div className="text-center py-12">
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                </svg>
+                <p className="text-gray-500">No tickets found</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {studentsList.map((studentData, idx) => (
+                  <div key={idx} className="px-6 py-4 hover:bg-gray-50 transition">
+                    <div className="flex items-center justify-between">
+                      {/* Student Info */}
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                          {studentData.student.first_name?.charAt(0)}
+                          {studentData.student.last_name?.charAt(0)}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-gray-900">
+                            {studentData.student.first_name} {studentData.student.last_name}
+                          </p>
+                          <p className="text-xs text-gray-600">{studentData.student.email}</p>
+                        </div>
+                      </div>
+
+                      {/* Ticket Stats */}
+                      <div className="flex items-center gap-6">
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-green-600">{studentData.activeCount}</p>
+                          <p className="text-xs text-gray-600">Available</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-gray-600">{studentData.usedCount}</p>
+                          <p className="text-xs text-gray-600">Used</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-blue-600">{studentData.votingCount}</p>
+                          <p className="text-xs text-gray-600">Voting</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-2xl font-bold text-green-600">{studentData.volunteeringCount}</p>
+                          <p className="text-xs text-gray-600">Volunteer</p>
+                        </div>
+                      </div>
+
+                      {/* View Button */}
+                      <div className="ml-6">
+                        <button
+                          onClick={() => navigate(`/user/${studentData.student.user_id}`)}
+                          className="text-purple-600 hover:text-purple-900 font-medium text-sm px-4 py-2 border-2 border-purple-300 rounded-lg hover:bg-purple-50 transition"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Info Banner */}
+          <div className="mt-6 bg-purple-50 border-2 border-purple-200 rounded-lg p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-purple-900 mb-2">Two Ways to Earn Allocation Tickets</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-purple-800">
+                  <div className="bg-white rounded-lg p-4 border-2 border-blue-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                      </svg>
+                      <p className="font-bold text-blue-900">Voting on Proposals</p>
+                    </div>
+                    <p className="text-xs text-blue-700">
+                      Students automatically earn 1 ticket when they vote on governance proposals that you create.
+                    </p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 border-2 border-green-200">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                      </svg>
+                      <p className="font-bold text-green-900">Completing Volunteer Work</p>
+                    </div>
+                    <p className="text-xs text-green-700">
+                      When Suppliers notify you of completed volunteer work, you review and decide to issue 1-2 tickets per shift.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
       </main>
     </div>
   );

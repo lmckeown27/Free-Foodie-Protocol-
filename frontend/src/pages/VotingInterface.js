@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { votingAPI, inventoryAPI, poasAPI } from '../services/api';
+import { votingAPI, inventoryAPI } from '../services/api';
 
 const VotingInterface = () => {
   const [inventory, setInventory] = useState([]);
   const [votes, setVotes] = useState({});
   const [myVotes, setMyVotes] = useState([]);
-  const [myScore, setMyScore] = useState(null);
   const [trending, setTrending] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -17,17 +16,15 @@ const VotingInterface = () => {
   
   const fetchData = async () => {
     try {
-      const [inventoryRes, myVotesRes, trendingRes, scoreRes] = await Promise.all([
+      const [inventoryRes, myVotesRes, trendingRes] = await Promise.all([
         inventoryAPI.getInventory({ status: 'available' }),
         votingAPI.getMyVotes(),
-        votingAPI.getTrending(),
-        poasAPI.getMyScore().catch(() => ({ data: { data: { poas_score: 0 } } }))
+        votingAPI.getTrending()
       ]);
       
       setInventory(inventoryRes.data.data || []);
       setMyVotes(myVotesRes.data.data || []);
       setTrending(trendingRes.data.data || []);
-      setMyScore(scoreRes.data.data);
       
       // Initialize votes from my previous votes
       const existingVotes = {};
@@ -63,7 +60,7 @@ const VotingInterface = () => {
       });
       
       await Promise.all(votePromises);
-      alert('Votes submitted successfully! Your POAS score will be recalculated.');
+      alert('Votes submitted successfully! Your votes help determine pantry inventory.');
       fetchData(); // Refresh
     } catch (error) {
       alert('Failed to submit votes: ' + (error.response?.data?.error || error.message));
@@ -107,30 +104,9 @@ const VotingInterface = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-primary-600">Vote on What You Want</h1>
           <p className="text-gray-600 mt-2">
-            Your votes help determine pantry inventory and improve your POAS score
+            Your votes help determine pantry inventory and shape what food is available
           </p>
         </div>
-        
-        {/* POAS Score Card */}
-        {myScore && (
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-lg shadow-lg p-6 mb-8">
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="text-lg opacity-90">Your POAS Score</h3>
-                <p className="text-4xl font-bold">{Number(myScore.poas_score).toFixed(1)}/100</p>
-                <p className="text-sm opacity-75 mt-1">
-                  Voting increases your allocation priority
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm opacity-75">Score Breakdown:</p>
-                <p className="text-xs mt-1">Voting: {(myScore.components.voting_engagement * 100).toFixed(0)}%</p>
-                <p className="text-xs">Need: {(myScore.components.need_factor * 100).toFixed(0)}%</p>
-                <p className="text-xs">Reliability: {(myScore.components.redemption_rate * 100).toFixed(0)}%</p>
-              </div>
-            </div>
-          </div>
-        )}
         
         {/* Trending Items */}
         {trending.length > 0 && (
@@ -222,8 +198,8 @@ const VotingInterface = () => {
           <ul className="text-sm text-primary-800 space-y-1 list-disc list-inside">
             <li>Vote on items you want to see in the pantry</li>
             <li>Priority 5 = Highest need, Priority 1 = Low interest</li>
-            <li>More votes = Higher POAS score = Better allocation chances</li>
-            <li>Your votes help the pantry stock what students actually need</li>
+            <li>Your votes help the pantry understand student needs and preferences</li>
+            <li>The pantry uses collective voting data to request food from suppliers</li>
             <li>You can change your votes anytime before submission</li>
           </ul>
         </div>

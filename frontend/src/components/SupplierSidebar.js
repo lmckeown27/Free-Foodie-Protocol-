@@ -67,13 +67,13 @@ const SupplierSidebar = ({ user }) => {
           </Link>
           
           <Link
-            to="/credentials"
-            className={navItemClass('/credentials')}
+            to="/supplier-volunteering"
+            className={navItemClass('/supplier-volunteering')}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
             </svg>
-            My Receipts
+            Volunteering
           </Link>
           
           <hr className="my-4 border-blue-200" />

@@ -14,8 +14,8 @@ const GOVERNANCE_WEIGHTS = {
 
 // @route   POST /api/v1/governance/proposals
 // @desc    Create a new governance proposal
-// @access  Private (Pantry, Supplier, Student)
-router.post('/proposals', authenticate, async (req, res, next) => {
+// @access  Private/Pantry only
+router.post('/proposals', authenticate, authorize('pantry'), async (req, res, next) => {
   try {
     const {
       proposal_type,

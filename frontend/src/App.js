@@ -15,7 +15,6 @@ import DonationHistory from './pages/DonationHistory';
 import Voting from './pages/Voting';
 import VotingInterface from './pages/VotingInterface';
 import Allocations from './pages/Allocations';
-import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
 import VolunteerHub from './pages/VolunteerHub';
 import MyCredentials from './pages/MyCredentials';
@@ -24,6 +23,8 @@ import CreateProposal from './pages/CreateProposal';
 import HowItWorks from './pages/HowItWorks';
 import StudentAnalytics from './pages/StudentAnalytics';
 import StudentInventory from './pages/StudentInventory';
+import SupplierVolunteering from './pages/SupplierVolunteering';
+import StudentVolunteering from './pages/StudentVolunteering';
 import './styles/App.css';
 
 // Protected route component
@@ -189,21 +190,30 @@ function App() {
               />
               
               <Route 
+                path="/volunteering" 
+                element={
+                  <ProtectedRoute allowedRoles={['student']}>
+                    <StudentVolunteering />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/supplier-volunteering" 
+                element={
+                  <ProtectedRoute allowedRoles={['supplier']}>
+                    <SupplierVolunteering />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
                 path="/allocations" 
                 element={
                   <ProtectedRoute>
                     <Allocations />
                   </ProtectedRoute>
                 } 
-              />
-              
-              <Route 
-                path="/analytics" 
-                element={
-                  <ProtectedRoute allowedRoles={['pantry']}>
-                    <Analytics />
-                  </ProtectedRoute>
-                }
               />
               
               <Route 

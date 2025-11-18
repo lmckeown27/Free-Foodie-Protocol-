@@ -97,11 +97,11 @@ export const nftAPI = {
   getNFTsByType: (type) => api.get(`/nft/type/${type}`),
 };
 
-// POAS API
+// POAS API (Pantry only - collective system-wide score and food item scores)
 export const poasAPI = {
-  calculateAll: () => api.get('/poas/calculate-all'),
-  getStudentScore: (studentId) => api.get(`/poas/student/${studentId}`),
-  getMyScore: () => api.get('/poas/my-score'),
+  getCollectiveScore: () => api.get('/poas/collective'), // System-wide collective POAS
+  getFoodItemScores: () => api.get('/poas/food-items'), // POAS scores for each food item
+  calculateAll: () => api.get('/poas/calculate-all'), // Individual scores for allocation
   getRecommendations: (itemId, limit = 10) => api.get(`/poas/recommendations/${itemId}?limit=${limit}`),
   calculateBatch: (studentIds) => api.post('/poas/calculate-batch', { student_ids: studentIds }),
 };

@@ -119,7 +119,7 @@ const LandingPage = () => {
       {
         id: 2,
         question: "How does POAS help allocate food?",
-        answer: "POAS scores students based on participation, volunteering, need, and reliability. It provides recommendations you review and approve. All data is permanently recorded."
+        answer: "POAS is a collective score based on overall student engagement (voting and volunteering). The Pantry uses this system-wide score to determine food quantities to request from suppliers. Individual allocations are handled fairly by the Pantry."
       },
       {
         id: 3,
@@ -390,7 +390,7 @@ const LandingPage = () => {
                     <div className="text-xs text-primary-100 text-center mt-1 mb-3">Full Voting Power</div>
                     <div className="space-y-1 text-xs text-primary-100">
                       <div className="bg-white/10 rounded px-2 py-1">Vote on ALL proposals</div>
-                      <div className="bg-white/10 rounded px-2 py-1">Earn via POAS</div>
+                      <div className="bg-white/10 rounded px-2 py-1">Get fair allocations</div>
                       <div className="bg-white/10 rounded px-2 py-1">Volunteer & engage</div>
                     </div>
                   </div>
